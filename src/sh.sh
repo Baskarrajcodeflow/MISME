@@ -1,0 +1,10 @@
+ng g c desktop/user-management-card --module=desktop/desktop.module.ts
+ng g c desktop/transaction-management-card --module=desktop/desktop.module.ts
+ng g c desktop/account-management-card --module=desktop/desktop.module.ts
+ng g c desktop/compliance-security-card --module=desktop/desktop.module.ts
+ng g c desktop/reporting-analytics-card --module=desktop/desktop.module.ts
+ng g c desktop/support-helpdesk-card --module=desktop/desktop.module.ts
+ng g c desktop/system-administration-card --module=desktop/desktop.module.ts
+ng g c desktop/notifications-alerts-card --module=desktop/desktop.module.ts
+ng g c desktop/integration-management-card --module=desktop/desktop.module.ts
+ng g c desktop/backup-recovery-card --module=desktop/desktop.module.ts

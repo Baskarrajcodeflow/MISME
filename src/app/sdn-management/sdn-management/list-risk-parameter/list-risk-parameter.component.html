@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-6">
+        &nbsp;
+    </div>
+    <div class="col-6">
+        <div class="text-right"  style="margin-right: 50px !important">
+            <button (click)="onClickCreate()" class="btn btn-success">Create Risk Parameter</button>
+        </div>
+    </div>
+</div>
+<br>
+<div class="page-header">
+    <h1 class="page-title">
+        List Risk Parameter 
+    </h1>
+</div>
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <!-- <div>
+                <mat-paginator [pageSize]="15" showFirstLastButtons aria-label="Select page of periodic elements">
+                </mat-paginator>
+            </div> -->
+            <div class="card-body">
+                <h4 class="card-title">Risk Parameter</h4>
+                <p class="card-description">
+                    List
+                </p>
+                     <br>
+                <div class="table-responsive table" >
+                    <table class="table">
+                        <thead>
+                            <tr>                     
+                                <th style="text-align: center;">Risk Type</th>
+                                <th style="text-align: center;">Risk Value</th>
+                                <th style="text-align: center;">Score</th>
+                                <th style="text-align: center;">User Type</th>
+                                <th style="text-align: center;">Description</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of content">
+                                <td style="text-align: center;"> {{c?.riskType}}</td>
+                                <td style="text-align: center;">{{c?.riskValue}}</td>
+                                <td style="text-align: center;">{{c?.score}}</td>
+                                <td style="text-align: center;">{{c?.userType}}</td>
+                                <td style="text-align: center;">{{c?.description}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

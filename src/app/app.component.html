@@ -1,0 +1,79 @@
+<div *ngIf="authService.currentUser() == '' ">
+  <app-landing></app-landing>
+</div>
+
+<div  *ngIf="authService.currentUser() != '' " class="flex flex-col h-screen bg-slate-50">
+  <app-header></app-header>
+
+  <div
+  class="flex h-[calc(100vh-var(--header-footer-height))] bg-slate-200 overflow-hidden">
+  <!-- <div class="absolute top-4 left-2 z-50 mt-12">
+  <button
+    (click)="permissionService.hideSidebar = !permissionService.hideSidebar" style="background-color: #f47a20;"
+    class="text-white  px-2 py-2 shadow hover:bg-orange-600 transition"
+  ><span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      [ngClass]="{ 'rotate-180': permissionService.hideSidebar }"
+      class="h-5 w-5 transform transition-transform duration-300"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path fill-rule="evenodd" d="M6 10l6-6v12l-6-6z" clip-rule="evenodd" /> 
+    </svg> </span> 
+  </button>
+</div> -->
+
+ <div
+    class="transition-all duration-300 ease-in-out bg-white shadow px-1 py-1"
+    [ngClass]="{ 'w-auto': !permissionService.hideSidebar, 'w-0 overflow-hidden': permissionService.hideSidebar }"
+  >
+    <div *ngIf="!permissionService.hideSidebar" class="min-w-[180px]">
+    
+      <app-sidebar></app-sidebar>     
+    </div>
+  </div>
+
+  
+  <!-- <button
+    class="absolute top-4 left-4 z-50 bg-orange-500 text-white p-1 rounded hover:bg-orange-600 transition"
+    (click)="permissionService.hideSidebar = !permissionService.hideSidebar"
+  >Sidebar Menu
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      [ngClass]="{ 'rotate-180': !permissionService.hideSidebar }"
+      class="w-4 h-4 transform transition-transform"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+    >
+      <path fill-rule="evenodd" d="M6 10l6-6v12l-6-6z" clip-rule="evenodd" />
+    </svg>
+  </button> -->
+  
+   <!--  <ng-container *ngIf="permissionService.hideSidebar"> -->
+      <div class="flex-1 p-2 overflow-auto">
+          <div [hidden]="authService.currentUser() != ''">
+            <app-landing></app-landing>
+          </div>
+          <div
+            [hidden]="authService.currentUser() == ''"
+            class="bg-white shadow-lg rounded-lg p-4 m-2"
+          >
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      
+      <!-- </ng-container> -->
+  </div>
+
+
+  <div *ngIf="authService.currentUser() != undefined">
+    <app-footer></app-footer>
+  </div>
+</div>
+
+<!-- <style>
+  :root {
+    --header-footer-height: 100px;
+  }
+</style> -->

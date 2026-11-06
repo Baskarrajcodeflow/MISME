@@ -1,0 +1,45 @@
+<div class="card">
+  <h3 class="page-title text-2xl font-bold mb-4">
+    SDN Upload
+  </h3>
+  <div class="card-body" *ngIf="prvilege?.createPrivelege">
+    <div class="w-full md:w-10/12">
+      <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          
+          <div class="form-group">
+            <label for="inputMiddleName" class="block text-sm font-medium text-gray-700">Source</label>
+            <select class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" formControlName="source">
+              <option value="https://www.treasury.gov">Treasury</option>
+              <option value="https://www.treasury.gov(ofac)">Treasury OFAC</option>
+              <option value="https://www.un.org">UN Organization</option>
+              <option value="https://www.mfa.gov.lv">MFA Government</option>
+              <option value="https://www.gov.uk">GOV UK</option>
+              <option value="https://www.mfsa.mt">MFSA</option>
+              <option value="http://www.fintraca.gov.af">FINTRACA</option>
+              <option value="Fintraca Individual Blacklist">FINTRACA Individual Blacklist</option>
+              <option value="Fintraca Corporate Blacklist">FINTRACA Corporate Blacklist</option>
+              <option value="https://data.europa.eu">EUROPEAN UNION</option>
+              <option value="PEP Target List">PEP</option>
+            </select>
+            <div *ngIf="uploadForm.get('source')?.invalid && uploadForm.get('source')?.touched" class="text-red-500 text-sm">
+              Source is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputFirstName" class="block text-sm font-medium text-gray-700">Select SDN file</label>
+            <input accept="image/*" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="file" (change)="onFileSelected($event)" />
+            <div *ngIf="uploadForm.get('file')?.invalid && uploadForm.get('file')?.touched" class="text-red-500 text-sm">
+              SDN file is required
+            </div>
+          </div>
+
+        </div>
+
+        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2" style="background-color: #0a365a;">Upload</button>
+      </form>
+    </div>
+  </div>
+  <app-loader *ngIf="isLoading"></app-loader>
+</div>

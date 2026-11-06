@@ -1,0 +1,20 @@
+<div class="text-center mt-[10px]">
+    <p style="font-size: 21px; font-weight: 600; color: gray;">File Rejection Reason</p>
+  </div>
+  
+  <div class="mt-[30px] px-4">
+    <input
+    [(ngModel)]="reason"
+      placeholder="Enter File Rejection Reason"
+      type="text"
+      class="px-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      id="end-date"
+    />
+  </div>
+  
+  <div class="flex gap-3 justify-end mt-[5%] px-4">
+      <button (click)="close()" mat-button class="px-4 py-2 border rounded-md hover:bg-sky-100">Cancel</button>
+    <button [disabled]="!reason" (click)="rejectUploadedFiles()" mat-button class="px-4 py-2 border rounded-md hover:bg-sky-100">Ok</button>
+  </div>
+<app-loader *ngIf="isLoading"></app-loader>
+  

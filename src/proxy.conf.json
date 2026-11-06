@@ -1,0 +1,93 @@
+{
+  "/constants": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/aaa": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/kyc": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/um": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/aml": {
+  "target": "http://192.168.0.150:8080",
+  "secure": false,
+  "changeOrigin": true
+  },
+  "/sdn": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+    },
+  "/sm": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/ams": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/ts": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/tms": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/pm": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/report": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/rmsbo": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/risk": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+   "/salary": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+    "/lms": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+    "/crm": {
+    "target": "http://192.168.0.150:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "*": {
+    "target": "http://localhost:4200",
+    "secure": false,
+    "changeOrigin": true
+
+  }
+}

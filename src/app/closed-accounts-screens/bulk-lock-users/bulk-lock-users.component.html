@@ -1,0 +1,114 @@
+<div class="max-w-7xl mx-auto p-6">
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">
+      Bulk Lock Users
+    </h1>
+    <p class="text-gray-500 mt-2">
+      Upload an excel sheet to lock multiple user accounts at once.
+    </p>
+  </div>
+
+  <div class="bg-white rounded-xl shadow border p-5">
+    <label class="block text-sm font-medium text-gray-700 mb-2">
+      Upload Excel Sheet (columns: walletNumber, phone)
+    </label>
+    <input #fileInput type="file" accept=".xlsx,.xls,.csv"
+      (change)="onFileSelected($event)"
+      class="w-full border border-gray-300 rounded-lg p-2">
+  </div>
+
+  <div class="bg-white rounded-xl shadow border p-5 mt-6" *ngIf="previewRecords.length">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-gray-900">
+        File Preview ({{ previewRecords.length }} records)
+      </h2>
+      <span class="text-sm font-medium" [ngClass]="invalidCount ? 'text-red-600' : 'text-green-600'">
+        {{ invalidCount ? invalidCount + ' record(s) failed validation' : 'All records are valid' }}
+      </span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 text-left">#</th>
+            <th class="px-4 py-2 text-left">Wallet Number</th>
+            <th class="px-4 py-2 text-left">Phone</th>
+            <th class="px-4 py-2 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of previewRecords" [ngClass]="{'bg-red-50': !record.isValid}">
+            <td class="border px-4 py-2">{{ record.rowNumber }}</td>
+            <td class="border px-4 py-2" [ngClass]="{'text-red-600': !record.walletValid}">{{ record.walletNumber || 'NIL' }}</td>
+            <td class="border px-4 py-2" [ngClass]="{'text-red-600': !record.phoneValid}">{{ record.phone || 'NIL' }}</td>
+            <td class="border px-4 py-2">
+              <span *ngIf="record.isValid" class="text-green-600 font-medium">Valid</span>
+              <span *ngIf="!record.isValid" class="text-red-600 text-sm">{{ record.errors.join(', ') }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="text-xs text-red-500 mt-3" *ngIf="invalidCount > 0">
+      Some records failed validation. You may confirm anyway — the server will re-validate and reject invalid records — or reupload a corrected file.
+    </p>
+
+    <div class="flex justify-end gap-3 mt-6">
+      <button
+        class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+        (click)="reuploadFile()">
+        Reupload
+      </button>
+      <button
+        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+        (click)="confirmUpload()">
+        Confirm &amp; Lock Users
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow border p-5 mt-6" *ngIf="reportRecords.length">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-gray-900">
+        Lock Report ({{ reportRecords.length }} records)
+      </h2>
+      <span class="text-sm font-medium">
+        <span class="text-green-600">{{ reportSuccessCount }} locked</span>
+        <span *ngIf="reportFailedCount" class="text-red-600 ml-2">{{ reportFailedCount }} failed</span>
+      </span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 text-left">#</th>
+            <th class="px-4 py-2 text-left">Wallet Number</th>
+            <th class="px-4 py-2 text-left">Phone</th>
+            <th class="px-4 py-2 text-left">Name</th>
+            <th class="px-4 py-2 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of reportRecords" [ngClass]="{'bg-red-50': !record.locked}">
+            <td class="border px-4 py-2">{{ record.rowNumber }}</td>
+            <td class="border px-4 py-2">{{ record.walletNumber || 'NIL' }}</td>
+            <td class="border px-4 py-2">{{ record.phone || 'NIL' }}</td>
+            <td class="border px-4 py-2">
+              {{ record.locked ? (record.firstName + ' ' + record.lastName) : '—' }}
+            </td>
+            <td class="border px-4 py-2">
+              <span *ngIf="record.locked" class="text-green-600 font-medium">Locked</span>
+              <span *ngIf="!record.locked" class="text-red-600 text-sm">{{ record.reason }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>

@@ -1,0 +1,61 @@
+/* Ensure you include these styles in your global styles or component-specific stylesheet */
+
+/* Base styles for the sidebar */
+.sidebar-item {
+    background-color: #ffffff; /* White background for each item */
+    border-bottom: 1px solid #f1f1f1; /* Slight border for separation */
+    transition: background-color 0.3s;
+}
+
+.sidebar-item:hover {
+    background-color: #f9f9f9; /* Light grey background on hover */
+}
+
+/* Styles for the header of each accordion item */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px; /* Adequate padding for touch targets */
+    cursor: pointer; /* Indicates this area is clickable */
+    color: #333333; /* Dark grey color for text for readability */
+    font-weight: bold;
+}
+
+/* Rotation effect for the icon indicating open/close state */
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Additional styling for the expandable area */
+.sidebar-content {
+    padding: 10px 16px;
+    background-color: #ffffff; /* Keeping the background consistent with the header */
+    border-top: 1px solid #f1f1f1; /* Subtle separation from the header */
+}
+
+/* Link styling within the sidebar */
+.sidebar-link {
+    display: block;
+    color: #0056b3; /* A professional blue for links */
+    text-decoration: none; /* No underline by default */
+    padding: 8px 0; /* Spacing around links for easier targeting */
+}
+
+.sidebar-link:hover {
+    text-decoration: underline; /* Underline on hover for clear interactivity */
+    color: #004494; /* Slightly darker blue on hover */
+}
+/* Accordion container */
+.accordion-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+  max-height: 0; /* Start with no height */
+  opacity: 0; /* Start with fully transparent */
+}
+
+/* Class to add when accordion is open */
+.accordion-open {
+  max-height: max-content; /* Max height larger than content's natural height */
+  opacity: 1; /* Fully opaque */
+}
+

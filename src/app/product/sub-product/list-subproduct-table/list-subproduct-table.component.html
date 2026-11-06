@@ -1,0 +1,10 @@
+
+
+
+<app-generic-table
+  [columns]="amountLimitColumns"
+  [rows]="Service"
+  (onDelete)="handleDelete($event)"
+  >
+</app-generic-table>
+<app-loader *ngIf="isLoading"></app-loader>

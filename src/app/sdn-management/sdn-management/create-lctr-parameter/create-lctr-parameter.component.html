@@ -1,0 +1,41 @@
+<div class="page-header">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a class="Txtcolor" href="javascript:;">LCTR Parameter</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create LCTR Parameter</li>
+        </ol>
+    </nav>
+</div>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="addLCTRForm">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>User Type <sup style="color: red;">*</sup></label>
+                                <select required formControlName="userType" class="form-control">
+                                    <option value="CUSTOMER">Individual</option>
+                                    <option value="CORPORATE_CUSTOMER">Corporate</option>
+                                    <option value="AGENT">Agent</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="text" formControlName="amount" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-12">
+                            <button style="width: 100%;" (click)="onClickSubmit()" type="button"
+                                class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

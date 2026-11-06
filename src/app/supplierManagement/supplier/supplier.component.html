@@ -1,0 +1,97 @@
+<div class="container mx-auto p-4">
+  <div class="bg-white shadow-md rounded-lg p-6 h-full">
+    <div class="mb-4">
+      <h4 class="text-2xl font-bold mb-4">Supplier Info</h4>
+    </div>
+    <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()" novalidate class="overflow-auto h-96"> <!-- Set a fixed height for overflow -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="form-group">
+          <label for="supplierName" class="label">Supplier Name</label>
+          <input type="text" formControlName="supplierName" id="supplierName" placeholder="Supplier Name" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="accountNumber" class="label">Bank Account Number</label>
+          <input type="text" formControlName="accountNumber" id="accountNumber" placeholder="Account Number" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="commission" class="label">Commission</label>
+          <input type="text" formControlName="commission" id="commission" placeholder="Commission Percentage" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="province" class="label">Province</label>
+          <input type="text" formControlName="province" id="province" placeholder="Province" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="phoneNumber" class="label">Current Phone Number</label>
+          <input type="text" formControlName="phoneNumber" id="phoneNumber" placeholder="Current Phone Number" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="email" class="label">Email</label>
+          <input type="email" formControlName="email" id="email" placeholder="Email" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="countryId" class="label">Country</label>
+          <select formControlName="countryId" id="countryId" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+            <option value="1">Afghanistan</option>
+            <option value="2">Aland Islands</option>
+            <option value="3">Albania</option>
+            <!-- Add more country options here -->
+            <option value="200">Solomon Islands</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="postalCode" class="label">Postal Code</label>
+          <input type="text" formControlName="postalCode" id="postalCode" placeholder="Postal Code" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="district" class="label">District</label>
+          <input type="text" formControlName="district" id="district" placeholder="District" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="village" class="label">Village</label>
+          <input type="text" formControlName="village" id="village" placeholder="Village" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="streetNo" class="label">Street Number</label>
+          <input type="text" formControlName="streetNo" id="streetNo" placeholder="Street Number" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="form-group">
+          <label for="houseOrFlatOrBuilding" class="label">House/Flat/Building Number</label>
+          <input type="text" formControlName="houseOrFlatOrBuilding" id="houseOrFlatOrBuilding" placeholder="House/Flat/Building Number" class="form-control w-full border-gray-300 rounded-md shadow-sm">
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <button type="submit" class="btn btn-primary mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        <button type="button" (click)="onCancel()" class="btn bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+      </div>
+    </form>
+    <div class="mt-8">
+      <h4 class="text-2xl font-bold mb-4">Suppliers List</h4>
+      <div class="overflow-auto h-48"> <!-- Set a fixed height for overflow -->
+        <table class="min-w-full bg-white border border-gray-200">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="px-4 py-2">ID</th>
+              <th class="px-4 py-2">Supplier Name</th>
+              <th class="px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let supplier of suppliers; let i = index" class="border-t border-gray-200">
+              <td class="px-4 py-2">{{ supplier.id }}</td>
+              <td class="px-4 py-2">{{ supplier.supplierName }}</td>
+              <td class="px-4 py-2">
+                <button (click)="onEdit(i)" class="btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button (click)="onDelete(i)" class="btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

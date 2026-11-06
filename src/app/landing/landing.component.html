@@ -1,0 +1,13 @@
+
+
+<div>
+   {{currentUser()}}
+<div [hidden]="currentUser() != ''"  [ngSwitch]="state">
+    <app-login (switchToContext)="switchTo($event)" *ngSwitchCase="c.login"/>
+    <app-signup (switchToContext)="switchTo($event)" *ngSwitchCase="c.signup"/>
+</div>
+
+<!-- <div  [hidden]="currentUser() == '' " >
+    <app-customer/>
+</div> -->
+</div>

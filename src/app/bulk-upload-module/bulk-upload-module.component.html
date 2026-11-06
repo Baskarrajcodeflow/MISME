@@ -1,0 +1,52 @@
+<div>
+  <div class="flex gap-7">
+    <div class="mb-4 w-1/2">
+      <label for="amountLimit" class="block text-gray-700" style="font-size: 14px">Select Corporate</label>
+      <select [(ngModel)]="value"
+        class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option [value]="null">----</option>
+        <option *ngFor="let item of corporateData" [ngValue]="item">{{ item?.firstName }} {{item?.lastName}} /
+          {{item?.walletAccount?.accountNo}}</option>
+      </select>
+    </div>
+    <div class="w-1/2 mt-[27px]">
+      <input type="file" (change)="onFileChange($event)" />
+    </div>
+    <div class="w-1/3 mt-[22px]" *ngIf="privilege?.createPrivelege">
+      <button [disabled]="!value || !selectedFile" (click)="uploadFile()" type="submit"
+        class=" px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+        style="background-color: #0a365a;">Upload</button>
+    </div>
+  </div>
+  <table class="min-w-full bg-blue border border-gray-300">
+    <thead style="background-color: rgb(10, 54, 90);">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Uploaded
+          Date Time</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Status</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Approved On
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Action</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <tr *ngFor="let item of bulkSalaryData" class="hover:bg-gray-100 cursor-pointer">
+        <td class="px-6 py-4 whitespace-nowrap">{{ item.uploadedDateTime | date:'MMM d, y, h:mm:ss a' }}</td>
+        <ng-container *ngIf="item?.status == 0">
+          <td class="px-6 py-4 whitespace-nowrap">Pending</td>
+        </ng-container>
+        <ng-container *ngIf="item?.status != 0">
+          <td class="px-6 py-4 whitespace-nowrap">Pending</td>
+        </ng-container>
+        <td class="px-6 py-4 whitespace-nowrap">{{ item.approvedOn }}</td>
+        <td class="px-6 py-4 whitespace-nowrap" *ngIf="privilege?.readPrivelege">
+          <button (click)="viewData(item)" type="submit"
+            class=" px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            style="background-color: #0a365a;">View</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button >Upload</button>

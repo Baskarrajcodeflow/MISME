@@ -1,0 +1,1036 @@
+<nav class="text-sm text-gray-500 my-2">
+  <ol class="list-reset flex">
+    <li><a routerLink="/dashboard" (click)="onNavigate('/dashboard')"
+        class="text-blue-600 hover:underline">Dashboard</a></li>
+    <li><span class="mx-2">/</span></li>
+    <li><a routerLink="/findCustomer" (click)="onNavigate('/findCustomer')"
+        class="text-blue-600 hover:underline">Search</a></li>
+    <li><span class="mx-2">/</span></li>
+    <li class="text-gray-700 font-medium">Customer Profile</li>
+  </ol>
+</nav>
+<div class="flex w-full bg-gray-100 p-2 gap-4 h-[calc(100vh-90px)]">
+<div class="w-1/2 flex flex-col gap-1 h-full overflow-y-auto">
+    <div class="flex-1 bg-white rounded-lg shadow p-4">
+      <div class="bg-white shadow rounded-lg p-3 w-full">
+        <!-- Profile Info Row -->
+        <div class="flex flex-col md:flex-row items-start justify-evenly gap-3 flex-wrap">
+          <!-- Avatar & Basic Info -->
+          <div class="flex flex-col items-start gap-4">
+            <!-- <img src="{{imageUrl}}/um/static/profile/{{customerPhoto}}" alt="avatar" class="w-16 h-16 rounded-full object-cover" /> -->
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-lg font-semibold">{{customerUserDetails.user?.firstName || 'NA'}}
+                  {{customerUserDetails.user.lastName || 'NA'}} </h2>
+              </div>
+              <p class="bg-yellow-300 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+              {{
+              customerUserDetails?.kyc?.kycType === 'NGO' ||
+              customerUserDetails?.kyc?.kycType === 'UN_AGENCY' ||
+              customerUserDetails?.kyc?.kycType === 'GOVT_AGENCY'
+              ? (customerUserDetails?.user?.userType || 'NA') + ' | ' + customerUserDetails?.kyc?.kycType
+              : (customerUserDetails?.user?.userType || 'NA')
+              }}
+            <p class="bg-red-700 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+              {{
+              customerUserDetails.user.dormant
+              ? (
+              customerUserDetails.user?.dormantOn
+              ? ('Dormant since ' + (customerUserDetails.user.dormantOn | date:'dd-MM-yyyy'))
+              : 'Dormant since NA'
+              )
+              : (customerUserDetails.user?.accountState == 'ACTIVE'
+              ? 'Active'
+              : 'Inactive Account')
+              }}
+            </p>
+              <ng-container *ngIf="selectedUserType">
+                <ng-container [ngSwitch]="selectedUserType">
+              
+                  <!-- CUSTOMER -->
+                  <p *ngSwitchCase="'CUSTOMER'" class="bg-yellow-300 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+                    {{ customerUserDetails.user?.gender || 'NA' }} |
+                    {{
+                    customerUserDetails?.kyc?.customerKyc?.custInfoDob
+                    ? (customerUserDetails?.kyc?.customerKyc?.custInfoDob | date:'dd-MM-yyyy')
+                    : 'NA'
+                    }}
+                  </p>
+              
+                  <!-- AGENT -->
+                  <!-- <p *ngSwitchCase="'AGENT'" class="bg-yellow-300 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+                    {{ customerUserDetails.user?.gender || 'NA' }} |
+                    {{
+                    customerUserDetails?.kyc?.agentKyc?.custInfoDob
+                    ? (customerUserDetails.kyc?.agentKyc?.custInfoDob | date:'dd-MM-yyyy')
+                    : 'NA'
+                    }}
+                  </p> -->
+                  <p *ngSwitchCase="'AGENT'" class="bg-yellow-300 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+                  
+                    <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+                  
+                      <!-- MASTER AGENT -->
+                      <span *ngSwitchCase="'MASTER AGENT'">
+                        Date of Expiry:
+                        {{
+                        customerUserDetails?.kyc?.masterAgentKyc?.bizLicenseDateOfExpiry
+                        ? (customerUserDetails?.kyc?.masterAgentKyc?.bizLicenseDateOfExpiry | date:'dd-MM-yyyy')
+                        : 'NA'
+                        }}
+                      </span>
+                  
+                      <!-- Default Agent -->
+                      <span *ngSwitchDefault>
+                        {{ customerUserDetails?.user?.gender || 'NA' }} |
+                        {{
+                        customerUserDetails?.kyc?.agentKyc?.custInfoDob
+                        ? (customerUserDetails?.kyc?.agentKyc?.custInfoDob | date:'dd-MM-yyyy')
+                        : 'NA'
+                        }}
+                      </span>
+                  
+                    </ng-container>
+                  
+                  </p>
+                  <!-- MERCHANT -->
+                  <p *ngSwitchCase="'MERCHANT'" class="bg-yellow-300 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+                    {{ customerUserDetails.user?.gender || 'NA' }} |
+                    {{
+                    customerUserDetails?.kyc?.agentKyc?.custInfoDob
+                    ? (customerUserDetails?.kyc?.agentKyc?.custInfoDob | date:'dd-MM-yyyy')
+                    : 'NA'
+                    }}
+                  </p>
+              
+                  <!-- CORPORATE / NGO / GOVT / UN -->
+                  <p *ngSwitchCase="'CORPORATE'" class="bg-yellow-300 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+              
+                    Date of Expiry:
+              
+                    <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+              
+                      <!-- NGO -->
+                      <span *ngSwitchCase="'NGO'">
+                        {{
+                        customerUserDetails?.kyc?.ngoKyc?.licenseRegNumber
+                        ? (customerUserDetails?.kyc?.ngoKyc?.licenseRegNumber | date:'dd-MM-yyyy')
+                        : 'NA'
+                        }}
+                      </span>
+              
+                      <!-- UN Agency -->
+                      <span *ngSwitchCase="'UN_AGENCY'">
+                        {{
+                        customerUserDetails?.kyc?.govtAgencyKyc?.licenseRegNumber
+                        ? (customerUserDetails?.kyc?.govtAgencyKyc?.licenseRegNumber | date:'dd-MM-yyyy')
+                        : 'NA'
+                        }}
+                      </span>
+              
+                      <!-- Government Agency -->
+                      <span *ngSwitchCase="'GOVT_AGENCY'">
+                        {{
+                        customerUserDetails?.kyc?.govtAgencyKyc?.contractEndDate
+                        ? (customerUserDetails?.kyc?.govtAgencyKyc?.contractEndDate | date:'dd-MM-yyyy')
+                        : 'NA'
+                        }}
+                      </span>
+              
+                      <!-- Default Corporate -->
+                      <span *ngSwitchDefault>
+                        {{
+                        customerUserDetails?.kyc?.corporateKyc?.bizLicenseDateOfExpiry
+                        ? (customerUserDetails?.kyc?.corporateKyc?.bizLicenseDateOfExpiry | date:'dd-MM-yyyy')
+                        : 'NA'
+                        }}
+                      </span>
+              
+                    </ng-container>
+                  </p>
+              
+                  <!-- MASTER_AGENT -->
+                  <!-- <p *ngSwitchCase="'MASTER_AGENT'" class="bg-yellow-300 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+              
+                    Date of Expiry:
+                    {{
+                    customerUserDetails?.kyc?.masterAgentKyc?.bizLicenseDateOfExpiry
+                    ? (customerUserDetails?.kyc?.masterAgentKyc?.bizLicenseDateOfExpiry | date:'dd-MM-yyyy')
+                    : 'NA'
+                    }}
+                  </p> -->
+              
+                </ng-container>
+              
+                <!-- AVAILABLE BALANCE -->
+                <p class="bg-red-700 text-white text-xs px-2 py-1 my-1 rounded font-extrabold">
+                  AFN {{
+                  availableBalance != null
+                  ? (availableBalance | number:'1.2-2')
+                  : 'NA'
+                  }}/-
+                </p>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Details Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6 text-sm text-gray-700 mx-1">
+            <div>
+              <span class="font-medium">
+                {{
+                (selectedUserType == 'CORPORATE' ||
+                (selectedUserType == 'AGENT' &&
+                customerUserDetails?.kyc?.kycType == 'MASTER AGENT'))
+                ? "License Number:"
+                : "Father's Name:"
+                }}
+              </span>
+              <ng-container [ngSwitch]="selectedUserType">
+                <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">
+                  {{ customerUserDetails.kyc?.customerKyc?.custInfoFatherName || 'NA' }}
+                </div>
+                <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">
+          
+                  <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+          
+                    <!-- MASTER AGENT -->
+                    <span *ngSwitchCase="'MASTER AGENT'">
+                      {{ customerUserDetails?.kyc?.masterAgentKyc?.bizLicenseTinNumber || 'NA' }}
+                    </span>
+          
+                    <!-- Normal Agent -->
+                    <span *ngSwitchDefault>
+                      {{ customerUserDetails?.kyc?.agentKyc?.custInfoFatherName || 'NA' }}
+                    </span>
+          
+                  </ng-container>
+          
+                </div>
+                <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">{{
+                  customerUserDetails.kyc?.agentKyc?.custInfoFatherName || 'NA' }}
+                </div>
+                <div *ngSwitchCase="'CORPORATE'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">
+          
+                  <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+          
+                    <!-- NGO -->
+                    <span *ngSwitchCase="'NGO'">
+                      {{ customerUserDetails?.kyc?.ngoKyc?.licenseRegNumber || 'NA' }}
+                    </span>
+          
+                    <!-- UN Agency -->
+                    <span *ngSwitchCase="'UN_AGENCY'">
+                      {{ customerUserDetails?.kyc?.govtAgencyKyc?.licenseRegNumber || 'NA' }}
+                    </span>
+          
+                    <!-- Government Agency -->
+                    <span *ngSwitchCase="'GOVT_AGENCY'">
+                      {{ customerUserDetails?.kyc?.govtAgencyKyc?.contractNumber || 'NA' }}
+                    </span>
+          
+                    <!-- Default Corporate -->
+                    <span *ngSwitchDefault>
+                      {{ customerUserDetails?.kyc?.corporateKyc?.bizLicenseNumber || 'NA' }}
+                    </span>
+          
+                  </ng-container>
+          
+                </div>
+              </ng-container>
+            </div>
+            <div>
+              <span class="font-medium">Phone:</span>
+              <div class="bg-yellow-100 mt-1 px-3 py-1 rounded">{{customerUserDetails.user?.phone || 'NA'}}</div>
+            </div>
+            <div>
+              <span class="font-medium">Wallet No:</span>
+              <div class="bg-yellow-100 mt-1 px-3 py-1 rounded">{{customerUserDetails.user?.walletAccount?.accountNo ||
+                'NA'}}</div>
+            </div>
+            <div>
+              <span class="font-medium">ID Proof No:</span>
+              <ng-container *ngIf="selectedUserType" [ngSwitch]="selectedUserType">
+                <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">
+                  {{customerUserDetails?.kyc?.customerKyc?.custProofNumber || 'NA'}}</div>
+                <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">
+                  {{ customerUserDetails?.kyc?.agentKyc?.custProofNumber || 'NA' }}
+                </div>
+          
+                <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">
+                  {{ customerUserDetails?.kyc?.agentKyc?.custProofNumber || 'NA' }}
+                </div>
+          
+                <div *ngSwitchCase="'CORPORATE'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">
+          
+                  <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+          
+                    <!-- NGO -->
+                    <span *ngSwitchCase="'NGO'">
+                      {{ customerUserDetails?.kyc?.ngoKyc?.repIdProofNumber || 'NA' }}
+                    </span>
+          
+                    <!-- UN Agency -->
+                    <span *ngSwitchCase="'UN_AGENCY'">
+                      {{ customerUserDetails?.kyc?.govtAgencyKyc?.custProofNumber || 'NA' }}
+                    </span>
+          
+                    <!-- Government Agency -->
+                    <span *ngSwitchCase="'GOVT_AGENCY'">
+                      {{ customerUserDetails?.kyc?.govtAgencyKyc?.pocIdProofNumber || 'NA' }}
+                    </span>
+          
+                    <!-- Default Corporate -->
+                    <span *ngSwitchDefault>
+                      {{ firstSignatoryIdProofNumber || 'NA' }}
+                    </span>
+          
+                  </ng-container>
+          
+                </div>
+                <div *ngSwitchCase="'MASTER AGENT'" class="bg-yellow-100 mt-1 px-3 py-1 rounded">
+                  {{customerUserDetails?.kyc?.masterAgentKyc?.custProofNumber || 'NA'}}</div>
+              </ng-container>
+            </div>
+            <div>
+              <span class="font-medium">Email:</span>
+              <div class="bg-yellow-100 mt-1 px-3 py-1 rounded">{{customerUserDetails.user?.email || 'NA'}}</div>
+            </div>
+            <div>
+              <span class="font-medium">Account Opening Date:</span>
+              <div class="bg-yellow-100 mt-1 px-3 py-1 rounded">{{customerUserDetails.user?.createdOn |date:'dd-MM-yyyy
+                HH:mm:ss':'Asia/Kabul' || 'NA'}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Tab Navigation -->
+        <div class="mt-6 w-full border-t pt-4">
+          <div class="flex gap-6 text-sm font-extrabold text-gray-500 justify-between">
+            <button *ngFor="let tab of tabs" class="hover:text-purple-700" [ngClass]="{
+      'text-blue-950 border-b-2 border-purple-700 pb-1': selectedTab === tab,
+      'text-gray-500': selectedTab !== tab
+    }" (click)="selectedTab = tab">
+              {{ tab }}
+            </button>
+          </div>
+          
+<ng-container *ngIf="selectedTab == 'Address' && (selectedUserType == 'CUSTOMER' || selectedUserType == 'MERCHANT' || (selectedUserType == 'AGENT' && customerUserDetails?.kyc?.kycType !== 'MASTER AGENT'))">
+   <div class="bg-white rounded-lg shadow-sm p-6 w-full max-w-3xl space-y-8">
+
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">📍 Current Address</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 max-w-2xl text-gray-800 text-sm">
+
+        <div class="font-semibold text-gray-600">Location:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.customerKyc?.currLocation || 'NA' }}
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.currLocation || 'NA' }}
+          </div>
+          <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.currLocation || 'NA' }}
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">Country:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.customerKyc?.currCountry || 'NA'}}
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.currCountry || 'NA' }}
+          </div>
+          <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.currCountry || 'NA' }}
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">Province:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.customerKyc?.currProvince || 'NA'}}
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.currProvince || 'NA' }}
+          </div>
+          <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.currProvince || 'NA' }}
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">District:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.customerKyc?.currDistrict || 'NA'}}
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.currDistrict || 'NA' }}
+          </div>
+          <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.currDistrict || 'NA' }}
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">Alt Phone Number:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.customerKyc?.custInfoAltPhone || 'NA'}}
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.custInfoAltPhone || 'NA' }}
+          </div>
+          <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.custInfoAltPhone || 'NA' }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">🏠 Permanent Address</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 max-w-2xl text-gray-800 text-sm">
+        
+        <div class="font-semibold text-gray-600">Country:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.customerKyc?.permCountry || 'NA'}}
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.permCountry || 'NA' }}
+          </div>
+          <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.permCountry || 'NA' }}
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">Province:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.customerKyc?.permProvince || 'NA'}}
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.permProvince || 'NA' }}
+          </div>
+          <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{ customerUserDetails?.kyc?.agentKyc?.permProvince || 'NA' }}
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">District:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CUSTOMER'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.customerKyc?.permDistrict || 'NA'}}
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.agentKyc?.permDistrict || 'NA'}}
+          </div>
+          <div *ngSwitchCase="'MERCHANT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            {{customerUserDetails?.kyc?.agentKyc?.permDistrict || 'NA'}}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="selectedTab == 'Company Address' && (selectedUserType == 'CORPORATE' || (selectedUserType == 'AGENT' && customerUserDetails?.kyc?.kycType == 'MASTER AGENT'))">
+
+ <div class="bg-white rounded-lg shadow-sm p-6 w-full max-w-3xl space-y-8">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">📍 Company Address</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 max-w-2xl text-gray-800 text-sm">
+
+        <div class="font-semibold text-gray-600">Location:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CORPORATE'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+              <span *ngSwitchCase="'NGO'">{{ customerUserDetails?.kyc?.ngoKyc?.location || 'NA' }}</span>
+              <span *ngSwitchCase="'UN_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.location || 'NA' }}</span>
+              <span *ngSwitchCase="'GOVT_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.location || 'NA' }}</span>
+              <span *ngSwitchDefault>{{ customerUserDetails?.kyc?.corporateKyc?.companyLocation || 'NA' }}</span>
+            </ng-container>
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <span *ngIf="customerUserDetails?.kyc?.kycType == 'MASTER AGENT'">
+              {{ customerUserDetails?.kyc?.masterAgentKyc?.companyLocation || 'NA' }}
+            </span>
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">Country:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CORPORATE'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+              <span *ngSwitchCase="'NGO'">{{ customerUserDetails?.kyc?.ngoKyc?.country || 'NA' }}</span>
+              <span *ngSwitchCase="'UN_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.country || 'NA' }}</span>
+              <span *ngSwitchCase="'GOVT_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.country || 'NA' }}</span>
+              <span *ngSwitchDefault>{{ customerUserDetails?.kyc?.corporateKyc?.companyCountry || 'NA' }}</span>
+            </ng-container>
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <span *ngIf="customerUserDetails?.kyc?.kycType == 'MASTER AGENT'">
+              {{ customerUserDetails?.kyc?.masterAgentKyc?.companyCountry || 'NA' }}
+            </span>
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">Province:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CORPORATE'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+              <span *ngSwitchCase="'NGO'">{{ customerUserDetails?.kyc?.ngoKyc?.province || 'NA' }}</span>
+              <span *ngSwitchCase="'UN_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.province || 'NA' }}</span>
+              <span *ngSwitchCase="'GOVT_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.province || 'NA' }}</span>
+              <span *ngSwitchDefault>{{ customerUserDetails?.kyc?.corporateKyc?.companyProvince || 'NA' }}</span>
+            </ng-container>
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <span *ngIf="customerUserDetails?.kyc?.kycType == 'MASTER AGENT'">
+              {{ customerUserDetails?.kyc?.masterAgentKyc?.companyProvince || 'NA' }}
+            </span>
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">District:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CORPORATE'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+              <span *ngSwitchCase="'NGO'">{{ customerUserDetails?.kyc?.ngoKyc?.district || 'NA' }}</span>
+              <span *ngSwitchCase="'UN_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.district || 'NA' }}</span>
+              <span *ngSwitchCase="'GOVT_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.district || 'NA' }}</span>
+              <span *ngSwitchDefault>{{ customerUserDetails?.kyc?.corporateKyc?.companyDistrict || 'NA' }}</span>
+            </ng-container>
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <span *ngIf="customerUserDetails?.kyc?.kycType == 'MASTER AGENT'">
+              {{ customerUserDetails?.kyc?.masterAgentKyc?.companyDistrict || 'NA' }}
+            </span>
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">Company Phone Number:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CORPORATE'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+              <span *ngSwitchCase="'NGO'">{{ customerUserDetails?.kyc?.ngoKyc?.officePhone || 'NA' }}</span>
+              <span *ngSwitchCase="'UN_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.officePhone || 'NA' }}</span>
+              <span *ngSwitchCase="'GOVT_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.officePhone || 'NA' }}</span>
+              <span *ngSwitchDefault>{{ customerUserDetails?.kyc?.corporateKyc?.companyOfficePhone || 'NA' }}</span>
+            </ng-container>
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <span *ngIf="customerUserDetails?.kyc?.kycType == 'MASTER AGENT'">
+              {{ customerUserDetails?.kyc?.masterAgentKyc?.companyOfficePhone || 'NA' }}
+            </span>
+          </div>
+        </ng-container>
+
+        <div class="font-semibold text-gray-600">Company Email:</div>
+        <ng-container [ngSwitch]="selectedUserType">
+          <div *ngSwitchCase="'CORPORATE'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <ng-container [ngSwitch]="customerUserDetails?.kyc?.kycType">
+              <span *ngSwitchCase="'NGO'">{{ customerUserDetails?.kyc?.ngoKyc?.officeEmail || 'NA' }}</span>
+              <span *ngSwitchCase="'UN_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.officeEmail || 'NA' }}</span>
+              <span *ngSwitchCase="'GOVT_AGENCY'">{{ customerUserDetails?.kyc?.govtAgencyKyc?.officeEmail || 'NA' }}</span>
+              <span *ngSwitchDefault>{{ customerUserDetails?.kyc?.corporateKyc?.companyEmail || 'NA' }}</span>
+            </ng-container>
+          </div>
+          <div *ngSwitchCase="'AGENT'" class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+            <span *ngIf="customerUserDetails?.kyc?.kycType == 'MASTER AGENT'">
+              {{ customerUserDetails?.kyc?.masterAgentKyc?.companyEmail || 'NA' }}
+            </span>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+          <ng-container *ngIf="selectedTab == 'Account Details'">
+            <div class="mt-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 max-w-2xl text-gray-800 text-sm">
+                <!-- Location -->
+                <div class="font-semibold text-gray-600">Account Status:</div>
+                <div class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+                  {{customerUserDetails.user.accountState || 'NA'}}
+                </div>
+                <div class="font-semibold text-gray-600">Account Opening Date:</div>
+                <div class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+                  {{customerUserDetails.user.createdOn | date:'dd-MM-yyyy HH:mm:ss':'Asia/Kabul'}}
+                </div>
+                <!--  <div class="font-semibold text-gray-600">Product:</div>
+                            <div class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+                              {{customerUserDetails.product || 'NA'}}
+                            </div> -->
+                <div class="font-semibold text-gray-600" *ngIf="customerUserDetails.user.dormant">Last Transaction Date:</div>
+                <div class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium"
+                  *ngIf="customerUserDetails.user.dormant">
+                  {{ customerUserDetails?.user?.lastTxnDate
+                  ? (customerUserDetails.user.lastTxnDate
+                  | date:'dd-MM-yyyy HH:mm:ss':'Asia/Kabul')
+                  : 'NA' }}
+                </div>
+                <div class="font-semibold text-gray-600">Last Logged On:</div>
+                <div class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+                  {{ customerUserDetails?.user?.lastLoggedIn
+                  ? (customerUserDetails.user.lastLoggedIn
+                  | date:'dd-MM-yyyy HH:mm:ss':'Asia/Kabul')
+                  : 'NA' }}
+                </div>
+          
+                <div class="font-semibold text-gray-600">Deposit Limit:</div>
+                <div class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium flex items-center gap-2 flex-wrap">
+                
+                  <!-- CURRENT LIMIT -->
+                  <span>
+                    AFN {{
+                    customerUserDetails?.user?.depositLimit != null
+                    ? (customerUserDetails.user.depositLimit | number:'1.2-2')
+                    : 'NA'
+                    }}/-
+                  </span>
+                
+                  <!-- EDIT BUTTON -->
+                  <button mat-icon-button color="primary" aria-label="Edit Deposit Limit" (click)="editDepositLimit()"
+                    class="p-0 m-0 align-middle text-sm">
+                    <mat-icon class="text-base align-middle">edit</mat-icon>
+                  </button>
+                
+                  <!-- VERIFY PART -->
+                  <ng-container *ngIf="customerUserDetails?.user?.dlEdit">
+                
+                    <div class="flex items-center gap-2 flex-wrap">
+                
+                      <!-- Initiated Limit -->
+                      <span class="text-xs text-orange-600 max-w-[200px] truncate">
+                        Initiated:
+                        <strong>
+                          AFN {{
+                          customerUserDetails?.user?.initiatedDepositLimit
+                          | number:'1.2-2'
+                          }}/-
+                        </strong>
+                      </span>
+                
+                      <!-- Old Limit (ONLY after authorize response provides it) -->
+                      <span *ngIf="customerUserDetails?.user?.oldDepositLimitVal" class="text-xs text-red-600 max-w-[180px] truncate"
+                        matTooltip="Old: AFN {{ customerUserDetails?.user?.oldDepositLimitVal | number:'1.2-2' }}/-">
+                
+                        Old Limit:
+                        <strong>
+                          AFN {{
+                          customerUserDetails.user.oldDepositLimitVal
+                          | number:'1.2-2'
+                          }}/-
+                        </strong>
+                      </span>
+                
+                      <!-- Authorize Button -->
+                      <button mat-raised-button class="text-xs h-7 px-3 rounded-md shadow-sm bg-green-600 hover:bg-green-700 text-white"
+                        (click)="verifyDepositLimit()">
+                        Authorize
+                      </button>
+                
+                    </div>
+                
+                  </ng-container>
+                
+                </div>
+
+                <!-- Suspend / Unsuspend Actions -->
+                <div class="font-semibold text-gray-600">Account Actions:</div>
+                <div class="flex flex-wrap gap-2">
+                  <button *ngIf="customerUserDetails.user.dormant" (click)="activateDormant()"
+                    class="text-xs px-3 py-1 rounded bg-red-500 text-white hover:bg-red-600 transition">
+                    Activate Dormant User
+                  </button>
+                  <button *ngIf="customerUserDetails.user.accountState == 'ACTIVE'"
+                    (click)="suspendUser(customerUserDetails?.user,0,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-red-500 text-white hover:bg-red-600 transition">
+                    Suspend
+                  </button>
+                  <button *ngIf="customerUserDetails.user.accountState == 'ACTIVE'"
+                    (click)="suspendUser(customerUserDetails?.user,0,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-red-900 text-white hover:bg-red-950 transition">
+                    Lock
+                  </button>
+                  <button *ngIf="customerUserDetails.user.accountState == 'SUSPEND'"
+                    (click)="suspendUser(customerUserDetails?.user,1,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-green-500 text-white hover:bg-green-600 transition">
+                    Unsuspend
+                  </button>
+                  <button *ngIf="customerUserDetails.user.accountState == 'UNSUSPEND_PENDING'"
+                    (click)="authorizeUnSuspendUser(customerUserDetails?.user,2,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Authorize Unsuspend Request
+                  </button>
+                  <button *ngIf="customerUserDetails.user.accountState == 'UNSUSPEND_PENDING'"
+                    (click)="authorizeUnSuspendUser(customerUserDetails?.user,3,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Reject Request Unsuspend
+                  </button>
+                  <button
+                    *ngIf="customerUserDetails.user.pwdLockout&& customerUserDetails.user.accountState != 'PWD_LOCKOUT_REVOKE_PENDING'"
+                    (click)="passwordUnlock(customerUserDetails?.user,1,'passwordUnlock')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    password Unlock
+                  </button>
+                  <button *ngIf="customerUserDetails.user.accountState == 'PWD_LOCKOUT_REVOKE_PENDING'"
+                    (click)="approvePasswordUnlock(customerUserDetails.user.id)"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Approve password Unlock</button>
+                  <button class="text-xs px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 transition"
+                    (click)="view(customerUserDetails.user.id,'view log')">
+                    View Logs
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="selectedTab == 'KYC Details'">
+            <div class="mt-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 max-w-2xl text-gray-800 text-sm">
+          
+                <!-- KYC Status -->
+                <div class="font-semibold text-gray-600">KYC Status:</div>
+                <div class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+                  {{ customerUserDetails?.kyc?.status || 'NA' }}
+                </div>
+          
+                <!-- KYC Type -->
+                <div class="font-semibold text-gray-600">KYC Type:</div>
+                <div class="bg-yellow-100 text-gray-900 px-3 py-1 rounded-md w-fit font-medium">
+                  {{ customerUserDetails?.kyc?.kycType || 'NA' }}
+                </div>
+          
+                <!-- View KYC Form -->
+                <div class="font-semibold text-gray-600">KYC Form:</div>
+                <div>
+                  <button class="text-xs px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 transition"
+                    (click)="viewKycForm()">
+                    View KYC Form
+                  </button>
+                </div>
+          
+                <!-- View Logs -->
+                <div class="font-semibold text-gray-600">Logs:</div>
+                <div>
+                  <button class="text-xs px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 transition"
+                    (click)="view(customerUserDetails?.kyc?.id,'kyc log')">
+                    View Logs
+                  </button>
+                </div>
+          
+              </div>
+            </div>
+          </ng-container>
+          
+          <ng-container *ngIf="selectedTab == 'Access Channels'">
+            <div class="mt-4">
+              <h4 class="text-sm font-extrabold text-gray-800">Access Channels</h4>
+              <div class="mt-2 text-sm text-gray-600 bg-slate-50 p-1 rounded-lg">
+
+
+                <div *ngFor="let channel of accessChannels"
+                  class="flex items-center justify-between py-3 border-b last:border-none">
+                  <div class="flex items-center space-x-3">
+                    <span class="font-semibold w-16">{{ channel?.name }}:</span>
+
+                    <!-- Status Icon + Label -->
+                    <div class="flex items-center space-x-1">
+                      <i class="fas text-lg"
+                        [ngClass]="channel?.status === 'Enabled' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'">
+                      </i>
+                      <span [ngClass]="channel?.status === 'Enabled' ? 'text-green-600' : 'text-red-500'">
+                        {{ channel?.status }}
+                      </span>
+                    </div>
+                    <!-- Divider -->
+                    <!--  <span class="text-gray-400">|</span> -->
+
+                    <!-- Activity -->
+                    <!--  <span [ngClass]="channel.activity === 'Active' ? 'text-green-600' : 'text-red-500'"
+                      class="font-medium">
+                      {{ channel.activity }}
+                    </span> -->
+                  </div>
+
+                  <!-- Buttons (aligned to right) -->
+                  <div class="flex flex-col space-y-1">
+                    <button class="text-xs bg-gray-100 px-3 py-1 rounded hover:bg-gray-200"
+                      (click)="toggleStatus(channel)">
+                      {{ channel.status === 'Enabled' ? 'Remove Channel' : 'Add Channel' }}
+                    </button>
+                    <!--  <button class="text-xs bg-gray-100 px-3 py-1 rounded hover:bg-gray-200"
+                      (click)="toggleActivity(channel)">
+                      {{ channel.activity === 'Active' ? 'Deactivate Channel' : 'Activate Channel' }}
+                    </button> -->
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side (Part 2) -->
+ <div class="w-1/2 flex flex-col gap-4 h-full min-h-0">
+  <div class="flex-1 bg-white rounded-lg shadow p-4 flex flex-col min-h-0">
+    <h2 class="text-xl font-semibold mb-4 text-gray-800">
+      Transaction Summary
+    </h2>
+
+    <div class="flex-1 relative min-h-0">
+      <div *ngIf="barChartData; else noChart" class="h-full">
+        <canvas
+          baseChart
+          [type]="'bar'"
+          [data]="barChartData"
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+
+      <ng-template #noChart>
+        <div class="flex items-center justify-center h-full text-gray-500 text-sm">
+          No transactions available
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="flex-1 bg-white rounded-lg shadow p-4 flex flex-col min-h-0">
+    <h2 class="text-xl font-semibold mb-4 text-gray-800">
+      Recent Transactions
+    </h2>
+    <div class="flex-1 overflow-y-auto overflow-x-auto border border-gray-200 rounded-lg min-h-0">
+      <ng-container *ngIf="customerUserDetails?.transactions?.length; else noData">
+        <table class="min-w-full divide-y divide-gray-200 text-xs text-left">
+          <thead class="bg-gray-100 text-gray-700 uppercase tracking-wider sticky top-0">
+            <tr>
+              <th class="px-4 py-3">Date</th>
+              <th class="px-4 py-3">Ref ID</th>
+              <th class="px-4 py-3">Amount</th>
+              <th class="px-4 py-3">Sender</th>
+              <th class="px-4 py-3">Receiver</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr *ngFor="let txn of customerUserDetails?.transactions" class="hover:bg-gray-50">
+              <td class="px-4 py-2">
+                {{ txn.txnDate | date:'dd-MM-yyyy HH:mm':'Asia/Kabul' }}
+                <p class="px-1 py-1 bg-gray-200 rounded shadow-sm text-xs">
+                  {{ txn.serviceName }}
+                </p>
+              </td>
+              <td class="px-1 py-1">
+                {{ txn.txnNo }}
+                <p class="px-1 py-1 capitalize bg-gray-200 rounded shadow-sm text-xs">
+                  {{ txn.payMethod }}
+                </p>
+              </td>
+              <td class="px-1 py-1 text-green-600 font-semibold">
+                {{ txn.creditAmount == '0.0' ? txn.debitAmount : txn.creditAmount }}؋
+              </td>
+              <td class="px-1 py-1">
+                <div class="text-xs text-gray-500">Wallet: {{ txn.sender }}</div>
+              </td>
+              <td class="px-1 py-1">
+                <div class="text-xs text-gray-500">Phone: {{ txn.receiver }}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+      <ng-template #noData>
+        <div class="flex items-center justify-center h-full text-gray-500 text-sm">
+          No transactions available
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalNew" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+    <h2 class="text-lg font-semibold mb-4">View Details</h2>
+
+    <button *ngIf="!isLoading"
+      type="button"
+      class="px-4 py-2 bg-red-500 text-white rounded text-sm mb-4 hover:bg-red-600 transition-colors"
+      (click)="downloadPdf()">
+      Download PDF
+    </button>
+
+    <div *ngIf="isLoading" class="flex justify-center items-center py-10">
+      <span class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mr-2"></span> Loading...
+    </div>
+
+    <div class="overflow-x-auto border rounded-lg" *ngIf="!showKycTable && !isLoading">
+      <table class="w-full bg-white border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+          <tr>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Created On</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Authorized On</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Category</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Reason</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Status</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Maker Name</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Checker Name</th>
+          </tr>
+        </thead>
+        <tbody class="text-sm">
+          <tr *ngFor="let detail of viewDetails" class="hover:bg-gray-50 border-b">
+            <td class="py-3 px-4 whitespace-nowrap">{{ detail.createdOn | date : "MMM d, y, h:mm:ss a" }}</td>
+            <td class="py-3 px-4 whitespace-nowrap">{{ detail.authorizedOn | date : "MMM d, y, h:mm:ss a" }}</td>
+            <td class="py-3 px-4">{{ detail.category }}</td>
+            <td class="py-3 px-4 break-words max-w-xs">
+              <span *ngIf="detail?.authReason == null && detail.rejectReason == null"> {{ detail.reason }}</span>
+              <span *ngIf="detail.authReason">{{ detail.authReason }}</span>
+              <span *ngIf="detail.rejectReason">{{ detail.rejectReason }}</span>
+            </td>
+            <td class="py-3 px-4">
+               <span [ngClass]="{'text-green-600 font-bold': detail.status === 'SUCCESS', 'text-yellow-600': detail.status === 'PENDING'}">
+                {{ detail.status }}
+               </span>
+            </td>
+            <td class="py-3 px-4 whitespace-nowrap">{{ detail.makerName }}</td>
+            <td class="py-3 px-4 whitespace-nowrap">{{ detail.checkerName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="overflow-x-auto border rounded-lg" *ngIf="showKycTable && !isLoading">
+      <table class="w-full bg-white border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+          <tr>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider min-w-[140px]">Created On</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Email</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Full Name</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Phone</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">KYC Type</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Created By</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider min-w-[150px]">Old Value</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider min-w-[150px]">New Value</th>
+            <th class="py-3 px-4 border-b text-left text-xs font-bold uppercase tracking-wider">Authorized By</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-sm">
+          <tr *ngFor="let detail of viewDetails" class="hover:bg-gray-50 border-b even:bg-gray-50">
+            <td class="py-3 px-4">{{ detail?.createdOn | date:'MMM d, y, h:mm:ss a' }}</td>
+
+            <td class="py-3 px-4 break-all min-w-[150px]">{{ detail?.submittedFor?.email }}</td>
+
+            <td class="py-3 px-4 font-medium">{{ detail?.submittedFor?.firstName }} {{ detail?.submittedFor?.lastName }}</td>
+
+            <td class="py-3 px-4 whitespace-nowrap">{{ detail?.submittedFor?.phone }}</td>
+
+            <td class="py-3 px-4">{{ detail.kycType }}</td>
+
+            <td class="py-3 px-4 text-xs leading-relaxed">
+              <div class="font-semibold">{{ detail.createdBy?.email }}</div>
+              <div class="text-gray-500">{{ detail.createdBy?.phone }}</div>
+              <div class="italic">{{ detail.createdBy?.userType }}</div>
+            </td>
+
+            <td class="py-3 px-4">
+              <ng-container *ngIf="detail.changedFields?.length > 0; else noChangesOld">
+                <div *ngFor="let change of detail.changedFields" class="mb-2 text-xs">
+                  <span class="block font-bold text-gray-600">{{ change.field }}:</span>
+                  <span class="text-red-500 break-words">{{ change.oldValue ?? '-' }}</span>
+                </div>
+              </ng-container>
+              <ng-template #noChangesOld>
+                <span class="text-gray-400 italic">No Changes</span>
+              </ng-template>
+            </td>
+
+            <td class="py-3 px-4">
+              <ng-container *ngIf="detail.changedFields?.length > 0; else noChangesNew">
+                <div *ngFor="let change of detail.changedFields" class="mb-2 text-xs">
+                  <span class="block font-bold text-gray-600">{{ change.field }}:</span>
+                  <span class="text-green-600 break-words">{{ change.newValue ?? '-' }}</span>
+                </div>
+              </ng-container>
+              <ng-template #noChangesNew>
+                <span class="text-gray-400 italic">No Changes</span>
+              </ng-template>
+            </td>
+
+            <td class="py-3 px-4 break-all">{{ detail.authorizedBy?.email }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="showKycTable && totalPages > 1" class="flex justify-between items-center mt-6">
+      <button class="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50" (click)="onPageChange(page - 1)" [disabled]="page === 0">Previous</button>
+      <span class="text-sm font-medium">Page {{ page + 1 }} of {{ totalPages }}</span>
+      <button class="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50" (click)="onPageChange(page + 1)" [disabled]="page + 1 >= totalPages">Next</button>
+    </div>
+
+    <div class="mt-6 flex justify-end border-t pt-4">
+      <button (click)="this.showModalNew = false; this.showKycTable = false" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="showModalNew" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-1/2 max-h-[80vh] overflow-y-auto">
+    <h2 class="text-lg font-semibold mb-4">View Details</h2>
+     <button
+      type="button"
+      class="px-4 py-2 bg-red-500 text-white rounded text-sm"
+      (click)="downloadPdf()">
+      Download PDF
+    </button>
+    <div class="overflow-x-auto">
+      <table class="w-full bg-white border border-gray-200">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="py-2 px-4 border-b border-gray-200 text-left whitespace-nowrap">Created On</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left whitespace-nowrap">Authorized On</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left whitespace-nowrap">Category</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left whitespace-nowrap">Reason</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left whitespace-nowrap">Status</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left whitespace-nowrap">Maker Name</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left whitespace-nowrap">Checker Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detail of viewDetails" class="hover:bg-gray-50">
+            <td class="py-2 px-4 border-b border-gray-200 whitespace-nowrap">{{ detail.createdOn | date : "MMM d, y,
+              h:mm:ss a" }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 whitespace-nowrap">{{ detail.authorizedOn | date : "MMM d, y,
+              h:mm:ss a" }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 whitespace-nowrap">{{ detail.category }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 whitespace-nowrap">
+              <span *ngIf="detail?.authReason == null && detail.rejectReason == null"> {{ detail.reason }}</span>
+              <span *ngIf="detail.authReason">{{ detail.authReason }}</span>
+              <span *ngIf="detail.rejectReason">{{ detail.rejectReason }}</span>
+            </td>
+            <td class="py-2 px-4 border-b border-gray-200 whitespace-nowrap">{{ detail.status }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 whitespace-nowrap">{{ detail.makerName }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 whitespace-nowrap">{{ detail.checkerName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button (click)="this.showModalNew = false && this.showKycTable = false" style="background-color: #0a365a;"
+      class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 float-right">
+      Close
+    </button>
+  </div>
+</div>  -->
+
+<app-loader *ngIf="isLoading"></app-loader>

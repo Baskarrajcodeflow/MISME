@@ -1,0 +1,13 @@
+::ng-deep .mat-datepicker-content {
+    transform: translate(-50%, -50%) !important; /* Center horizontally and vertically */
+    top: -10% !important; /* Center vertically */
+    margin-top: 270px; /* Adjust as necessary to fine-tune vertical positioning */
+    margin-left: 270%;
+  }
+  
+  ::ng-deep .mat-datepicker-popup {
+    width: auto; /* Allow the datepicker to auto-size */
+  }
+  
+
+  

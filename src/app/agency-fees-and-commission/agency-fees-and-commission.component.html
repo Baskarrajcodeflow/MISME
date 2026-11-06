@@ -1,0 +1,195 @@
+<div class="container mx-auto p-4 m-h-[100px] table-container">
+  <form [formGroup]="form">
+    <div>
+      <div class="flex gap-4">
+        <div class="w-1/2">
+          <div class="mb-4">
+            <label
+              for="service"
+              class="block text-gray-700"
+              style="font-size: 14px"
+            >
+              Name</label
+            >
+            <input
+              formControlName="name"
+              for
+              type="text"
+              id="name"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Type</label
+            >
+            <select
+              formControlName="Type"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>FIXED</option>
+              <option>PERCENT</option>
+              <option>SLABWISE_FIXED</option>
+              <option>SLABWISE_PERCENT</option>
+            </select>
+          </div>
+
+          <div
+            class="mb-4"
+            *ngIf="
+              form.controls['Type'].value != 'SLABWISE_FIXED' &&
+              form.controls['Type'].value != 'SLABWISE_PERCENT'
+            "
+          >
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Commission Type</label
+            >
+            <select
+              formControlName="CommissionType"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>----</option>
+              <option>POSTPAID</option>
+              <option>PREPAID</option>
+            </select>
+          </div>
+        </div>
+        <div class="w-1/2">
+          <div class="mb-4">
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Currency</label
+            >
+            <select
+              formControlName="currency"
+              class="mt-2 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>----</option>
+              <option>AFN</option>
+            </select>
+          </div>
+          <div
+            class="mb-4"
+            *ngIf="
+              form.controls['Type'].value != 'FIXED' &&
+              form.controls['Type'].value != 'PERCENT'
+            "
+          >
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Commission Type</label
+            >
+            <select
+              formControlName="CommissionType"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>POSTPAID</option>
+              <option>PREPAID</option>
+            </select>
+          </div>
+          <div
+            class="mb-4"
+            *ngIf="
+              form.controls['Type'].value == 'FIXED' ||
+              form.controls['Type'].value == 'PERCENT'
+            "
+          >
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Amount</label
+            >
+            <input
+              formControlName="amount"
+              type="text"
+              id="name"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <div class="mb-4">
+        <label class="block text-gray-700" style="font-size: 14px"
+          >Sub agent commission</label
+        >
+        <input
+          type="text"
+          id="name"
+          class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700" style="font-size: 14px"
+          >Merchant commission</label
+        >
+        <input
+          type="text"
+          id="name"
+          class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div class="mt-6">
+        <button
+          type="submit"
+          class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+    <div
+      class="flex gap-2"
+      *ngIf="
+        form.controls['Type'].value == 'SLABWISE_FIXED' ||
+        form.controls['Type'].value == 'SLABWISE_PERCENT'
+      "
+    >
+      <div class="mb-4">
+        <label class="block text-gray-700" style="font-size: 14px"
+          >Minimum Amount</label
+        >
+        <input
+          formControlName="amount"
+          type="text"
+          id="name"
+          class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700" style="font-size: 14px"
+          >Maximum Amount</label
+        >
+        <input
+          formControlName="amount"
+          type="text"
+          id="name"
+          class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700" style="font-size: 14px">Value</label>
+        <input
+          formControlName="amount"
+          type="text"
+          id="name"
+          class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div class="mt-6">
+        <button
+          type="submit"
+          class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+    <div class="float-left">
+      <button 
+      (click)="submit()"
+        type="submit"
+        class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,509 @@
+<!-- <div class="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Reward Configuration</h1>
+    <p class="text-lg text-gray-600 mt-2">Configure loyalty rewards for Customers</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 lg:col-span-2">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold text-gray-900">Create New Reward</h2>
+        <div class="flex items-center space-x-2">
+          <span class="text-sm text-gray-500">Status:</span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            Draft
+          </span>
+        </div>
+      </div>
+
+      <div class="border-b border-gray-200 mb-6">
+        <nav class="-mb-px flex space-x-8">
+          <button 
+            (click)="setActiveTab('cashback')"
+            [class]="activeTab === 'cashback' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center">
+            <svg class="h-5 w-5 mr-2" [ngClass]="activeTab === 'cashback' ? 'text-blue-500' : 'text-gray-400'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Cashback
+          </button>
+          <button 
+            (click)="setActiveTab('topup')"
+            [class]="activeTab === 'topup' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center">
+            <svg class="h-5 w-5 mr-2" [ngClass]="activeTab === 'topup' ? 'text-green-500' : 'text-gray-400'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            Top-Up
+          </button>
+          <button 
+            (click)="setActiveTab('data')"
+            [class]="activeTab === 'data' ? 'border-purple-500 text-purple-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center">
+            <svg class="h-5 w-5 mr-2" [ngClass]="activeTab === 'data' ? 'text-purple-500' : 'text-gray-400'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Data Bundle
+          </button>
+        </nav>
+      </div>
+
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Reward Name *</label>
+          <div class="mt-1 relative rounded-md shadow-sm">
+            <input type="text" class="block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 py-2 px-3" 
+                   placeholder="e.g., Bronze Tier Cashback" >
+          </div>
+        </div>
+
+        <div *ngIf="activeTab === 'cashback'" class="space-y-6">
+
+          <div class="pt-4 border-t border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Cashback Requirements</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+   
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Transaction Value (AFN) *</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span class="text-gray-500">AFN</span>
+                  </div>
+                  <input type="number" class="block w-full pl-12 rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 py-2 px-3" 
+                         placeholder="200" >
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="pt-4 border-t border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Cashback Value</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Cashback Percentage *</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <input type="number" class="block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 py-2 px-3" 
+                         placeholder="5" >
+                  <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <span class="text-gray-500">%</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Maximum Cashback (AFN)</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span class="text-gray-500">AFN</span>
+                  </div>
+                  <input type="number" class="block w-full pl-12 rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 py-2 px-3" 
+                         placeholder="100">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="activeTab === 'topup'" class="space-y-6">
+          <div class="pt-4 border-t border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Top-Up Requirements</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Points Required *</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <input type="number" class="block w-full rounded-md border-gray-300 focus:ring-green-500 focus:border-green-500 py-2 px-3" 
+                         placeholder="500" >
+                </div>
+              </div>
+
+
+                 <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Top-Up Amount (AFN) *</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span class="text-gray-500">AFN</span>
+                  </div>
+                  <input type="number" class="block w-full pl-12 rounded-md border-gray-300 focus:ring-green-500 focus:border-green-500 py-2 px-3" 
+                         placeholder="10" >
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div *ngIf="activeTab === 'data'" class="space-y-6">
+          <div class="pt-4 border-t border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Data Bundle Requirements</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Points Required *</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <input type="number" class="block w-full rounded-md border-gray-300 focus:ring-purple-500 focus:border-purple-500 py-2 px-3" 
+                         placeholder="1000" >
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Minimum Active Package</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <select class="block w-full rounded-md border-gray-300 focus:ring-purple-500 focus:border-purple-500 py-2 px-3" >
+                    <option value="">Not required</option>
+                    <option value="daily">Daily Package</option>
+                    <option value="weekly">Weekly Package</option>
+                    <option value="monthly">Monthly Package</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Data Bundle Details</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Data Volume *</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <input type="number" class="block w-full rounded-md border-gray-300 focus:ring-purple-500 focus:border-purple-500 py-2 px-3" 
+                         placeholder="1">
+                  <div class="absolute inset-y-0 right-0 flex items-center">
+                    <select class="h-full rounded-r-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:ring-purple-500 focus:border-purple-500">
+                      <option value="MB">MB</option>
+                      <option value="GB" selected>GB</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="activeTab === 'data' ||  activeTab === 'topup'" class="pt-4 border-t border-gray-200">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Eligibility</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Carrier *</label>
+              <select class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500" >
+                <option>All Carriers</option>
+                <option selected>AWCC</option>
+                <option>Roshan</option>
+                <option>Etisalat</option>
+                <option>MTN</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">User Type</label>
+              <select class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500" >
+                <option>Customers</option>
+                <option>Agents</option>
+                <option>Merchants<option>
+                <option>Master Agents</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-gray-200">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Validity Period</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
+              <div class="mt-1 relative rounded-md shadow-sm">
+                <input type="date" class="block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 py-2 px-3" 
+                     >
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">End Date *</label>
+              <div class="mt-1 relative rounded-md shadow-sm">
+                <input type="date" class="block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 py-2 px-3" 
+                      >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-6 mt-6 border-t border-gray-200 flex justify-end space-x-3">
+        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Cancel
+        </button>
+        <button type="button" (click)="saveDraft()" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Save as Draft
+        </button>
+        <button type="submit" (click)="publishReward()" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+          Publish Reward
+        </button>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Reward Preview</h2>
+        
+        <div *ngIf="activeTab === 'cashback'" class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-blue-100 rounded-lg p-3">
+              <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="font-medium text-gray-900">{{ rewardName || 'Cashback Reward' }}</h3>
+              <div class="mt-2 text-sm text-gray-600">
+                <p>{{ cashback.percentage || 5 }}% cashback for {{ carrier || 'AWCC' }} {{ customerType === 'All Customers' ? 'customers' : customerType.toLowerCase() }} with {{ cashback.minPoints || 100 }}+ points on minimum recharge of {{ cashback.minRecharge || 200 }} AFN.</p>
+                <p class="mt-1 text-xs text-gray-500">Valid: {{ (startDate | date) || 'Oct 1, 2023' }} - {{ (endDate | date) || 'Dec 31, 2023' }}</p>
+                <p *ngIf="cashback.maxCashback" class="mt-1 text-xs text-gray-500">Max cashback: {{ cashback.maxCashback }} AFN</p>
+              </div>
+            </div>
+          </div>
+        </div>
+   
+        <div *ngIf="activeTab === 'topup'" class="bg-green-50 border border-green-100 rounded-lg p-4">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-green-100 rounded-lg p-3">
+              <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="font-medium text-gray-900">{{ rewardName || 'Top-Up Reward' }}</h3>
+              <div class="mt-2 text-sm text-gray-600">
+                <p>{{ topup.amount || 10 }} AFN top-up credit for {{ carrier || 'AWCC' }} {{ customerType === 'All Customers' ? 'customers' : customerType.toLowerCase() }} with {{ topup.points || 500 }}+ points.</p>
+                <p class="mt-1 text-xs text-gray-500">Valid: {{ (startDate | date) || 'Oct 1, 2023' }} - {{ (endDate | date) || 'Dec 31, 2023' }}</p>
+                <p *ngIf="topup.validityDays" class="mt-1 text-xs text-gray-500">Credit valid for {{ topup.validityDays || 30 }} days</p>
+              </div>
+            </div>
+          </div>
+        </div>
+     
+        <div *ngIf="activeTab === 'data'" class="bg-purple-50 border border-purple-100 rounded-lg p-4">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-purple-100 rounded-lg p-3">
+              <svg class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="font-medium text-gray-900">{{ rewardName || 'Data Bundle Reward' }}</h3>
+              <div class="mt-2 text-sm text-gray-600">
+                <p>{{ dataBundle.amount || 1 }}{{ dataBundle.unit || 'GB' }} free data for {{ carrier || 'AWCC' }} {{ customerType === 'All Customers' ? 'customers' : customerType.toLowerCase() }} with {{ dataBundle.points || 1000 }}+ points.</p>
+                <p class="mt-1 text-xs text-gray-500">Valid: {{ (startDate | date) || 'Oct 1, 2023' }} - {{ (endDate | date) || 'Dec 31, 2023' }}</p>
+                <p class="mt-1 text-xs text-gray-500">Data valid for {{ dataBundle.validityDays || 7 }} days after redemption</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold text-gray-900">Existing Rewards</h2>
+          <button type="button" class="text-sm text-blue-600 hover:text-blue-800">View All</button>
+        </div>
+        
+        <div class="space-y-3">
+          <div class="group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="flex items-center space-x-3">
+              <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                <svg class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-900">Bronze Cashback</h4>
+                <p class="text-xs text-gray-500">5% cashback (min 200 AFN)</p>
+              </div>
+            </div>
+            <button class="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-blue-600 transition-opacity">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="flex items-center space-x-3">
+              <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center">
+                <svg class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-900">Silver Top-Up</h4>
+                <p class="text-xs text-gray-500">10 AFN credit</p>
+              </div>
+            </div>
+            <button class="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-blue-600 transition-opacity">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="flex items-center space-x-3">
+              <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                <svg class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-900">Gold Data Bundle</h4>
+                <p class="text-xs text-gray-500">1GB for 7 days</p>
+              </div>
+            </div>
+            <button class="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-blue-600 transition-opacity">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-                3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Need Help?</h2>
+        <div class="space-y-3">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 h-5 w-5 text-blue-500">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p class="ml-3 text-sm text-gray-600">
+              Learn more about <a href="#" class="text-blue-600 hover:text-blue-800">reward configurations</a> in our documentation.
+            </p>
+          </div>
+          <div class="flex items-start">
+            <div class="flex-shrink-0 h-5 w-5 text-blue-500">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+            </div>
+            <p class="ml-3 text-sm text-gray-600">
+              Contact support at <a href="mailto:support@af-rewards.com" class="text-blue-600 hover:text-blue-800">support-rewards.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+
+</div> -->
+
+
+
+
+<div class="p-6 bg-white rounded-xl shadow-md">
+  <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden">
+    
+    <!-- HEADER -->
+    <thead class="bg-gray-900 text-white">
+      <tr>
+        <th class="px-5 py-3 text-left text-xs font-semibold tracking-wide uppercase">Name</th>
+        <!-- <th class="px-5 py-3 text-left text-xs font-semibold tracking-wide uppercase">Min Txn Amount</th> -->
+        <th class="px-5 py-3 text-left text-xs font-semibold tracking-wide uppercase">Max Limit</th>
+        <th class="px-5 py-3 text-left text-xs font-semibold tracking-wide uppercase">Expiry Days</th>
+        <th class="px-5 py-3 text-left text-xs font-semibold tracking-wide uppercase">Amount / Point</th>
+        <!-- <th class="px-5 py-3 text-left text-xs font-semibold tracking-wide uppercase">Points / Transaction</th> -->
+        <th class="px-5 py-3 text-left text-xs font-semibold tracking-wide uppercase">Actions</th>
+      </tr>
+
+      <!-- FILTER ROW -->
+      <tr class="bg-gray-100 border-b border-gray-300">
+        <th class="px-5 py-2">
+          <input 
+          [(ngModel)]="loyaltyName"
+            type="text" 
+            placeholder="Name" 
+  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400"
+          />
+        </th>
+        <!-- <th class="px-5 py-2">
+          <input 
+          [(ngModel)]="minAmount"
+            type="number" 
+            placeholder="Min Amount" 
+  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400"
+          />
+        </th> -->
+
+        <th class="px-5 py-2">
+          <input 
+          [(ngModel)]="maxLimit"
+            type="number" 
+            placeholder="Max Limit" 
+  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400"
+          />
+        </th>
+
+        <th class="px-5 py-2">
+          <input 
+          [(ngModel)]="expiryDays"
+            type="number" 
+            placeholder="Days" 
+  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400"
+          />
+        </th>
+
+        <th class="px-5 py-2">
+          <input 
+          [(ngModel)]="amountPerPoint"
+            type="number" 
+            placeholder="Amt/Point" 
+  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400"
+          />
+        </th>
+
+        <!-- <th class="px-5 py-2">
+          <input 
+          [(ngModel)]="pointsPerTransaction"
+            type="number" 
+            placeholder="Pts/Txn" 
+  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400"
+          />
+        </th> -->
+
+        <th class="px-5 py-2">
+          <button 
+          (click)="saveConfig()"
+            class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition">
+            Add
+          </button>
+        </th>
+      </tr>
+    </thead>
+
+    <!-- BODY -->
+    <tbody class="divide-y divide-gray-200 text-gray-700">
+
+      <tr class="hover:bg-gray-50 transition" *ngFor="let config of rewardConfigs">
+        <td class="px-5 py-4 font-medium">{{ config.name }}</td>
+        <!-- <td class="px-5 py-4">{{ config.minTransactionAmount }}</td> -->
+        <td class="px-5 py-4">{{ config.maxLimit }}</td>
+        <td class="px-5 py-4">{{ config.expiryDays }}</td>
+        <td class="px-5 py-4">{{ config.amountPerPoint }}</td>
+        <td class="px-5 py-4">
+           <button 
+          (click)="approve(config)"
+            class="px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700 transition">
+            Approve
+          </button>
+        </td>
+
+        <!-- <td class="px-5 py-4">
+          <button 
+            class="text-blue-600 hover:text-blue-800 transition">
+            <i class="fas fa-edit"></i>
+          </button>
+        </td> -->
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+

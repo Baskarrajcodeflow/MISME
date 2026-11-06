@@ -1,0 +1,54 @@
+<div class="h-full overflow-x-auto overflow-y-auto p-4 bg-gray-50">
+
+  <!-- Page Title -->
+  <div class="mb-4">
+    <h5 class="text-xl font-bold text-gray-800">Commission Structure</h5>
+    <p class="text-sm text-gray-500">List of all configured commission rules</p>
+  </div>
+
+  <!-- Table Card -->
+  <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+
+    <table class="min-w-full table-fixed border-collapse">
+      <!-- Header -->
+      <thead style="background-color: rgb(10, 54, 90);">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">ID</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Name</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Type</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Amount</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Category</th>
+          <!-- <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Status</th> -->
+        </tr>
+      </thead>
+
+      <!-- Body -->
+      <tbody class="divide-y divide-gray-100">
+        <tr *ngFor="let c of commissionData" 
+            class="hover:bg-blue-50 transition cursor-pointer">
+
+          <td class="px-4 py-2 text-sm text-gray-700 font-medium">{{ c?.id }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700">{{ c?.name }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700">{{ c?.type }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700 font-semibold">
+            {{ c?.amount }} {{ c?.currency }}
+          </td>
+          <td class="px-4 py-2 text-sm text-gray-700">{{ c?.commissionCategory }}</td>
+
+          <!-- Status Badge -->
+          <!-- <td class="px-4 py-2 text-sm">
+            <span 
+              class="px-3 py-1 rounded-full text-xs font-semibold"
+              [ngClass]="c?.active 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-red-100 text-red-700'">
+              {{ c?.active ? 'Active' : 'Inactive' }}
+            </span>
+          </td> -->
+
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

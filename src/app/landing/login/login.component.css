@@ -1,0 +1,66 @@
+/* eye */
+.relative {
+  position: relative; /* Required for absolute positioning of the icon */
+}
+
+input {
+  padding-right: 40px; /* Space for the eye icon */
+  height: 40px; /* Set a consistent height */
+  line-height: 40px; /* Center text vertically within the input */
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%; /* Center vertically */
+  right: 10px; /* Adjust for spacing from the right */
+  transform: translateY(-50%); /* Correct vertical alignment */
+  cursor: pointer;
+  color: gray; /* Color of the icon */
+  pointer-events: auto; /* Allow clicks on the icon */
+}
+
+input:focus {
+  border-color: #3b82f6; /* Change border color on focus */
+  box-shadow: 0 0 0 2px rgba(59, 130, 247, 0.5); /* Optional focus ring */
+}
+
+/* eye */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+button span {
+  font-size: 18px; /* Adjust the size of the icon */
+  color: #4a5568;  /* Text color for the icon */
+}
+
+button:hover span {
+  color: #1a202c;  /* Change color on hover */
+}
+.background-image {
+  background-image: url('../../../assets/images/login-bg-new.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+}
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+.bg-custom-blue {
+  background-color: rgb(0, 100, 162);
+}
+.bg-custom-orange {
+  background-color: rgb(244, 122, 32);
+}
+
+.bodyData {
+  font-family: 'MyCustomFont';
+}

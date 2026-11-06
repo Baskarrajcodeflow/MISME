@@ -1,0 +1,154 @@
+<div class="h-full overflow-x-auto overflow-y-auto">
+  <div *ngIf="selected && !isEnableEditView">
+    <app-bo-view [backOffice]="selected" (save)="onSave($event)" (cancel)="onCancel()"
+      [isDisableField]="isDisableField">
+    </app-bo-view>
+  </div>
+
+  <!-- EDIT VIEW -->
+  <div *ngIf="selected && isEnableEditView">
+    <app-bo-user-edit [backOffice]="selected" (save)="onSave($event)" (cancel)="onCancel()"
+      [isDisableField]="isDisableField">
+    </app-bo-user-edit>
+  </div>
+
+  <!-- TABLE VIEW (DEFAULT) -->
+  <div *ngIf="!selected" class="relative min-h-screen bg-[#FAF9F6] font-sans overflow-hidden p-4 sm:p-8">
+    
+    <!-- Ambient Background (Warm Tones) -->
+    <div class="absolute inset-0 pointer-events-none z-0">
+      <div class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-amber-500/10 rounded-full mix-blend-multiply filter blur-[120px]"></div>
+      <div class="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-[#3B1E0B]/5 rounded-full mix-blend-multiply filter blur-[120px]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(#78350f_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.03]"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto">
+      
+      <!-- Header & Search -->
+      <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-[#3B1E0B] tracking-tight">Back Office Users</h1>
+          <p class="mt-1 text-sm text-slate-500 font-medium">Manage internal staff accounts and permissions.</p>
+        </div>
+        <!-- Your existing search/user create component -->
+        <app-search-user (add)="onAdd($event)" *ngIf="boPrvilege?.createPrivelege" class="w-full sm:w-auto"></app-search-user>
+      </div>
+
+      <!-- Data Table Card -->
+      <div class="bg-white rounded-3xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.05)] border border-amber-100 overflow-hidden"
+        *ngIf="boPrvilege?.readPrivelege">
+
+        <div class="overflow-x-auto">
+          <table class="w-full whitespace-nowrap">
+            
+            <!-- Table Header -->
+            <thead>
+              <tr class="bg-[#FAF9F6] border-b border-amber-100/60">
+                <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Username</th>
+                <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Full Name</th>
+                <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Phone</th>
+                <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Role</th>
+                <th class="px-6 py-4 text-center text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Reject</th>
+                <th class="px-6 py-4 text-center text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Activate / Unlock</th>
+                <th class="px-6 py-4 text-center text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Deactivate</th>
+              </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody class="divide-y divide-amber-100/40">
+              <tr *ngFor="let user of boUsers" 
+                  class="hover:bg-amber-50/30 transition-colors duration-200 group cursor-pointer" 
+                  (click)="onUserClick(user)">
+
+                <!-- Username -->
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-white flex items-center justify-center font-bold text-sm shadow-sm ring-2 ring-white">
+                      {{ user.email?.charAt(0)?.toUpperCase() || 'U' }}
+                    </div>
+                    <span class="font-semibold text-[#3B1E0B] group-hover:text-amber-700 transition-colors">
+                      {{ user.email }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Full Name -->
+                <td class="px-6 py-4 text-sm text-slate-600 font-medium">
+                  {{ user.firstName }} {{ user.lastName }}
+                </td>
+
+                <!-- Phone -->
+                <td class="px-6 py-4 text-sm text-slate-600">
+                  {{ user.phone || '—' }}
+                </td>
+
+                <!-- Role -->
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-700 text-xs font-semibold shadow-sm">
+                    {{ user.roleData?.roleName || 'N/A' }}
+                  </span>
+                </td>
+
+                <!-- Reject -->
+                <td class="px-6 py-4 text-center">
+                  <button *ngIf="shouldShowRejectButton(user)" 
+                    (click)="$event.stopPropagation(); onClickReject(user)"
+                    class="inline-flex items-center justify-center px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 hover:bg-rose-100 hover:-translate-y-0.5 active:scale-[0.98]">
+                    Reject
+                  </button>
+                </td>
+
+                <!-- Activate / Password Unlock -->
+                <td class="px-6 py-4 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    
+                    <button *ngIf="!user.active && !user.deleted && boPrvilege?.authorizePrivelege"
+                      (click)="$event.stopPropagation(); onClickActive(user)"
+                      class="inline-flex items-center justify-center px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 hover:bg-emerald-100 hover:-translate-y-0.5 active:scale-[0.98]">
+                      Activate
+                    </button>
+
+                    <button *ngIf="user?.pwdLockout && user?.accountState != 'PWD_LOCKOUT_REVOKE_PENDING'"
+                      (click)="$event.stopPropagation(); passwordUnlock(user,1,'passwordUnlock')"
+                      class="inline-flex items-center justify-center px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 hover:bg-amber-100 hover:-translate-y-0.5 active:scale-[0.98]">
+                      Unlock
+                    </button>
+
+                    <button *ngIf="user?.accountState == 'PWD_LOCKOUT_REVOKE_PENDING'"
+                      (click)="$event.stopPropagation(); approvePasswordUnlock(user?.id)"
+                      class="inline-flex items-center justify-center px-3 py-1.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 hover:bg-indigo-100 hover:-translate-y-0.5 active:scale-[0.98]">
+                      Approve
+                    </button>
+                  </div>
+                </td>
+
+                <!-- Deactivate -->
+                <td class="px-6 py-4 text-center">
+                  <button *ngIf="user.active && !user.deleted && boPrvilege?.authorizePrivelege"
+                    (click)="$event.stopPropagation(); onClickDeactive(user)"
+                    class="inline-flex items-center justify-center px-3 py-1.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 hover:bg-slate-200 hover:text-slate-900 hover:-translate-y-0.5 active:scale-[0.98]">
+                    Deactivate
+                  </button>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="boUsers.length === 0" class="flex flex-col items-center justify-center py-16 px-4 text-center border-t border-amber-100/50">
+          <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+          </div>
+          <h3 class="text-lg font-bold text-[#3B1E0B] mb-1">No back office users found</h3>
+          <p class="text-slate-500 text-sm">There are currently no staff accounts registered.</p>
+        </div>
+
+      </div>
+
+      <app-loader *ngIf="isLoading"></app-loader>
+
+    </div>
+  </div>
+</div>

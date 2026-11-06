@@ -1,0 +1,161 @@
+<div *ngIf="!showOTP" class="relative">
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 bg-gray-800">
+        <div class="w-16 h-16 border-4 border-gray-300 rounded-full animate-spin border-t-transparent"></div>
+    </div>
+    <form [formGroup]="searchForm">
+        <div class="mb-4 flex flex-row gap-4 w-full">
+            <!-- KYC Type -->
+            <div class="flex flex-col w-1/3">
+                <label class="mb-2 text-sm font-medium text-gray-700">KYC Type</label>
+                <select name="kycTypeDropdown" [(ngModel)]="kycType"
+                    class="form-select w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    (change)="onChangeKyctype($event)">
+                    <option value="">Select</option>
+                    <option *ngIf="searchTarget=='PHONE'" value="">All</option>
+                    <option value="CUSTOMER">Customer</option>
+                    <option value="AGENT">Agent</option>
+                    <option value="SUPER_AGENT">Master Agent</option>
+                    <option value="MM_STAFF">MM Staff</option>
+                    <option value="MICRO_MERCHANT">Micro Merchant</option>
+                    <option value="MERCHANT">Merchant</option>
+                    <option value="CORPORATE">Corporate</option>
+                    <option value="NGO">NGO</option>
+                    <option value="GOVT_AGENCY">Govt Agency</option>
+                    <option value="UN_AGENCY">UN Agency</option>
+                </select>
+            </div>
+            <!-- Search By -->
+            <div class="flex flex-col w-1/3">
+                <label class="mb-2 text-sm font-medium text-gray-700">Search By</label>
+                <select #selectedDrop formControlName="SearchBy"
+                    class="form-select w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    (change)="onChangeSearchBy($event)">
+                    <option value="" disabled>Select</option>
+                    <option value="PHONE">Phone</option>
+                    <option value="ID_PROOF">ID Proof NO</option>
+                    <!-- new added -->
+                    <option value="EMAIL">Email ID</option>
+                </select>
+            </div>
+            <!-- Search Input -->
+            <div class="flex flex-col w-1/3">
+                <label class="mb-2 text-sm font-medium text-gray-700">Search</label>
+                <div class="flex items-center border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" #selectedText
+                        class="w-full px-4 py-2 text-gray-700 bg-white rounded-l-md focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        formControlName="searchText" placeholder="Search...">
+                    <i class="fa fa-search px-3 text-gray-400 cursor-pointer" (click)="onClickSearch()"></i>
+                </div>
+                <div *ngIf="noResults" class="text-center text-gray-500 mt-2">
+                    No results found
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Table Container -->
+    <div class="container mx-auto p-4">
+        <div class="overflow-x-auto shadow-md rounded-lg">
+            <table class="min-w-full table-auto border-collapse border border-gray-200">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-4 py-2 border">Name</th>
+                        <th class="px-4 py-2 border">Email</th>
+                        <th class="px-4 py-2 border">Submitted by</th>
+                        <th class="px-4 py-2 border">ID Proof Number</th>
+                        <th class="px-4 py-2 border">Phone</th>
+                        <th class="px-4 py-2 border">Sequence Number</th>
+                        <th class="px-4 py-2 border">Submitted Date</th>
+                        <th class="px-4 py-2 border">Status</th>
+                        <th class="px-4 py-2 border">KYC Type</th>
+                        <th class="px-4 py-2 border">MM Wallet</th>
+                        <th class="px-4 py-2 border">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data; let i = index" class="hover:bg-gray-100 cursor-pointer">
+                        <!-- Name -->
+                        <td class="border px-4 py-2">
+                            <ng-container *ngIf="item?.kycType != 'MASTER AGENT' && item?.kycType != 'CORPORATE'">
+                                {{ item.agentKyc?.custInfoFirstName || item.customerKyc?.custInfoFirstName || 'NIL' }}
+                                {{ item.agentKyc?.custInfoLastName || item.customerKyc?.custInfoLastName || 'NIL' }}
+                            </ng-container>
+
+                            <ng-container *ngIf="item?.kycType == 'MASTER AGENT'">
+                                {{item.masterAgentKyc?.companyName }}
+                            </ng-container>
+                            <ng-container *ngIf="item?.kycType == 'CORPORATE'">
+                                {{item.corporateKyc?.companyName }}
+                            </ng-container>
+                        </td>
+                        <!-- Email -->
+                        <td class="border px-4 py-2">
+                            <ng-container *ngIf="item?.kycType != 'MASTER AGENT' || item?.kycType != 'CORPORATE'">
+                                {{ item.agentKyc?.custInfoEmail || item.customerKyc?.custInfoEmail
+                                }}
+                            </ng-container>
+
+                            <ng-container *ngIf="item?.kycType == 'MASTER AGENT'">
+                                {{item.masterAgentKyc?.companyEmail}}
+                            </ng-container>
+                            <ng-container *ngIf="item?.kycType == 'CORPORATE'">
+                                {{item.corporateKyc?.companyEmail}}
+                            </ng-container>
+                        </td>
+                        <!-- Submitted By -->
+                        <td class="border px-4 py-2">{{ item.submittedBy?.firstName || 'NIL' }}</td>
+                        <!-- ID Proof Number -->
+                        <td class="border px-4 py-2">
+                            {{ item.agentKyc?.custProofNumber || item.customerKyc?.custProofNumber ||
+                            item.masterAgentKyc?.signatories[0]?.idProofNumber ||
+                            item.corporateKyc?.signatories[0]?.idProofNumber || 'NIL' }}
+                        </td>
+                        <!-- Phone -->
+                        <td class="border px-4 py-2">{{ '+93' + (item.submittedFor?.phone?.slice(-9) || 'NIL') }}</td>
+                        <!-- Sequence Number -->
+                        <td class="border px-4 py-2">{{ item.seqNo || 'NIL' }}</td>
+                        <!-- Submitted Date -->
+                        <td class="border px-4 py-2">{{ item.createdOn || 'NIL' }}</td>
+                        <!-- Status -->
+                        <td class="border px-4 py-2">{{ item.status || 'NIL' }}</td>
+                        <!-- KYC Type -->
+                        <td class="border px-4 py-2">{{ item.kycType || 'NIL' }}</td>
+                        <!-- MM Wallet -->
+                        <td class="border px-4 py-2">
+                            {{ item.agentKyc?.custInfoMMWallet || item.customerKyc?.custInfoMMWallet ||
+                            item.masterAgentKyc?.companyWalletNumber || item.corporateKyc?.companyWalletNumber ||
+                            item.govtAgencyKyc?.walletNumber || item.ngoKyc?.walletNumber || 'NIL' }} </td>
+                        <!-- Update Button -->
+                        <!-- *ngIf="item.status == 'REJECTED'" -->
+                        <td class="border px-4 py-2 text-center">
+                            <button (click)="onClickUpdate(item,'incompleteKyc')"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                style="background-color: #0a365a;">
+                                Update
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="showPaginationButtons" class="flex justify-between mt-4">
+            <button *ngIf="currentPage > 0" (click)="onPreviousPage()"
+                class="px-4 py-2 text-white rounded bg-blue-500 hover:bg-blue-600" style="background-color: #0a365a;">
+                Previous
+            </button>
+            <button (click)="onNextPage()" class="px-4 py-2 text-white rounded bg-blue-500 hover:bg-blue-600"
+                style="background-color: #0a365a;">
+                Next
+            </button>
+        </div>
+    </div>
+</div>
+<!-- <button (click)="openOtp()">Enter OTP</button> -->
+<div *ngIf="showOTP">
+    <app-otp-modal [show]="showOTP" [digits]="6" [title]="'Verify OTP'" [subtitle]="'Enter the 6-digit code'"
+        (submitted)="onOtpSubmit($event)" (closed)="showOTP = false">
+    </app-otp-modal>
+</div>

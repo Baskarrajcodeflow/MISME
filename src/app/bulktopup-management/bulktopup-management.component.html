@@ -1,0 +1,59 @@
+<div class="w-full  ga mx-auto"  *ngIf="SalaryPrivelege?.readPrivelege">
+    <!-- Tab Headers -->
+    <div class="flex justify-between border-b border-gray-200">
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 1, 'border-transparent': activeTab !== 1 }"
+        (click)="setActiveTab(1)">
+        Upload Topup File
+      </button>
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 2, 'border-transparent': activeTab !== 2 }"
+        (click)="setActiveTab(2)">
+        
+       Uploaded Files
+      </button>
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 3, 'border-transparent': activeTab !== 3 }"
+        (click)="setActiveTab(3)">
+       
+        Authorized Files
+      </button>
+      <!-- <button 
+      class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+      [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 4, 'border-transparent': activeTab !== 4 }"
+      (click)="setActiveTab(4)">
+      
+Processed Files
+    </button> -->
+    <button 
+    class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+    [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 5, 'border-transparent': activeTab !== 5 }"
+    (click)="setActiveTab(5)">
+    
+Rejected Files
+  </button>
+    </div>
+  
+    <!-- Tab Content -->
+    <div class="p-4">
+      <div *ngIf="activeTab === 1">
+        <app-topup-file-upload></app-topup-file-upload>
+      </div>
+      <div *ngIf="activeTab === 2">
+        <h4 class="text-md font-semibold">All Uploaded Files</h4>
+        <app-topup-table></app-topup-table>
+      </div>
+      <div *ngIf="activeTab === 3">
+        <h4 class="text-md font-semibold">Authorized Files</h4>
+        <app-approved-files></app-approved-files>
+      </div>
+      <div *ngIf="activeTab === 5">
+        <h4 class="text-md font-semibold">Rejected Files</h4>
+        <app-rejected-files></app-rejected-files>
+      </div>
+    </div>
+  </div>
+  

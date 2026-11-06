@@ -1,0 +1,296 @@
+<nav class="text-sm text-gray-500 ">
+    <ol class="list-reset flex">
+        <li><a routerLink="/dashboard" (click)="onNavigate('/dashboard')"
+                class="text-blue-600 hover:underline">Dashboard</a></li>
+        <li><span class="mx-2">/</span></li>
+        <li class="text-gray-700 font-medium">Case Management</li>
+    </ol>
+</nav>
+<div class="flex items-center justify-center  bg-gray-100 p-8 rounded-md px-4">
+    <div class="w-3/4 items-center">
+        <form class="flex flex-wrap gap-3">
+            <select required
+                class="flex-1 min-w-[180px] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                (change)="onFilterChange($event)">
+                <option value="" disabled>Select</option>
+                <option value="1">Active Users</option>
+                <option value="2">Deactivated/Blocked/Locked Users</option>
+                <option value="6">New Users Activation</option>
+                <option value="3">Dormant Users</option>
+                <option value="4">Suspended Users</option>
+                <option value="5">Password Lockout Users</option>
+                </select>
+                <!-- <button type="button" class="px-4 py-2 bg-red-500 text-white rounded text-sm" (click)="downloadPdf()">
+                    Download PDF
+                </button> -->
+                
+                <!-- Download Excel -->
+                <button type="button" class="px-4 py-2 bg-green-600 text-white rounded text-sm" (click)="downloadExcel()">
+                    Download Excel
+                </button>
+        </form>
+    </div>
+</div>
+<div class="flex items-center justify-center  bg-gray-100 p-8 rounded-md px-4">
+    <table class="w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Key Details
+                </th>
+                <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Basic Details
+                </th>
+                <!--   <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+           Company Details
+          </th> -->
+                <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Account Status
+                </th>
+                <!--  <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Logs
+          </th> -->
+            </tr>
+        </thead>
+        <app-loader *ngIf="isLoading"></app-loader>
+
+
+        <tbody class="bg-white divide-y divide-gray-200">
+            <ng-container *ngFor="let item of usersList; let i = index">
+                <tr class="cursor-pointer transition duration-300 ease-in-out transform hover:bg-blue-50 hover:scale-102 hover:shadow-lg"
+                    [ngClass]="{
+                    'bg-orange-50': i % 2 === 0,
+                    'bg-white': i % 2 !== 0
+                  }">
+                    <td class="px-6 py-2 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <!-- <img [src]="transaction.profilePic" alt="Profile" class="w-10 h-10 rounded-full mr-4" /> -->
+                            <div class="text-medium font-medium text-gray-900">
+                                <p class="text-xs text-gray-500 p-1">
+                                    Type :
+                                    <span class=" text-sm text-gray-900">{{item?.userType}}</span>
+                                </p>
+
+                                <p class="text-xs text-gray-500 p-1">
+                                    Phone :
+                                    <span class=" text-sm text-gray-900">{{
+                                        item?.phone
+                                        }}</span>
+                                </p>
+                                <p class="text-xs text-gray-500 p-1">
+                                    Wallet No :
+                                    <span class="text-sm  text-gray-900">{{
+                                        item?.walletNo 
+                                        }}</span>
+                                </p>
+                                <p class="text-xs text-gray-500 p-1">
+                                    ID Proof No :
+                                    <span class="text-sm  text-gray-900">{{
+                                        item?.idProofNo
+                                        }}</span>
+                                </p>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-2 whitespace-nowrap">
+                        <div class="text-medium font-medium text-gray-900">
+                            <p class="text-xs text-gray-500 p-1">Email :
+                                <span class="text-sm  text-gray-900">
+                                    {{ item?.email }}
+                                </span>
+                            </p>
+                            <span class="text-xs text-gray-500 p-1">Name :</span>
+                            <span class="text-sm">
+                                {{ item?.firstName }}  {{  item?.lastName }}
+                            </span>
+                            <!-- <p class="text-xs text-gray-500 p-1">
+                                Last Name :
+                                <span class="text-sm  text-gray-900">{{
+                                    item?.lastName
+                                    }}</span>
+                            </p> -->
+                            <!--   <p class="text-xs text-gray-500 p-1">
+                      Gender :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.gender
+                        }}</span>
+                    </p> -->
+                              <p class="text-xs text-gray-500 p-1">
+                     KYC Status :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.kycStatus ? item?.kycStatus : 'No KYC'
+                        }}</span>
+                    </p> 
+
+                        </div>
+
+                    </td>
+                    <!-- <td class="px-6 py-2 whitespace-nowrap">
+               <div class="text-medium font-medium text-gray-900">
+                    <span class="text-xs text-gray-500 p-1">Company Name :</span>
+                    <span class="text-sm">
+                      {{ item?.companyName }}
+                    </span>
+                     <p class="text-xs text-gray-500 p-1">
+                      TIN Number :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.tinNumber
+                        }}</span>
+                    </p> 
+                     <p class="text-xs text-gray-500 p-1">
+                      Business License No :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.businessLicenseNumber
+                        }}</span>
+                    </p> 
+                    
+
+                  </div>
+              </td> -->
+                    <td class="px-6 py-2 whitespace-nowrap">
+                        <div class="flex items-center space-x-3 mt-2"> <!-- // (click)="toggleState()"  -->
+
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="text-medium font-medium text-gray-900">
+                                        <!-- <p class="text-xs text-gray-500 p-1">
+                      Account Started On :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.accountStartedOn
+                        }}</span>
+                    </p> 
+                      <p class="text-xs text-gray-500 p-1">
+                      Last Logged On :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.lastLoggedOn
+                        }}</span>
+                    </p>  -->
+                    <div class="flex items-center space-x-4">
+                                    <span class="font-semibold text-sm">{{ item?.accountStatus ? item?.accountStatus : 'Disabled' }}</span>
+                                    <button  [ngClass]="item?.accountStatus == 'ACTIVE' ? 'bg-green-500' : 'bg-red-500'"
+                                        class="relative w-10 h-6 rounded-full transition-colors duration-300">
+                                        <span [ngClass]="item?.accountStatus == 'ACTIVE' ? 'translate-x-7' : 'translate-x-1'"
+                                            class="absolute left-0 top-0 h-6 w-6 bg-white rounded-full shadow transform transition-transform duration-300"></span>
+                                    </button>
+                                </div>
+                     <div class="flex flex-wrap gap-2 mt-3">
+                  <button *ngIf="item.dormant" (click)="activateDormant(item)"
+                    class="text-xs px-3 py-1 rounded bg-red-500 text-white hover:bg-red-600 transition">
+                    Activate Dormant User
+                  </button>
+                  <button *ngIf="item.accountState == 'ACTIVE'"
+                    (click)="suspendUser(item,0,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-red-500 text-white hover:bg-red-600 transition">
+                    Suspend
+                  </button>
+                  <button *ngIf="item.accountState == 'ACTIVE'"
+                    (click)="suspendUser(item,0,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-red-900 text-white hover:bg-red-950 transition">
+                    Lock
+                  </button>
+                 <!--  <button *ngIf="item.accountState == 'SUSPEND'"
+                    (click)="suspendUser(item,1,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-green-500 text-white hover:bg-green-600 transition">
+                    Unsuspend
+                  </button> -->
+                  <!-- <button *ngIf="item.accountState == 'UNSUSPEND_PENDING'"
+                    (click)="authorizeUnSuspendUser(item,2,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Authorize Unsuspend Request
+                  </button>
+                  <button *ngIf="item.accountState == 'UNSUSPEND_PENDING'"
+                    (click)="authorizeUnSuspendUser(item,3,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Reject Request Unsuspend
+                  </button> -->
+                  <button
+                    *ngIf="selectedOption == '5' && item.accountState != 'PWD_LOCKOUT_REVOKE_PENDING'"
+                    (click)="passwordUnlock(item,1,'passwordUnlock')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    password Unlock
+                  </button>
+                  <button *ngIf="item.accountState == 'PWD_LOCKOUT_REVOKE_PENDING'"
+                    (click)="approvePasswordUnlock(item.id)"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Approve password Unlock</button>
+                  <button *ngIf="item.accountState == 'SUSPEND'"
+                    (click)="suspendUser(item,1,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-green-500 text-white hover:bg-green-600 transition">
+                    Unsuspend
+                  </button>
+                  <button *ngIf="item.accountState == 'UNSUSPEND_PENDING'"
+                    (click)="authorizeUnSuspendUser(item,2,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Authorize Unsuspend Request
+                  </button>
+                  <button *ngIf="item.accountState == 'UNSUSPEND_PENDING'"
+                    (click)="authorizeUnSuspendUser(item,3,'suspend')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Reject Request Unsuspend
+                  </button>
+                  <button
+                    *ngIf="selectedOption == '5' && item.accountState != 'PWD_LOCKOUT_REVOKE_PENDING'"
+                    (click)="passwordUnlock(item,1,'passwordUnlock')"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    password Unlock
+                  </button>
+                  <button *ngIf="selectedOption == '5' && item.accountState == 'PWD_LOCKOUT_REVOKE_PENDING'"
+                    (click)="approvePasswordUnlock(item.id)"
+                    class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Approve password Unlock
+                  </button>
+
+                  <!--  <button class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                      Reset Password
+                    </button> -->
+
+                  <!-- <button class="text-xs px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 transition"
+                    (click)="view(customerUserDetails.user.id)"></button> -->
+
+                  <!--  <button class="text-xs px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">
+                      Reset Password
+                    </button> -->
+
+                 <!--  <button class="text-xs px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 transition"
+                    (click)="view(customerUserDetails.user.id)">
+                    View Logs
+                  </button> -->
+                </div>
+                                
+                         
+
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+
+            </ng-container>
+
+        </tbody>
+
+    </table>
+   
+
+</div>
+<div class="flex items-center justify-center bg-gray-100 p-8 rounded-md px-4">
+     <button 
+    (click)="prevPage()" 
+    [disabled]="pageNo === 0"
+    class="mx-6 px-4 py-2 bg-gray-300 rounded disabled:opacity-50">
+    Previous
+</button>
+
+<span class="text-sm mx-3">
+  Page {{ pageNo + 1 }}
+</span>
+
+<button 
+    (click)="nextPage()" 
+    [disabled]="usersList.length < 25"
+    class="mx-6 px-4 py-2 bg-gray-300 text-white rounded disabled:opacity-50">
+    Next
+</button>
+</div>

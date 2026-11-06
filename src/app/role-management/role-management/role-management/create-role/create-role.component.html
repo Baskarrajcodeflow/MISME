@@ -1,0 +1,264 @@
+<div class="relative min-h-screen bg-[#FAF9F6] font-sans overflow-hidden p-4 sm:p-8">
+  
+  <!-- Ambient Background (Warm Tones) -->
+  <div class="absolute inset-0 pointer-events-none z-0">
+    <div class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-amber-500/10 rounded-full mix-blend-multiply filter blur-[120px]"></div>
+    <div class="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-[#3B1E0B]/5 rounded-full mix-blend-multiply filter blur-[120px]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#78350f_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.03]"></div>
+  </div>
+
+  <div class="relative z-10 max-w-6xl mx-auto">
+    
+    <!-- Page Header & Breadcrumb -->
+    <div class="mb-8">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="flex items-center space-x-2 text-sm font-medium text-slate-500">
+          <li><a class="text-amber-600 hover:text-amber-700 transition-colors" href="javascript:;">Role Management</a></li>
+          <li class="text-slate-400">/</li>
+          <li class="text-[#3B1E0B] font-semibold" aria-current="page">Create</li>
+        </ol>
+      </nav>
+      <h1 class="text-3xl font-bold text-[#3B1E0B] tracking-tight">Create Roles</h1>
+      <p class="mt-1 text-sm text-slate-500 font-medium">Define a new role and configure granular permissions.</p>
+    </div>
+
+    <!-- Main Form Card -->
+    <div class="bg-white rounded-3xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.05)] border border-amber-100 overflow-hidden">
+      
+      <addRoleForm [formGroup]="addRoleForm">
+        
+        <div class="p-8 space-y-10">
+
+          <!-- ================= ROLE DETAILS ================= -->
+          <section formGroupName="roleInfo">
+            <div class="mb-6 flex items-center gap-3 border-b border-amber-100/60 pb-4">
+              <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-[#3B1E0B]">Role Details</h2>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">Basic identification for the new role.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#FAF9F6] p-6 rounded-2xl border border-amber-100/50">
+              
+              <!-- Role Name -->
+              <div class="flex flex-col space-y-1.5">
+                <label for="roleName" class="text-[13px] font-semibold text-[#3B1E0B] tracking-wide ml-0.5">
+                  Role Name <span class="text-rose-500">*</span>
+                </label>
+                <input 
+                  id="roleName" 
+                  type="text" 
+                  formControlName="roleName" 
+                  placeholder="e.g. Teller Supervisor"
+                  class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-[#3B1E0B] placeholder-slate-400 text-sm transition-all focus:outline-none focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500"
+                  [ngClass]="{'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20': addRoleForm.get('roleName')?.touched && addRoleForm.get('roleName')?.invalid}"
+                />
+                <div *ngIf="addRoleForm.get('roleName')?.touched && addRoleForm.get('roleName')?.hasError('required')" class="text-rose-500 text-xs font-semibold mt-1">
+                  Role Name is required.
+                </div>
+              </div>
+
+              <!-- Role Description -->
+              <div class="flex flex-col space-y-1.5">
+                <label for="roleDesc" class="text-[13px] font-semibold text-[#3B1E0B] tracking-wide ml-0.5">
+                  Role Description <span class="text-rose-500">*</span>
+                </label>
+                <input 
+                  id="roleDesc" 
+                  type="text" 
+                  formControlName="roleDesc" 
+                  placeholder="Brief description of responsibilities"
+                  class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-[#3B1E0B] placeholder-slate-400 text-sm transition-all focus:outline-none focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500"
+                  [ngClass]="{'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20': addRoleForm.get('roleDesc')?.touched && addRoleForm.get('roleDesc')?.invalid}"
+                />
+                <div *ngIf="addRoleForm.get('roleDesc')?.touched && addRoleForm.get('roleDesc')?.hasError('required')" class="text-rose-500 text-xs font-semibold mt-1">
+                  Description is required.
+                </div>
+              </div>
+
+              <!-- Branch -->
+              <div class="flex flex-col space-y-1.5">
+                <label for="branch" class="text-[13px] font-semibold text-[#3B1E0B] tracking-wide ml-0.5">
+                  Branch <span class="text-rose-500">*</span>
+                </label>
+                <div class="relative">
+                  <select 
+                    formControlName="branch" 
+                    id="branch"
+                    (change)="onSelectBranch($event)"
+                    class="w-full appearance-none px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-[#3B1E0B] text-sm focus:outline-none focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 cursor-pointer transition-all"
+                    [ngClass]="{'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20': addRoleForm.get('branch')?.touched && addRoleForm.get('branch')?.invalid}"
+                  >
+                    <option value="">Select a branch</option>
+                    <option *ngFor="let branch of branches" [value]="branch.id">{{ branch?.name }}</option>
+                  </select>
+                  <svg class="pointer-events-none absolute right-3.5 top-3.5 h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+                <div *ngIf="addRoleForm.get('branch')?.touched && addRoleForm.get('branch')?.hasError('required')" class="text-rose-500 text-xs font-semibold mt-1">
+                  Branch is required.
+                </div>
+              </div>
+
+              <!-- Department -->
+              <div class="flex flex-col space-y-1.5">
+                <label for="department" class="text-[13px] font-semibold text-[#3B1E0B] tracking-wide ml-0.5">
+                  Department <span class="text-rose-500">*</span>
+                </label>
+                <div class="relative">
+                  <select 
+                    formControlName="department" 
+                    id="department"
+                    class="w-full appearance-none px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-[#3B1E0B] text-sm focus:outline-none focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 cursor-pointer transition-all"
+                    [ngClass]="{'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20': addRoleForm.get('department')?.touched && addRoleForm.get('department')?.invalid}"
+                  >
+                    <option value="">Select a department</option>
+                    <option *ngFor="let department of departments" [value]="department.id">{{ department.name }}</option>
+                  </select>
+                  <svg class="pointer-events-none absolute right-3.5 top-3.5 h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+                <div *ngIf="addRoleForm.get('department')?.touched && addRoleForm.get('department')?.hasError('required')" class="text-rose-500 text-xs font-semibold mt-1">
+                  Department is required.
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================= PERMISSIONS MATRIX ================= -->
+          <section>
+            <div class="mb-6 flex items-center gap-3 border-b border-amber-100/60 pb-4">
+              <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-[#3B1E0B]">Permissions Matrix</h2>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">Grant granular access to system components and subcomponents.</p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-amber-100/50 overflow-hidden bg-[#FAF9F6]">
+              <div class="overflow-x-auto">
+                <table class="w-full whitespace-nowrap text-sm">
+                  <thead>
+                    <tr class="bg-[#3B1E0B] border-b border-[#2d1608]">
+                      <th scope="col" class="px-6 py-4 text-left text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">Menu Component</th>
+                      <th scope="col" class="px-4 py-4 text-center text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">#</th>
+                      <th scope="col" class="px-4 py-4 text-center text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">Select All</th>
+                      <th scope="col" class="px-4 py-4 text-center text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">Create</th>
+                      <th scope="col" class="px-4 py-4 text-center text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">View</th>
+                      <th scope="col" class="px-4 py-4 text-center text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">Update</th>
+                      <th scope="col" class="px-4 py-4 text-center text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">Delete</th>
+                      <th scope="col" class="px-4 py-4 text-center text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">Authorize</th>
+                      <th scope="col" class="px-4 py-4 text-center text-[11px] font-bold text-amber-50/80 uppercase tracking-wider">Active</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-amber-100/40">
+                    
+                    <ng-container *ngFor="let mainComponent of mainComponents">
+                      
+                      <!-- Main Component Row -->
+                      <tr class="bg-white hover:bg-amber-50/30 transition-colors duration-200">
+                        <td class="px-6 py-4 font-bold text-[#3B1E0B]">{{ mainComponent.componentName }}</td>
+                        <td class="px-4 py-4 text-center"></td>
+                        <td class="px-4 py-4 text-center">
+                          <input type="checkbox" (change)="onCheckAll(mainComponent, $event)"
+                            class="w-4 h-4 text-amber-600 bg-white border-slate-300 rounded focus:ring-amber-500 cursor-pointer">
+                        </td>
+                        <td colspan="6" class="px-4 py-4 text-center"></td>
+                      </tr>
+
+                      <!-- Sub Components (Expanded) -->
+                      <ng-container *ngIf="mainComponent.isChecked">
+                        <tr *ngFor="let subComponent of components[mainComponent.id]" class="bg-[#FAF9F6] hover:bg-amber-50/50 transition-colors duration-200">
+                          <td class="px-6 py-3 text-slate-600 font-medium">
+                            <div class="flex items-center gap-2 pl-4">
+                              <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                              {{ subComponent.subComponentName }}
+                            </div>
+                          </td>
+                          <td class="px-4 py-3 text-center"></td>
+                          <td class="px-4 py-3 text-center">
+                            <input type="checkbox" 
+                              class="w-4 h-4 text-amber-600 bg-white border-slate-300 rounded focus:ring-amber-500 cursor-pointer" 
+                              [checked]="subComponent.create && subComponent.read && subComponent.update && subComponent.delete && subComponent.authorize && subComponent.active" 
+                              (change)="onCheckingAllCheckbox($event, subComponent)">
+                          </td>
+                          <td class="px-4 py-3 text-center">
+                            <input type="checkbox"
+                              class="w-4 h-4 text-amber-600 bg-white border-slate-300 rounded focus:ring-amber-500 cursor-pointer" 
+                              [checked]="subComponent.create"  
+                              (change)="onCheckingCreate($event,subComponent)">
+                          </td>
+                          <td class="px-4 py-3 text-center">
+                            <input type="checkbox"
+                              class="w-4 h-4 text-amber-600 bg-white border-slate-300 rounded focus:ring-amber-500 cursor-pointer" 
+                              [checked]="subComponent.read" 
+                              (change)="onCheckingView($event,subComponent)">
+                          </td>
+                          <td class="px-4 py-3 text-center">
+                            <input type="checkbox" 
+                              class="w-4 h-4 text-amber-600 bg-white border-slate-300 rounded focus:ring-amber-500 cursor-pointer" 
+                              [checked]="subComponent.update" 
+                              (change)="onCheckingUpdate($event,subComponent)">
+                          </td>
+                          <td class="px-4 py-3 text-center">
+                            <input type="checkbox"
+                              class="w-4 h-4 text-amber-600 bg-white border-slate-300 rounded focus:ring-amber-500 cursor-pointer"  
+                              [checked]="subComponent.delete" 
+                              (change)="onCheckingDelete($event,subComponent)">
+                          </td>
+                          <td class="px-4 py-3 text-center">
+                            <input type="checkbox"
+                              class="w-4 h-4 text-amber-600 bg-white border-slate-300 rounded focus:ring-amber-500 cursor-pointer" 
+                              [checked]="subComponent.authorize"  
+                              (change)="onCheckingAuthorize($event,subComponent)">
+                          </td>
+                          <td class="px-4 py-3 text-center">
+                            <input type="checkbox"
+                              class="w-4 h-4 text-amber-600 bg-white border-slate-300 rounded focus:ring-amber-500 cursor-pointer" 
+                              [checked]="subComponent.active"  
+                              (change)="onCheckingActive($event,subComponent)">
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-container>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Actions Footer -->
+        <div class="px-8 py-6 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-end gap-3">
+          <button 
+            type="button" 
+            (click)="resetForm()"
+            class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold text-sm transition-all duration-300 hover:bg-slate-50 active:scale-[0.98]"
+          >
+            Reset
+          </button>
+          <button 
+            type="button" 
+            (click)="submit()"
+            class="w-full sm:w-auto px-8 py-2.5 rounded-xl bg-[#F59E0B] text-white font-bold text-sm shadow-[0_4px_14px_rgba(245,158,11,0.3)] transition-all duration-300 hover:bg-[#D97706] hover:-translate-y-0.5 active:scale-[0.98]"
+          >
+            Submit Role
+          </button>
+        </div>
+
+      </addRoleForm>
+      
+    </div>
+
+  </div>
+
+  <div *ngIf="isLoading">
+    <app-loader></app-loader>
+  </div>
+</div>

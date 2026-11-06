@@ -1,0 +1,99 @@
+<div class="flex justify-center items-center">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 w-full max-w-3xl">
+ <div class="">
+     <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h3 class="text-lg font-semibold text-gray-800">
+      Financial Period Setup
+    </h3>
+  </div>
+
+  <!-- Form -->
+  <div class="grid grid-cols-2 gap-6">
+
+    <!-- FROM -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        From
+      </label>
+
+      <div class="flex gap-2">
+
+        <select
+          [(ngModel)]="financialPeriod.fromMonth"
+          class="w-1/2 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+
+          <option *ngFor="let m of months" [value]="m.value">
+            {{m.name}}
+          </option>
+
+        </select>
+
+        <select
+          [(ngModel)]="financialPeriod.fromDay"
+          class="w-1/2 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+
+          <option *ngFor="let d of [].constructor(getDays(financialPeriod.fromMonth)); let i=index"
+                  [value]="i+1">
+            {{i+1}}
+          </option>
+
+        </select>
+
+      </div>
+    </div>
+
+    <!-- TO -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        To
+      </label>
+
+      <div class="flex gap-2">
+
+        <select
+          [(ngModel)]="financialPeriod.toMonth"
+          class="w-1/2 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+
+          <option *ngFor="let m of months" [value]="m.value">
+            {{m.name}}
+          </option>
+
+        </select>
+
+        <select
+          [(ngModel)]="financialPeriod.toDay"
+          class="w-1/2 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+
+          <option *ngFor="let d of [].constructor(getDays(financialPeriod.toMonth)); let i=index"
+                  [value]="i+1">
+            {{i+1}}
+          </option>
+
+        </select>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Buttons -->
+  <div class="flex justify-between mt-8 gap-3">
+ <div class="text-md text-gray-700">
+    Current Financial Year Period: <span class="font-semibold text-gray-900">Jan 01 – Dec 31</span>
+  </div>
+
+
+    <button
+      class="px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 shadow-sm">
+      Save
+    </button>
+
+  </div>
+
+  
+ </div>
+
+</div>
+
+</div>

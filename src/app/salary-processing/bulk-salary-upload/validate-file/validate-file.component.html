@@ -1,0 +1,47 @@
+<div class="csv-uploader">
+    <h2>CSV Uploader</h2>
+    
+    <input type="file" accept=".csv" (change)="onFileSelected($event)" />
+  
+    <div *ngIf="isProcessing" class="progress-section">
+      <p>Processing: {{ processedLines }} lines processed.</p>
+      <p>Errors Encountered: {{ errorCount }}</p>
+      <div class="progress-bar">
+        <div 
+          class="progress-fill" 
+          [style.width.%]="(processedLines / (processedLines + 1)) * 100">
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="isUploadComplete" class="summary-section">
+      <h3>Processing Complete</h3>
+      <p>Total Lines Processed: {{ processedLines }}</p>
+      <p>Total Errors: {{ errorCount }}</p>
+  
+      <button 
+        [disabled]="validData.length === 0" 
+        (click)="sendDataToBackend()">
+        Send Valid Data to Backend
+      </button>
+  
+      <div *ngIf="errors.length > 0" class="error-list">
+        <h4>Errors:</h4>
+        <ul>
+          <li *ngFor="let error of errors">
+            Line {{ error.lineNumber }}: {{ error.errors.join(', ') }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<div class="mt-[10px]">
+  <button 
+  (click)="uploadFile()"
+  class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+  style="background-color: #0a365a"
+  >
+    Upload
+  </button>
+</div>

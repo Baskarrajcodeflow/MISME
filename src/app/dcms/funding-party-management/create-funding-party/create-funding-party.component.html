@@ -1,0 +1,150 @@
+<div class="container">
+    <div class="page-header"></div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card shadow-lg rounded-lg p-6 bg-white">
+                <div class="card-body">
+                    <div class="mb-6">
+                        <h3 class="page-title text-2xl font-bold text-[#0a365a]">
+                            Mark As Funding Party
+                        </h3>
+                        <p class="text-gray-500 text-sm mt-1">
+                            Search for a corporate.
+                        </p>
+                    </div>
+                    <form [formGroup]="backOfficeForm" (ngSubmit)="onSearch()">
+                        <div class="flex flex-col sm:flex-row gap-3 items-end">
+                            <div class="w-full sm:w-2/3 lg:w-1/2">
+                                <label class="block mb-2 text-sm font-semibold text-gray-700">
+                                    Search Corporate
+                                </label>
+                                <div class="relative">
+                                    <input type="text" formControlName="searchText"
+                                        placeholder="Search by name, phone number or email" class="w-full border border-gray-300 rounded-lg pl-4 pr-12 py-3 text-sm
+                                           focus:outline-none focus:ring-2 focus:ring-[#0a365a]
+                                           focus:border-[#0a365a]" />
+                                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2
+                                           w-9 h-9 flex items-center justify-center
+                                           bg-[#0a365a] hover:bg-[#082d4a]
+                                           text-white rounded-md transition duration-200" title="Search">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M21 21l-4.35-4.35m2.1-5.4a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-800">
+                                    Search Results
+                                </h4>
+                                <p class="text-sm text-gray-500 mt-1" *ngIf="filteredFundingParties?.length">
+                                    {{ result.length }} result(s) found
+                                </p>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto border border-gray-200 rounded-xl shadow-sm" *ngIf="result?.length">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-gray-50 border-b border-gray-200">
+                                    <tr>
+                                        <th class="px-5 py-4 font-semibold text-gray-700">
+                                            Name
+                                        </th>
+                                        <th class="px-5 py-4 font-semibold text-gray-700">
+                                            Phone Number
+                                        </th>
+                                        <th class="px-5 py-4 font-semibold text-gray-700">
+                                            Email
+                                        </th>
+                                        <th class="px-5 py-4 font-semibold text-gray-700">
+                                            Status
+                                        </th>
+                                        <th class="px-5 py-4 font-semibold text-gray-700 text-center">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr *ngFor="let corporate of result"
+                                        class="hover:bg-gray-50 transition duration-150">
+                                        <td class="px-5 py-4">
+                                            <div class="font-semibold text-gray-800">
+                                                {{ corporate.firstName }}
+                                                {{ corporate.lastName }}
+                                            </div>
+                                        </td>
+                                        <td class="px-5 py-4 text-gray-600">
+                                            {{ corporate?.phone || 'Nil' }}
+                                        </td>
+                                        <td class="px-5 py-4 text-gray-600">
+                                            {{ corporate.email || 'Nil' }}
+                                        </td>
+
+                                        <td class="px-5 py-4">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full
+                                                   text-xs font-medium" [ngClass]="corporate.isFundingParty
+                                                ? 'bg-green-100 text-green-700'
+                                                : 'bg-gray-100 text-gray-600'">
+                                                <span class="w-1.5 h-1.5 rounded-full mr-2" [ngClass]="corporate.isFundingParty
+                                                    ? 'bg-green-500'
+                                                    : 'bg-gray-400'">
+                                                </span>
+                                                {{ corporate.isFundingParty
+                                                ? 'Funding Party'
+                                                : 'Not Registered' }}
+                                            </span>
+                                        </td>
+                                        <td class="px-5 py-4 text-center">
+                                            <button *ngIf="!corporate.isFundingParty" type="button"
+                                                (click)="onMarkAsFundingParty(corporate?.id)" class="inline-flex items-center justify-center
+                                                   bg-[#0a365a] hover:bg-[#082d4a]
+                                                   text-white text-sm font-medium
+                                                   px-4 py-2 rounded-lg
+                                                   shadow-sm hover:shadow
+                                                   transition duration-200">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 4v16m8-8H4" />
+                                                </svg>
+                                                Mark as Funding Party
+                                            </button>
+                                            <span *ngIf="corporate.isFundingParty"
+                                                class="text-green-600 text-sm font-medium">
+                                                Already Registered
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div *ngIf="searchPerformed && !result.length"
+                            class="border border-gray-200 rounded-xl py-12 text-center bg-gray-50">
+                            <div class="mx-auto w-12 h-12 flex items-center justify-center
+                                   rounded-full bg-gray-100 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-4.35-4.35m2.1-5.4a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z" />
+                                </svg>
+                            </div>
+                            <p class="text-gray-600 font-medium">
+                                No corporates found
+                            </p>
+                            <p class="text-gray-400 text-sm mt-1">
+                                Try searching with a different name, phone number or email.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="card">
+    <div class="card-body">
+      <div class="w-full md:w-10/12">
+        <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+  
+          <div class="mb-4">
+            <div class="w-full">
+              <div class="form-group">
+                <label for="inputMiddleName" class="block text-sm font-medium text-gray-700">Source</label>
+                <select class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" formControlName="source">
+                  <option value="https://www.treasury.gov">Treasury</option>
+                  <option value="https://www.treasury.gov(ofac)">Treasury OFAC</option>
+                  <option value="https://www.un.org">UN Organization</option>
+                  <option value="https://www.mfa.gov.lv">MFA Government</option>
+                  <option value="https://www.gov.uk">GOV UK</option>
+                  <option value="https://www.mfsa.mt">MFSA</option>
+                  <option value="http://www.fintraca.gov.af">FINTRACA</option>
+                  <option value="Fintraca Individual Blacklist">FINTRACA Individual Blacklist</option>
+                  <option value="Fintraca Corporate Blacklist">FINTRACA Corporate Blacklist</option>
+                </select>
+              </div>
+            </div>
+          </div>
+  
+          <div class="mb-4">
+            <div class="w-full">
+              <div class="form-group">
+                <label for="inputFirstName" class="block text-sm font-medium text-gray-700">Select SDN file</label>
+                <input accept="image/*" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="file" (change)="onFileSelected($event)" />
+              </div>
+            </div>
+          </div>
+  
+          <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

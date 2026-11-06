@@ -1,0 +1,15 @@
+.table-header, .table-data {
+    text-align: center;
+    border: 1px solid #dee2e6;
+    font-size: 14px;
+    width: 250px; /* Adjust this value as needed */
+}
+
+.table-header {
+    background-color: rgb(10, 54, 90);
+    color: white;
+}
+
+.table{
+    width: max-content;
+}

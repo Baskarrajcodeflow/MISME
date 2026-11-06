@@ -1,0 +1,390 @@
+<div class="container mx-auto p-4" *ngIf="privilege?.readPrivelege">
+    <div *ngIf="isLoading" class="spinner-container">
+        <div class="spinner"></div> <!-- Your spinner element -->
+    </div>
+    <!-- <select *ngIf="!isLoading">
+        <option *ngFor="let acc of accNo" [value]="acc">{{ acc }}</option>
+    </select> -->
+    <form [formGroup]="ListForm">
+        <div>
+            <div class="flex gap-4 mt-4">
+                <!-- <form [formGroup]="searchForm"> -->
+                <!-- <div class="w-1/2 relative">
+                    <div class="mb-4">
+                        <label class="block text-gray-700" style="font-size: 14px">Select Head Account</label>
+                        <select [formControl]="usertype" (change)="onHeadAccChange($event)"
+                            class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option></option>
+                            <option *ngFor="let a of headDataDef" [value]="a?.id">
+                                {{a?.accountDescription}}|{{a?.accountNo}}|{{a?.runningBalance}}
+                            </option>
+                        </select>
+                    </div>
+                </div> -->
+                <ng-container>
+                    <div class="w-1/2 relative">
+                        <div class="mb-4">
+                            <label class="block text-gray-700" style="font-size: 14px">Select Category</label>
+                            <select [formControl]="category" (change)="onChangeCategory($event)"
+                                class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>----</option>
+                                <option value="LIABILITY">LIABILITY</option>
+                                <option value="EXPENSE">EXPENSE</option>
+                                <option value="INCOME">INCOME</option>
+                                <option value="ASSET">ASSET</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-1/2" *ngIf="showMainFilter">
+                        <div class="mb-4">
+                            <label class="block text-gray-700" style="font-size: 14px">Select Filter Type</label>
+                            <select formControlName="filterType" (change)="onChangeFilterType($event)"
+                                class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option disabled>----</option>
+                                <option value="ACC_NAME">Account name</option>
+                                <option value="ACC_NO">Account no</option>
+                                <option value="HEAD_ACC_NO">Head account no</option>
+                                <option value="SUB_HEAD_ACC_NO">Sub account no</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-1/2" *ngIf="showTypeAccNo">
+                        <div class="mb-4">
+                            <label class="block text-gray-700" style="font-size: 14px">Select Account NO</label>
+                            <select id="country" (change)="onchangeAccNo($event)"
+                                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                                <option></option>
+                                <option *ngFor="let a of accNo" [value]="a?.accountNo">
+                                    {{a?.accountNo}}|{{a?.accountDescription}}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- <div class="flex items-center gap-2 justify-end">
+                        <mat-icon (click)="prevPage('accNo')" *ngIf="accNoPage > 0" class="cursor-pointer">
+                            chevron_left
+                        </mat-icon>
+                        <mat-icon (click)="nextPage('accNo')" *ngIf="accNoResultLength > 100"
+                            class="cursor-pointer text-blue-500">
+                            chevron_right
+                        </mat-icon>
+                    </div> -->
+                    </div>
+                    <div class="w-1/2" *ngIf="showTypeHeadAccNo">
+                        <div class="mb-4">
+                            <label class="block text-gray-700" style="font-size: 14px">Select Head Account NO</label>
+                            <select id="country" (change)="onchangeHeadAccNo($event)"
+                                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                                <option></option>
+                                <option *ngFor="let a of headAccNo" [value]="a?.accountNo">
+                                    {{a?.accountNo}}|{{a?.accountDescription}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2 justify-end">
+                            <mat-icon (click)="prevPage('headAccNo')" *ngIf="headAccNoPage > 0" class="cursor-pointer">
+                                chevron_left hno
+                            </mat-icon>
+                            <mat-icon (click)="nextPage('headAccNo')"
+                                *ngIf="(HeadAccNoResultLength > 100) && (headAccNoPage < HeadAccNoTotalPages)"
+                                class="cursor-pointer text-blue-500">
+                                chevron_right hno
+                            </mat-icon>
+                        </div>
+                    </div>
+                    <div class="w-1/2" *ngIf="showTypeSubAccNo">
+                        <div class="mb-4">
+                            <label class="block text-gray-700" style="font-size: 14px">Select Sub Account
+                                NO</label>
+                            <select id="country" (change)="onchangeSubAccNo($event)"
+                                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                                <option></option>
+                                <option *ngFor="let a of subAccNo" [value]="a?.accountNo">
+                                    {{a?.accountNo}}|{{a?.accountDescription}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2 justify-end">
+                            <mat-icon (click)="prevPage('subAccNo')" *ngIf="subAccNoPage > 0" class="cursor-pointer">
+                                chevron_left sno
+                            </mat-icon>
+                            <mat-icon (click)="nextPage('subAccNo')"
+                                *ngIf="(subAccNoResultLength > 100) && (subAccNoPage < subAccNoTotalpages)"
+                                class="cursor-pointer text-blue-500">
+                                chevron_right sno
+                            </mat-icon>
+                        </div>
+                    </div>
+                    <!-- no need till 139 -->
+                    <div class="w-1/2 relative" *ngIf="showCategoryText">
+                        <div class="mb-4">
+                            <label class="block text-gray-700" style="font-size: 14px">Search</label>
+                            <div class="relative">
+                                <input type="text" [formControl]="searchCategoryText"
+                                    class="mt-1 p-2 border rounded w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Search...">
+                                <i class="fa fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                                    (click)="onSearchCategoryText()"></i>
+                            </div>
+                        </div>
+                        <!-- <div class="flex items-center gap-2 justify-end">
+                        <mat-icon (click)="prevPage('category')" *ngIf="CategoryTextPage > 0" class="cursor-pointer">
+                            chevron_left
+                        </mat-icon>
+                        <mat-icon (click)="nextPage('category')"
+                            *ngIf="searchCategoryTextLength > 100 && CategoryTextPage < CategoryTextTotalPage"
+                            class="cursor-pointer text-blue-500">
+                            chevron_right
+                        </mat-icon>
+                    </div> -->
+                    </div>
+                    <div class="w-1/2 relative" *ngIf="showTypeInput">
+                        <div class="mb-4">
+                            <label class="block text-gray-700" style="font-size: 14px">Search</label>
+                            <div class="relative">
+                                <input type="text" [formControl]="searchText"
+                                    class="mt-1 p-2 border rounded w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Search...">
+                                <i class="fa fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                                    (click)="onSearchAccName()"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 justify-end">
+                            <mat-icon (click)="prevPage('accName')" *ngIf="accNamePage > 0" class="cursor-pointer">
+                                chevron_left an
+                            </mat-icon>
+                            <mat-icon (click)="nextPage('accName')"
+                                *ngIf="(searchaccNameLength > 100) && (accNamePage < accNameTotalPage)"
+                                class="cursor-pointer text-blue-500">
+                                chevron_right an
+                            </mat-icon>
+                        </div>
+                    </div>
+                    <div class="mt-[30px]">
+                        <button mat-icon-button [matMenuTriggerFor]="downloadMenu">
+                            <mat-icon>download</mat-icon>
+                        </button>
+
+                        <!-- The dropdown menu -->
+                        <mat-menu #downloadMenu="matMenu">
+                            <button mat-menu-item (click)="makePdf()">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                                <span>Download as PDF</span>
+                            </button>
+                            <button mat-menu-item (click)="exportToExcel()">
+                                <mat-icon>table_view</mat-icon>
+                                <span>Download as Excel</span>
+                            </button>
+                            <button mat-menu-item (click)="exportToCSV()">
+                                <mat-icon>table_view</mat-icon>
+                                <span>Download as CSV</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </form>
+    <!-- <div class="overflow-x-auto w-full mt-8"> -->
+    <div class="table-container" *ngIf="showTable">
+        <br>
+        <table class="min-w-full table-fixed border-collapse text-sm">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-2 py-2 text-left whitespace-nowrap">Account Number</th>
+                    <th class="px-2 py-2 text-left whitespace-nowrap">Name</th>
+                    <th class="px-2 py-2 text-left whitespace-nowrap">Account Description</th>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Head Account No</th>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Sub Account No</th>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Type</th>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Running Balance</th>
+                    <th *ngIf="subAccNoResult" class="px-2 py-2 text-center whitespace-nowrap">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- (click)="onClickGetLeafData(item)" -->
+                <tr *ngFor="let item of allData; let i = index" class="hover:bg-gray-100">
+                    <td class="border px-2 py-1 break-words text-sm">{{ item.accountNo }}</td>
+                    <td class="border px-2 py-1 break-words text-sm">{{ item.firstName }}</td>
+                    <td class="border px-2 py-1 break-words text-sm">{{ item.accountDescription }}</td>
+                    <td class="border px-1 py-1 text-center text-sm">{{ item.headAccountNo }}</td>
+                    <td class="border px-1 py-1 text-center text-sm">{{ item.subAccountNo }}</td>
+                    <td class="border px-1 py-1 text-center text-sm">{{ item.type }}</td>
+                    <td class="px-1 py-2 text-center whitespace-nowrap">{{ item.runningBalance }}
+                    </td>
+                    <td *ngIf="subAccNoResult" class="border px-2 py-1 text-center">
+                        <button type="button" (click)="onClickViewDetails(item)"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            style="background-color: #0a365a;">
+                            <i class="fas fa-eye text-xs"></i> View
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- withoutFilter table -->
+    <!-- <div class="table-container" *ngIf="showLeafTable">
+        <table class="min-w-full table-fixed border-collapse text-sm">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Full Name</th>
+                    <th class="px-2 py-2 text-left whitespace-nowrap">Account Number</th>
+                    <th class="px-2 py-2 text-left whitespace-nowrap">Account Description</th>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Head Account No</th>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Sub Account No</th>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Type</th>
+                    <th class="px-1 py-2 text-center whitespace-nowrap">Running Balance</th>
+                    <th class="px-2 py-2 text-center whitespace-nowrap">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of allLeafData; let i = index" class="hover:bg-gray-100">
+                    <td class="border px-2 py-1 break-words text-sm"> {{ item.firstName }} {{ item.lastName }}</td>
+                    <td class="border px-2 py-1 break-words text-sm">{{ item.accountNo }}</td>
+                    <td class="border px-2 py-1 break-words text-sm">{{ item.accountDescription }}</td>
+                    <td class="border px-1 py-1 text-center text-sm">{{ item.headAccountNo }}</td>
+                    <td class="border px-1 py-1 text-center text-sm">{{ item.subAccountNo }}</td>
+                    <td class="border px-1 py-1 text-center text-sm">{{ item.type }}</td>
+                    <td class="border px-1 py-1 text-center text-sm">{{ item.runningBalance }}
+                    </td>
+                    <td class="border px-2 py-1 text-center">
+                        <button type="button" (click)="onClickViewDetails(item)"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            style="background-color: #0a365a;">
+                            <i class="fas fa-eye text-xs"></i> View
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div> -->
+</div>
+<div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div
+        class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto relative animate-fade-in">
+        <!-- Fixed Button in Top-Right of Modal -->
+        <button (click)="viewTransactionHistory()"
+            class="absolute top-4 right-4 text-blue-600 hover:text-blue-800 flex items-center text-sm z-10"
+            title="View Transaction History">
+            <i class="fas fa-eye mr-1"></i> View Transaction History
+        </button>
+        <br>
+        <br>
+        <div class="trans-table-container" *ngIf="showTransResult">
+            <!-- Filters Section -->
+            <div *ngIf="showTransResult" class="mb-4 flex items-end gap-3">
+                <div>
+                    <label for="fromDate" class="block text-xs text-gray-600">From Date</label>
+                    <input id="fromDate" type="date" [(ngModel)]="fromDate"
+                        class="border border-gray-300 rounded-md px-2 py-1 text-sm w-full">
+                </div>
+                <div>
+                    <label for="toDate" class="block text-xs text-gray-600">To Date</label>
+                    <input id="toDate" type="date" [(ngModel)]="toDate"
+                        class="border border-gray-300 rounded-md px-2 py-1 text-sm w-full">
+                </div>
+                <div class="mt-5">
+                    <button (click)="filterTransactions()" title="Filter"
+                        class="text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md shadow flex items-center">
+                        <i class="fas fa-search mr-1"></i> Search
+                    </button>
+                </div>
+                <div class="mt-[30px]">
+                    <button mat-icon-button [matMenuTriggerFor]="downloadMenu">
+                        <mat-icon>download</mat-icon>
+                    </button>
+
+                    <!-- The dropdown menu -->
+                    <mat-menu #downloadMenu="matMenu">
+                        <button mat-menu-item (click)="makePdfTrans()">
+                            <mat-icon>picture_as_pdf</mat-icon>
+                            <span>Download as PDF</span>
+                        </button>
+                        <button mat-menu-item (click)="exportToExcelTrans()">
+                            <mat-icon>table_view</mat-icon>
+                            <span>Download as Excel</span>
+                        </button>
+                        <button mat-menu-item (click)="exportToCSVTrans()">
+                            <mat-icon>table_view</mat-icon>
+                            <span>Download as CSV</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+            <table #transactionTable class="trans-table min-w-full table-fixed border-collapse text-sm">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-2 py-2 text-left whitespace-nowrap">Cr Amount</th>
+                        <th class="px-2 py-2 text-left whitespace-nowrap">Dr Amount</th>
+                        <th class="px-2 py-2 text-left whitespace-nowrap">Date</th>
+                        <th class="px-2 py-2 text-left whitespace-nowrap">Payment Method</th>
+                        <th class="px-2 py-2 text-left whitespace-nowrap">Service Name</th>
+                        <th class="px-2 py-2 text-left whitespace-nowrap">Transaction No</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of allTransResult" class="hover:bg-gray-100">
+                        <td class="border px-2 py-1 text-sm">{{ item?.creditAmount }}</td>
+                        <td class="border px-2 py-1 text-sm">{{ item?.debitAmount }}</td>
+                        <td class="border px-2 py-1 text-sm">{{ item?.date }}</td>
+                        <td class="border px-2 py-1 text-sm">{{ item?.payMethod }}</td>
+                        <td class="border px-2 py-1 text-sm">{{ item?.serviceName }}</td>
+                        <td class="border px-2 py-1 text-sm">{{ item?.transNo }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Details</h2>
+        <div *ngIf="!detailResult?.userOrNot">
+            <div class="mb-4">
+                <span class="block text-gray-600 font-medium">First Name:</span>
+                <span class="text-gray-900">{{ detailResult.firstName || 'N/A' }}</span>
+            </div>
+        </div>
+        <div *ngIf="detailResult?.userOrNot">
+            <div class="flex flex-wrap gap-y-4">
+                <div class="w-1/2">
+                    <span class="block text-gray-600 font-medium">First Name:</span>
+                    <span class="text-gray-900">{{ detailResult.firstName || 'N/A' }}</span>
+                </div>
+                <div class="w-1/2">
+                    <span class="block text-gray-600 font-medium">Last Name:</span>
+                    <span class="text-gray-900">{{ detailResult.lastName || 'N/A' }}</span>
+                </div>
+                <div class="w-1/2">
+                    <span class="block text-gray-600 font-medium">Email:</span>
+                    <span class="text-gray-900">{{ detailResult.email || 'N/A' }}</span>
+                </div>
+                <div class="w-1/2">
+                    <span class="block text-gray-600 font-medium">Phone:</span>
+                    <span class="text-gray-900">{{ detailResult.phone || 'N/A' }}</span>
+                </div>
+                <div class="w-1/2">
+                    <span class="block text-gray-600 font-medium">Gender:</span>
+                    <span class="text-gray-900">{{ detailResult.gender || 'N/A' }}</span>
+                </div>
+                <div class="w-1/2">
+                    <span class="block text-gray-600 font-medium">Username:</span>
+                    <span class="text-gray-900">{{ detailResult.userName || 'N/A' }}</span>
+                </div>
+                <div class="w-1/2">
+                    <span class="block text-gray-600 font-medium">Account State:</span>
+                    <span class="text-gray-900">{{ detailResult.accState || 'N/A' }}</span>
+                </div>
+                <!-- Uncomment if needed
+                <div class="w-1/2">
+                    <span class="block text-gray-600 font-medium">User or Not:</span>
+                    <span class="text-gray-900">{{ detailResult.userOrNot ? 'Yes' : 'No' }}</span>
+                </div> -->
+            </div>
+
+        </div>
+        <div class="mt-8 text-right">
+            <button (click)="closeModal()"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                style="background-color: #0a365a;"> Close
+            </button>
+        </div>
+    </div>
+</div>

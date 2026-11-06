@@ -1,0 +1,146 @@
+<ng-container>
+    <div class="mt-[10px]">
+        <button mat-icon-button [matMenuTriggerFor]="downloadMenu">
+            <mat-icon>download</mat-icon>
+        </button>
+        <mat-menu #downloadMenu="matMenu">
+            <button mat-menu-item (click)="downloadJasperPDF()">
+                <mat-icon>picture_as_pdf</mat-icon>
+                <span>Download as PDF</span>
+            </button>
+            <button mat-menu-item (click)="downloadJasperExcel()">
+                <mat-icon>table_view</mat-icon>
+                <span>Download as Excel</span>
+            </button>
+            <button mat-menu-item (click)="downloadJasperCSV()">
+                <mat-icon>table_view</mat-icon>
+                <span>Download as CSV</span>
+            </button>
+        </mat-menu>
+    </div>
+</ng-container>
+
+<div class="mb-6">
+    <div class="bg-white rounded-xl shadow-md border border-gray-200 p-5">
+        <div class="flex flex-wrap items-center gap-4">
+            <div class="w-56">
+                <select (change)="onChangeSearchBy($event)"
+                    class="w-full h-11 px-4 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#f47a20] focus:border-[#f47a20]">
+                    <option value=""></option>
+                    <option value="STATUS">Status</option>
+                    <option value="RECEIVER_NAME">Receiver Name</option>
+                    <option value="MOB_NO">Mobile No</option>
+                </select>
+            </div>
+            <div class="w-56" *ngIf="showStatus">
+                <select [(ngModel)]="status" (change)="onChangeStatus($event)"
+                    class="w-full h-11 px-4 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#f47a20] focus:border-[#f47a20]">
+                    <option value="">Select Status</option>
+                    <option value="PENDING">PENDING</option>
+                    <option value="VERIFIED">VERIFIED</option>
+                    <option value="PAID">PAID</option>
+                    <option value="EXPIRED">EXPIRED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                </select>
+            </div>
+            <div class="w-56" *ngIf="showMobno">
+                <input type="text" [(ngModel)]="mobNo" placeholder="Mobile Number"
+                    class="w-full h-11 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f47a20] focus:border-[#f47a20]" />
+            </div>
+            <div class="w-56" *ngIf="showReceiverName">
+                <input type="text" [(ngModel)]="receiverName" placeholder="Receiver Name"
+                    class="w-full h-11 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f47a20] focus:border-[#f47a20]" />
+            </div>
+            <button *ngIf="showSearchButton" type="button" (click)="onClickSearch()"
+                class="h-11 w-40 bg-[#f47a20] hover:bg-[#e66b15] text-white rounded-lg font-medium transition">
+                Search
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<div class="mt-[10px]" *ngIf="agentSummaryReport">
+    <div class="max-w-6xl mx-auto bg-white p-8 shadow-lg border border-gray-200 print">
+        <div class="flex justify-between header-section">
+            <div class="w-1/3">
+                <img src="../../../assets/images/logo.png" alt="Bank Logo" class="mb-4 w-28 h-auto" />
+                <p class="text-sm text-gray-700">
+                    Afghan Besim Mobile Money Company,<br />
+                    Darulaman Road, Hajari Najari,<br />
+                    KABUL ,AFGHANISTAN
+                </p>
+            </div>
+            <div class="w-1/3 text-right">
+                <h2 class="text-xl -mt-[10px] font-semibold text-[#f47a20] text-left">
+                    Remittance Pay Details
+                </h2>
+                <!-- <p class="text-sm text-gray-700 text-left">
+                    <strong>Statement Period</strong>:
+                    {{ dateForm.controls['fromDate'].value }} to
+                    {{ dateForm.controls['toDate'].value }}
+                </p> -->
+                <p class="text-sm text-gray-700 text-left">
+                    <strong>Back Office User</strong>:
+                    {{ backOfficeUser }}
+                </p>
+            </div>
+        </div>
+        <div class="mt-8 overflow-x-auto table-section">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-[#f47a20] text-white text-sm">
+                        <th class="p-2 border border-gray-200 text-center">ID</th>
+                        <th class="p-2 border border-gray-200 text-center">Transaction No.</th>
+                        <th class="p-2 border border-gray-200 text-center">Token No.</th>
+                        <th class="p-2 border border-gray-200 text-center">Sender Wallet No.</th>
+                        <th class="p-2 border border-gray-200 text-center">Receiver Name</th>
+                        <th class="p-2 border border-gray-200 text-center">Receiver Mobile</th>
+                        <th class="p-2 border border-gray-200 text-center">Amount</th>
+                        <th class="p-2 border border-gray-200 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of paginatedData" class="text-sm text-gray-700">
+                        <td class="p-2 border border-gray-200 text-center">
+                            {{ item?.id ?? 'NIL' }}
+                        </td>
+                        <td class="p-2 border border-gray-200 text-center">
+                            {{ item?.transactionNo ?? 'NIL' }}
+                        </td>
+                        <td class="p-2 border border-gray-200 text-center">
+                            {{ item?.tokenNo ?? 'NIL' }}
+                        </td>
+                        <td class="p-2 border border-gray-200 text-center">
+                            {{ item?.senderWalletNo ?? 'NIL' }}
+                        </td>
+                        <td class="p-2 border border-gray-200 text-center">
+                            {{ item?.receiverName ?? 'NIL' }}
+                        </td>
+                        <td class="p-2 border border-gray-200 text-center">
+                            {{ item?.receiverMobile ?? 'NIL' }}
+                        </td>
+                        <td class="p-2 border border-gray-200 text-center">
+                            {{ item?.amount ?? 'NIL' }}
+                        </td>
+                        <td class="p-2 border border-gray-200 text-center">
+                            {{ item?.status ?? 'NIL' }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr class="border-t-1 border-black my-4" />
+            <div class="mt-4 flex justify-between items-center">
+                <button class="px-4 py-2 bg-gray-300 rounded" (click)="goToPage(currentPage - 1)"
+                    [disabled]="currentPage === 1">
+                    Previous
+                </button>
+                <p>Page {{ currentPage }} of {{ totalPages }}</p>
+                <button class="px-4 py-2 bg-gray-300 rounded" (click)="goToPage(currentPage + 1)"
+                    [disabled]="currentPage === totalPages">
+                    Next
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .bg-custom-blue {
+        background-color: rgb(0, 100, 162);
+      }
+      .bg-custom-orange {
+        background-color: rgb(244, 122, 32);
+      }
+    </style>
+  </head>
+  <body class="flex items-center justify-center min-h-screen bg-custom-blue">
+    <div
+      class="flex flex-col md:flex-row bg-white rounded-lg shadow-lg mx-4 md:mx-auto overflow-hidden"
+      style="max-width: 1000px; width: 1000px"
+    >
+      <!-- Left side with image -->
+      <div
+        class="md:w-1/2 bg-cover bg-center lt-md:hidden"
+        style="
+          background-image: url('../../../assets/images/MM_RK_Design_600x800PX.svg');
+          height: 650px;
+        "
+      ></div>
+      <!-- Right side with form -->
+      <div
+        class="w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center"
+        style="height: 650px"
+      >
+        <div class="w-full">
+          <div>
+            <div class="mb-3 text-center">
+              <img
+                src="../../../assets/images/logo.png"
+                alt="Logo"
+                class="mx-auto mb-4 w-28 h-auto"
+              />
+              <h2 class="text-2xl font-bold text-[rgb(0,100,162)]">Signup</h2>
+            </div>
+            <form #signupForm="ngForm">
+              <div class="mb-4">
+                <label class=" ">User Name</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  [(ngModel)]="username"
+                  type="tel"
+                  autocomplete="phone"
+                  pattern="[0-9]*"
+                  minlength="9"
+                  required
+                  class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <div
+                  *ngIf="username && username.length < 9"
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Invalid
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class=" ">Phone Number</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  [(ngModel)]="username"
+                  type="tel"
+                  autocomplete="phone"
+                  pattern="[0-9]*"
+                  minlength="9"
+                  required
+                  class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <div
+                  *ngIf="username && username.length < 9"
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Invalid
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class=" ">Tazkira Number</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  [(ngModel)]="username"
+                  type="tel"
+                  autocomplete="phone"
+                  pattern="[0-9]*"
+                  minlength="9"
+                  required
+                  class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <div
+                  *ngIf="username && username.length < 9"
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Invalid
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class=" ">Address</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  [(ngModel)]="username"
+                  type="tel"
+                  autocomplete="phone"
+                  pattern="[0-9]*"
+                  minlength="9"
+                  required
+                  class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <div
+                  *ngIf="username && username.length < 9"
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Invalid
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="password" class="">Password</label>
+                <input
+                  type="password"
+                  [(ngModel)]="password"
+                  id="password"
+                  class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                class="w-full py-3 bg-custom-orange hover:bg-orange-600 text-white font-bold rounded-lg transition duration-200"
+              >
+                Sign In
+              </button>
+            </form>
+            <div class="text-center mt-4">
+              <p>
+                Already a Member?
+                <a
+                  class="text-[rgb(0,100,162)] font-semibold hover:underline"
+                  (click)="invokeSwitchTo(contexts[0])"
+                  >Login Here</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

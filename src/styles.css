@@ -1,0 +1,32 @@
+@import '../node_modules/@ng-select/ng-select/themes/default.theme.css';
+/* Add application styles & imports to this file! */
+@import '../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;/* You can add global styles to this file, and also import other style files */
+
+  :root {
+    --header-footer-height: 122px;
+  }
+  
+
+
+ /*  @font-face {
+    font-family: 'MyCustomFont';
+    src: url('assets/Fonts/ENG/ebrima.ttf') format('truetype');
+         /* url('assets/Fonts/ENG/ebrimabd.ttf') format('.ttf'); //
+    font-weight: 200;
+    font-style: normal;
+  } */
+  ngx-extended-pdf-viewer #toolbarContainer, ngx-extended-pdf-viewer .findbar, ngx-extended-pdf-viewer .secondaryToolbar, ngx-extended-pdf-viewer .editorParamsToolbar {
+    position: relative;
+    min-height: 32px;
+    background-color: #f9f9f9;
+    visibility: hidden;
+}
+
+html, body { height: 100%;font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important; }
+body { margin: 0;}
+#special-icon {
+  color: green;
+}

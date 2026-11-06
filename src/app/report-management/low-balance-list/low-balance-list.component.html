@@ -1,0 +1,75 @@
+ <div class="w-full text-right">
+            <h2 class="text-xl font-semibold text-[#f47a20] text-left">
+              Low Balance List
+            </h2>           
+          </div>
+        
+
+        <div class="mt-8 overflow-x-auto table-section">
+          <table class="w-full table-fixed border-collapse">
+            <thead>
+              <tr class="bg-[#f47a20] text-white text-left text-sm">
+                <th class="p-2 border border-gray-200 text-center">
+                  Wallet No
+                </th>
+                <th class="p-2 border border-gray-200 text-center">
+Username                </th>
+                <th class="p-2 border border-gray-200 text-center">
+                  Phone Number
+                </th>
+                 <th class="p-2 border border-gray-200 text-center">
+                  Email
+                </th>
+                  <th class="p-2 border border-gray-200 text-center">
+                  First Name
+                </th>
+                  <th class="p-2 border border-gray-200 text-center">
+                  Last Name
+                </th>
+                <th class="p-2 border border-gray-200 text-center">
+                  Balance
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lowBalanceList" class="text-sm text-gray-700">
+                <td class="p-2 border border-gray-200 text-center  whitespace-normal break-words">
+                  {{ item?.walletNo }}
+                </td>
+                <td class="p-2 border border-gray-200 text-center  whitespace-normal break-words">
+                  {{ item?.username }}
+                </td>
+                <td class="p-2 border border-gray-200 text-center  whitespace-normal break-words">
+                  {{ item?.phone}}
+                </td>
+                <td class="p-2 border border-gray-200 text-center  whitespace-normal break-words">
+                  {{ item?.email }}
+                </td>
+                <td class="p-2 border border-gray-200 text-center  whitespace-normal break-words">
+                  {{ item?.firstName }}
+                </td>
+                <td class="p-2 border border-gray-200 text-center  whitespace-normal break-words">
+                  {{ item?.lastName }}
+                </td>
+                <td class="p-2 border border-gray-200 text-center  whitespace-normal break-words">
+                  {{ item?.balance | number : "1.2-2" }}
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+          </div>
+         
+
+          <div class="mt-4 flex justify-between items-center">
+            <button class="px-4 py-2 bg-gray-300 rounded" (click)="getList(currentPage - 1)"
+              [disabled]="currentPage === 0">
+              Previous
+            </button>
+            <p>Page {{ currentPage + 1 }} </p>
+            <button class="px-4 py-2 bg-gray-300 rounded" (click)="getList(currentPage + 1)"
+              [disabled]="listLength < 50">
+              Next
+            </button>
+          </div>
+        

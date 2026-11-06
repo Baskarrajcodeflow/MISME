@@ -1,0 +1,70 @@
+<!-- Backdrop -->
+<div *ngIf="show" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"></div>
+
+<!-- Modal -->
+<div *ngIf="show" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-zinc-100">
+    <!-- Header -->
+    <div class="flex items-start justify-between p-5">
+      <div>
+        <h3 class="text-xl font-semibold text-zinc-900">{{ title }}</h3>
+        <p class="mt-1 text-sm text-zinc-500">{{ subtitle }}</p>
+      </div>
+      <button (click)="close()" aria-label="Close"
+              class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 hover:bg-zinc-50 active:scale-95 transition">
+        ✕
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="px-5 pb-5">
+      <!-- <div class="flex items-center justify-between gap-2 select-none"
+           (paste)="onPaste($event)">
+        <input *ngFor="let b of boxes; let i = index"
+               #otpInput
+               inputmode="numeric"
+               pattern="[0-9]*"
+               maxlength="1"
+               [(ngModel)]="boxes[i]"
+               (input)="onInput($event, i)"
+               (keydown)="onKeyDown($event, i)"
+               class="h-12 w-12 text-center text-lg font-medium rounded-2xl border border-zinc-200 focus:outline-none focus:ring-4 focus:ring-zinc-200/70 focus:border-zinc-300 shadow-sm" />
+      </div> -->
+         <div class="flex justify-left mt-4 space-x-6">
+                  <form [formGroup]="otpForm">
+                    <input type="text" maxlength="1" style="padding-right:0px!important;"
+                      class="text-black mt-1 p-2 border border-gray-600 rounded  focus:ring-2 focus:ring-indigo-500 mx-2 w-12 h-12 text-center text-xl border border-gray-300 rounded-md  focus:border-blue-500"
+                      formControlName="otp1" (input)="onOtpInput($event, otp2, null)" #otp1>
+                    <input type="text" maxlength="1" style="padding-right:0px!important;"
+                      class="text-black mt-1 p-2 border border-gray-600 rounded  focus:ring-2 focus:ring-indigo-500 mx-2 w-12 h-12 text-center text-xl border border-gray-300 rounded-md  focus:border-blue-500"
+                      formControlName="otp2" (input)="onOtpInput($event, otp3, otp1)" #otp2>
+                    <input type="text" maxlength="1" style="padding-right:0px!important;"
+                      class="text-black mt-1 p-2 border border-gray-600 rounded  focus:ring-2 focus:ring-indigo-500 mx-2 w-12 h-12 text-center text-xl border border-gray-300 rounded-md  focus:border-blue-500"
+                      formControlName="otp3" (input)="onOtpInput($event, otp4, otp2)" #otp3>
+                    <input type="text" maxlength="1" style="padding-right:0px!important;"
+                      class="text-black mt-1 p-2 border border-gray-600 rounded  focus:ring-2 focus:ring-indigo-500 mx-2 w-12 h-12 text-center text-xl border border-gray-300 rounded-md  focus:border-blue-500"
+                      formControlName="otp4" (input)="onOtpInput($event, otp5, otp3)" #otp4>
+                    <input type="text" maxlength="1" style="padding-right:0px!important;"
+                      class="text-black mt-1 p-2 border border-gray-600 rounded  focus:ring-2 focus:ring-indigo-500 mx-2 w-12 h-12 text-center text-xl border border-gray-300 rounded-md  focus:border-blue-500"
+                      formControlName="otp5" (input)="onOtpInput($event, otp6, otp4)" #otp5>
+                    <input type="text" maxlength="1" style="padding-right:0px!important;"
+                      class="text-black mt-1 p-2 border border-gray-600 rounded  focus:ring-2 focus:ring-indigo-500 mx-2 w-12 h-12 text-center text-xl border border-gray-300 rounded-md  focus:border-blue-500"
+                      formControlName="otp6" (input)="onOtpInput($event, null, otp5)" #otp6>
+                  </form>
+                </div>
+
+      <!-- Actions -->
+      <div class="mt-6 flex items-center justify-between">
+        <button (click)="close()"
+                class="px-4 h-10 rounded-xl border border-zinc-200 hover:bg-zinc-50 active:scale-95 transition">
+          Close
+        </button>
+        <button (click)="submit()"
+                [disabled]="!isOtpComplete"
+                class="px-4 h-10 rounded-xl bg-zinc-900 text-white hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

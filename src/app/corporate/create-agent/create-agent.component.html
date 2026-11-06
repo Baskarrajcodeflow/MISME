@@ -1,0 +1,1223 @@
+<div *ngIf="currentPage === 1">
+    <form [formGroup]="corporateForm" (ngSubmit)="nextPage()"
+        class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">Agent User Information</h2>
+        <div class="mb-4">
+            <label for="masterAgentType" class="block text-sm font-medium text-gray-700">Choose Master Agent
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="masterAgentType" formControlName="masterAgentType" (change)="onChangeMasterAgent($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option value="" disabled>Select Master Agent</option>
+                <option *ngFor="let agent of masterAgentData" [value]="agent.id">
+                    <!-- {{ agent.firstName }} {{agent.lastName}}/{{walletAccount.accountNo}} -->
+                    {{ agent.firstName || '' }} {{ agent.lastName || '' }} / {{ agent.walletAccount.accountNo }}
+                </option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="submittedByFirst" class="block text-sm font-medium text-gray-700">First Name
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="submittedByFirst" type="text" formControlName="submittedByFirst"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('submittedByFirst')?.errors?.['pattern'] && corporateForm.get('submittedByFirst')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="submittedByLast" class="block text-sm font-medium text-gray-700">Last Name
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="submittedByLast" type="text" formControlName="submittedByLast"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('submittedByLast')?.errors?.['pattern'] && corporateForm.get('submittedByLast')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="submittedByEmail" class="block text-sm font-medium text-gray-700">Email
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="submittedByEmail" type="text" formControlName="submittedByEmail"
+                (blur)="checkEmailExistenceReg()"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('submittedByEmail')?.errors?.['pattern'] && corporateForm.get('submittedByEmail')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid email.
+            </span>
+            <span *ngIf="emailErrorReg" style="color: red;">
+                <small> Email already exists</small>
+            </span>
+        </div>
+
+        <div class="mb-4">
+            <label for="submittedByPhone" class="block text-sm font-medium text-gray-700">Phone
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="submittedByPhone" type="text" formControlName="submittedByPhone"
+                (blur)="checkPhoneExistenceReg()"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="submittedByPhone?.errors?.['pattern']" style="color: red;">
+                <small>Please enter a valid phone number ending
+                    with '7XXXXXXXX'.</small></span>
+            <span *ngIf="phoneErrorReg" style="color: red;">
+                <small>Phone already exists</small>
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="submittedByGender" class="block text-sm font-medium text-gray-700">Gender
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="submittedByGender" formControlName="submittedByGender"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="" disabled>Select gender</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="submittedByUserName" class="block text-sm font-medium text-gray-700">UserName
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="submittedByUserName" type="text" formControlName="submittedByUserName"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4">
+            <label for="currentProvince" class="block text-sm font-medium text-gray-700">Province
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="currentProvince" formControlName="currentProvince"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option *ngFor="let province of provinces" [value]="province.name">{{province.name}}</option>
+            </select>
+        </div>
+        <div class="mb-4 relative">
+            <label for="submittedByPassword" class="block text-sm font-medium text-gray-700">Password
+                <sup style="color: red;">*</sup>
+            </label>
+            <div class="relative">
+                <input [type]="showPassword ? 'text' : 'password'" id="submittedByPassword"
+                    formControlName="submittedByPassword" (input)="sanitizeInput($event)"
+                    class="mt-1 block w-full h-8 pr-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                <span class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                    (click)="togglePasswordVisibility()">
+                    <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                </span>
+                <div *ngIf="submittedByPassword.invalid && submittedByPassword.touched"
+                    class="text-red-500 text-sm mt-1">
+                    <div *ngIf="submittedByPassword.errors?.['minlength']">Password must be at least 4 characters.</div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-between items-center">
+            <button type="button" (click)="onCancel()"
+                class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">
+                Cancel
+            </button>
+            <div class="flex space-x-2">
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="nextPage()">
+                    Next
+                </button>
+                <button type="button" *ngIf="!isRegisterClicked"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="onClickReg()" [disabled]="!isCurrentPageValid()">
+                    Register and Save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div *ngIf="currentPage === 2">
+    <form [formGroup]="corporateForm" (ngSubmit)="nextPage()"
+        class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">Identity Details</h2>
+        <div class="mb-4">
+            <label for="accType" class="block text-sm font-medium text-gray-700">Account Type
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="accType" formControlName="accType"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="" disabled>Select</option>
+                <option value="AGENT">Internal Agent</option>
+                <option value="MM_STAFF">External Agent</option>
+                <option value="MERCHANT">Merchant</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="basicFirstName" class="block text-sm font-medium text-gray-700">First Name
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="basicFirstName" type="text" formControlName="basicFirstName"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('basicFirstName')?.errors?.['pattern'] && corporateForm.get('basicFirstName')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="basicLastName" class="block text-sm font-medium text-gray-700">Last Name
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="basicLastName" type="text" formControlName="basicLastName"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('basicLastName')?.errors?.['pattern'] && corporateForm.get('basicLastName')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="basicFatherName" class="block text-sm font-medium text-gray-700">father Name
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="basicFatherName" type="text" formControlName="basicFatherName"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('basicFatherName')?.errors?.['pattern'] && corporateForm.get('basicFatherName')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <!-- <div class="mb-4">
+            <label for="pos" class="block text-sm font-medium text-gray-700">Wallet number
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="pos" type="text" formControlName="basicwallet"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('basicwallet')?.errors?.['pattern'] && corporateForm.get('basicwallet')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span>
+        </div> -->
+        <div class="mb-4">
+            <label for="idType" class="block text-sm font-medium text-gray-700">ID Type
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="idType" formControlName="idType"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="" disabled>Select ID Type</option>
+                <option value="E_TAZKIRA">E-Tazkira</option>
+                <option value="PAPER_TAZKIRA">Paper Tazkira</option>
+                <option value="PASSPORT">Passport</option>
+            </select>
+        </div>
+        <div class="mb-4"
+            *ngIf="corporateForm.get('idType')?.value == 'E_TAZKIRA' || corporateForm.get('idType')?.value == 'PAPER_TAZKIRA'">
+            <label for="idNO" class="block text-sm font-medium text-gray-700">ID number
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="idNO" type="text" formControlName="idNO" (blur)="checkIdExists()" (input)="sanitizeInput($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('idNO')?.errors?.['pattern'] && corporateForm.get('idNO')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span>
+            <span *ngIf="showIdExist" style="color: red;">
+                <small>ID Number already exists.</small>
+            </span>
+        </div>
+        <div class="mb-4" *ngIf="corporateForm.get('idType')?.value == 'PASSPORT'">
+            <label for="passNO" class="block text-sm font-medium text-gray-700">ID number
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="passNO" type="text" formControlName="passNO" (blur)="checkPassnoExists()"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('passNO')?.errors?.['pattern'] && corporateForm.get('passNO')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid value (only alphanumericc values and special characters are allowed).
+            </span>
+            <span *ngIf="showPassExist" style="color: red;">
+                <small>Passport Number already exists.</small>
+            </span>
+        </div>
+        <div class="mb-4"
+            *ngIf="corporateForm.get('idType')?.value == 'E_TAZKIRA' || corporateForm.get('idType')?.value == 'PASSPORT'">
+            <label for="issueDate" class="block text-sm font-medium text-gray-700">ID Issue Date
+            </label>
+            <input id="issueDate" type="date" formControlName="issueDate"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.controls['issueDate'].hasError('pastDate') && corporateForm.controls['issueDate'].touched">
+                <small style="color: red;"> Date of Issue cannot be a future date.</small>
+            </span>
+        </div>
+        <div class="mb-4"
+            *ngIf="corporateForm.get('idType')?.value == 'E_TAZKIRA' || corporateForm.get('idType')?.value == 'PASSPORT'">
+            <label for="expiryDate" class="block text-sm font-medium text-gray-700">ID Expiry Date
+                <sup style="color: red;">*</sup><span
+                    *ngIf="corporateForm.controls['expiryDate'].hasError('pastDate') && corporateForm.controls['expiryDate'].touched">
+                    <small style="color: red;">ID Expiry Date cannot be a past date.</small>
+                </span>
+            </label>
+            <input id="expiryDate" type="date" formControlName="expiryDate"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4" *ngIf="corporateForm.get('idType')?.value == 'PAPER_TAZKIRA'">
+            <label for="pageNO" class="block text-sm font-medium text-gray-700">Page Number
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="pageNO" type="text" formControlName="pageNO"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('pageNO')?.errors?.['pattern'] && corporateForm.get('pageNO')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span>
+        </div>
+        <div class="mb-4" *ngIf="corporateForm.get('idType')?.value == 'PAPER_TAZKIRA'">
+            <label for="bookNO" class="block text-sm font-medium text-gray-700">Book number
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="bookNO" type="text" formControlName="bookNO"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('bookNO')?.errors?.['pattern'] && corporateForm.get('bookNO')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span>
+        </div>
+        <div class="mb-4" *ngIf="corporateForm.get('idType')?.value == 'PAPER_TAZKIRA'">
+            <label for="regNO" class="block text-sm font-medium text-gray-700">Registration number
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="regNO" type="text" formControlName="regNO"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('regNO')?.errors?.['pattern'] && corporateForm.get('regNO')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span>
+        </div>
+
+        <div class="mb-4">
+            <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="dob" type="date" formControlName="dob"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('dob')?.hasError('underage')">
+                <small style="color: red;">Age should be at least 18 years old.</small>
+            </span>
+            <span *ngIf="corporateForm.get('dob')?.hasError('overage')">
+                <small style="color: red;">Age shouldnot exceed 100 years old.</small>
+            </span>
+        </div>
+        <!-- <div class="mb-4">
+            <label for="placeOfBirth" class="block text-sm font-medium text-gray-700">Place Of Birth
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="placeOfBirth" type="text" formControlName="placeOfBirth"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('placeOfBirth')?.errors?.['pattern'] && corporateForm.get('placeOfBirth')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div> -->
+        <div class="mb-4">
+            <label for="country" class="block text-sm font-medium text-gray-700">Birth Country
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="country" formControlName="country"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option *ngFor="let nationality of nationalities" [value]="nationality?.name">
+                    {{nationality?.name}}
+                </option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="province" class="block text-sm font-medium text-gray-700">Birth Province
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="province" formControlName="province"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM"
+                (change)="onSelectProvince($event)">
+                <option *ngFor="let province of provinces" [value]="province.name">{{province.name}}</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="genderInfo" class="block text-sm font-medium text-gray-700">Gender
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="genderInfo" formControlName="genderInfo"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="" disabled>Select gender</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="marital" class="block text-sm font-medium text-gray-700">Marital status
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="marital" formControlName="marital"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="" disabled>Select</option>
+                <option value="SINGLE">Single</option>
+                <option value="MARRIED">Married</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="nationality" class="block text-sm font-medium text-gray-700">Nationality
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="nationality" formControlName="nationality"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option *ngFor="let nationality of nationalities" [value]="nationality?.nationality">
+                    {{nationality?.nationality}}
+                </option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="basicPhone" class="block text-sm font-medium text-gray-700">Phone
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="basicPhone" type="text" formControlName="basicPhone" (blur)="checkPhoneExistenceBasic()"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="basicPhone?.errors?.['pattern']" style="color: red;">
+                <small>Please enter a valid phone number ending
+                    with '7XXXXXXXX'.</small></span>
+            <span *ngIf="phoneErrorBasic" style="color: red;">
+                <small>Phone already exists</small>
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="basicEmail" class="block text-sm font-medium text-gray-700">Email
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="basicEmail" type="text" formControlName="basicEmail" (blur)="checkEmailExistenceBasic()"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('basicEmail')?.errors?.['pattern'] && corporateForm.get('basicEmail')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid email.
+            </span>
+            <span *ngIf="emailError">
+                <small style="color: red;"> {{ emailError }}</small>
+            </span>
+            <span *ngIf="emailErrorBasic" style="color: red;">
+                <small>Email already exists</small>
+            </span>
+        </div>
+        <!-- <div class="mb-4">
+            <label for="accOpenDate" class="block text-sm font-medium text-gray-700">Account Opening Date
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="accOpenDate" type="text" formControlName="accOpenDate" 
+                   class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div> -->
+
+
+        <div class="mb-4">
+            <label for="PTID" class="block text-sm font-medium text-gray-700">PTID Number
+            </label>
+            <input id="PTID" type="text" formControlName="PTID"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('PTID')?.errors?.['pattern'] && corporateForm.get('PTID')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="accPurpose" class="block text-sm font-medium text-gray-700">Purpose of Account
+                Opening
+                <sup style="color: red;">*</sup>
+            </label>
+            <!-- <input id="accPurpose" type="text" formControlName="accPurpose" -->
+            <!-- class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"> -->
+            <select id="accPurpose" formControlName="accPurpose" (change)="onChangeAccPurpose($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option *ngFor="let a of accPurposeData" [value]="a">
+                    {{a}}
+                </option>
+            </select>
+        </div>
+        <div class="mb-4" *ngIf="accPurposeTextBox">
+            <label for="accPurposeText" class="block text-sm font-medium text-gray-700">Purpose of Account
+                Opening
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="accPurposeText" type="text" formControlName="accPurposeText" placeholder="Enter a Value"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+
+        <div class="flex justify-between">
+            <button type="button" (click)="previousPage()"
+                class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Previuos</button>
+            <div class="flex space-x-2">
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="nextPage()">Next</button>
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="savePage()"
+                    [disabled]="!isCurrentPageValid()">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div *ngIf="currentPage === 3">
+    <form [formGroup]="corporateForm" (ngSubmit)="nextPage()"
+        class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-lg font-medium text-gray-900 mb-4"> Current Address Details</h2>
+        <div class="mb-4">
+            <label for="locationAddress" class="block text-sm font-medium text-gray-700">Location
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="locationAddress" type="text" formControlName="locationAddress"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('locationAddress')?.errors?.['pattern'] && corporateForm.get('locationAddress')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+
+
+        <div class="mb-4">
+            <label for="countryAddress" class="block text-sm font-medium text-gray-700">Country
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="countryAddress" formControlName="countryAddress" (change)="onChangeCountryCur($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option *ngFor="let nationality of nationalities" [value]="nationality?.name">
+                    {{nationality?.name}}
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-4" *ngIf="showCurProDrop">
+            <label for="provinceAddress" class="block text-sm font-medium text-gray-700">Province
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="provinceAddress" formControlName="provinceAddress"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM"
+                (change)="onSelectProvince($event)">
+                <option *ngFor="let province of provinces" [value]="province.name">{{province.name}}</option>
+            </select>
+        </div>
+        <!-- province text -->
+        <div class="mb-4" *ngIf="showCurProText">
+            <label for="province" class="block text-sm font-medium text-gray-700">Province
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="province" type="text" formControlName="provinceTextCur"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+
+        <div class="mb-4" *ngIf="showCurDisDrop">
+            <label for="districtAddress" class="block text-sm font-medium text-gray-700">District
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="districtAddress" formControlName="districtAddress"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option *ngFor="let district of districts" [value]="district.name">{{district.name}}</option>
+            </select>
+        </div>
+        <!-- district text -->
+        <div class="mb-4" *ngIf="showCurDisText">
+            <label for="district" class="block text-sm font-medium text-gray-700">District
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="district" type="text" formControlName="districtTextCur"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+
+        <div class="mb-4">
+            <label for="streetAddress" class="block text-sm font-medium text-gray-700">Street</label>
+            <input id="streetAddress" type="text" formControlName="streetAddress"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="flex justify-between">
+            <button type="button" (click)="previousPage()"
+                class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Previous</button>
+            <div class="flex space-x-2">
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="nextPage()">Next</button>
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="savePage()"
+                    [disabled]="!isCurrentPageValid()">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="currentPage === 4">
+    <form [formGroup]="corporateForm" (ngSubmit)="nextPage()"
+        class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">Permanent Address Details</h2>
+
+
+        <div class="mb-4">
+            <label for="permanentCountry" class="block text-sm font-medium text-gray-700">Country
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="permanentCountry" formControlName="permanentCountry" (change)="onChangeCountryPer($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option *ngFor="let nationality of nationalities" [value]="nationality?.name">
+                    {{nationality?.name}}
+                </option>
+            </select>
+        </div>
+        <div class="mb-4" *ngIf="showPerProDrop">
+            <label for="permanentProvince" class="block text-sm font-medium text-gray-700">Province
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="permanentProvince" formControlName="permanentProvince"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM"
+                (change)="onSelectProvince($event)">
+                <option *ngFor="let province of provinces" [value]="province.name">{{province.name}}</option>
+            </select>
+        </div>
+        <!-- province text -->
+        <div class="mb-4" *ngIf="showPerProText">
+            <label for="province" class="block text-sm font-medium text-gray-700">Province
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="province" type="text" formControlName="provinceTextPer"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4" *ngIf="showPerDisDrop">
+            <label for="permanentDistrict" class="block text-sm font-medium text-gray-700">District
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="permanentDistrict" formControlName="permanentDistrict"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-SM">
+                <option *ngFor="let district of districts" [value]="district.name">{{district.name}}</option>
+            </select>
+        </div>
+        <div class="mb-4" *ngIf="showPerDisText">
+            <label for="district" class="block text-sm font-medium text-gray-700">District
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="district" type="text" formControlName="districtTextPer"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="flex justify-between">
+            <button type="button" (click)="previousPage()"
+                class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Previous</button>
+            <div class="flex space-x-2">
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="nextPage()">Next</button>
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="savePage()"
+                    [disabled]="!isCurrentPageValid()">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- org details -->
+<div *ngIf="currentPage === 5">
+    <form [formGroup]="corporateForm" (ngSubmit)="nextPage()"
+        class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">Agent Organization/Shop Details</h2>
+        <div class="mb-4">
+            <label for="incomeSourceOrg" class="block text-sm font-medium text-gray-700">Source of Income
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="incomeSourceOrg" formControlName="incomeSourceOrg" (change)="onChangeincomeSource($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option *ngFor="let a of incomeSourceData" [value]="a">
+                    {{a}}
+                </option>
+            </select>
+        </div>
+        <div class="mb-4" *ngIf="sourceTextBox">
+            <label for="sourceText" class="block text-sm font-medium text-gray-700">Source of Income
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="sourceText" type="text" formControlName="sourceText" placeholder="Enter a Value"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4">
+            <label for="ShopName" class="block text-sm font-medium text-gray-700">organization/Shop name
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="ShopName" type="text" formControlName="ShopName"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('ShopName')?.errors?.['pattern'] && corporateForm.get('ShopName')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="positionorg" class="block text-sm font-medium text-gray-700">Position Held<sup
+                    style="color: red;">*</sup></label>
+
+            <input id="positionorg" type="text" formControlName="positionorg"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('positionorg')?.errors?.['pattern'] && corporateForm.get('positionorg')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="address" class="block text-sm font-medium text-gray-700">Shop Address
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="address" type="text" formControlName="address"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4">
+            <label for="monthlyIncomeorg" class="block text-sm font-medium text-gray-700">Monthly Income
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="monthlyIncomeorg" type="text" formControlName="monthlyIncomeorg"
+                (keypress)="onKeyPressNoAlphabet($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <!-- <span
+                *ngIf="corporateForm.get('monthlyIncomeorg')?.errors?.['pattern'] && corporateForm.get('monthlyIncomeorg')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span> -->
+        </div>
+
+        <div class="mb-4">
+            <label for="TurnoverOrg" class="block text-sm font-medium text-gray-700">Monthly Turnover
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="TurnoverOrg" type="text" formControlName="TurnoverOrg" (keypress)="onKeyPressNoAlphabet($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <!-- <span
+                *ngIf="corporateForm.get('TurnoverOrg')?.errors?.['pattern'] && corporateForm.get('TurnoverOrg')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span> -->
+        </div>
+        <div class="mb-4">
+            <label for="natureOfBusiness" class="block text-sm font-medium text-gray-700">Nature of Business
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="natureOfBusiness" formControlName="natureOfBusiness" (change)="onChangeNatureOfBusiness($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option *ngFor="let a of natureOfBusinessData" [value]="a?.name">
+                    {{a?.name}}
+                </option>
+            </select>
+        </div>
+        <div class="mb-4" *ngIf="natureTextBox">
+            <label for="natureText" class="block text-sm font-medium text-gray-700">Nature of Business
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="natureText" type="text" formControlName="natureText" placeholder="Enter a Value"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4">
+            <label for="tinOrg" class="block text-sm font-medium text-gray-700">Tin Number
+            </label>
+            <input id="tinOrg" type="text" formControlName="tinOrg"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('tinOrg')?.errors?.['pattern'] && corporateForm.get('tinOrg')?.touched"
+                class="text-red-500 text-sm">
+                Please enter a valid numeric value.
+            </span>
+        </div>
+        <div class="flex justify-between">
+            <button type="button" (click)="previousPage()"
+                class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Previous</button>
+            <div class="flex space-x-2">
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="nextPage()">Next</button>
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="savePage()"
+                    [disabled]="!isCurrentPageValid()">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- emi -->
+<div *ngIf="currentPage === 6">
+    <form [formGroup]="corporateForm" (ngSubmit)="nextPage()"
+        class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">EMI Account Details
+        </h2>
+        <div class="mb-4">
+            <label for="haveOtherAccounts" class="block text-sm font-medium text-gray-700">Do you have account with
+                other EMIs?
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="haveOtherAccounts" formControlName="haveOtherAccounts" (change)="onSelectEMI($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="" disabled></option>
+                <option value="TRUE">Yes</option>
+                <option value="FALSE">No</option>
+            </select>
+        </div>
+        <div *ngIf="showEMIdetails">
+            <div class="mb-4">
+                <label for="EMIname" class="block text-sm font-medium text-gray-700">EMI Name
+                    <sup style="color: red;">*</sup>
+                </label>
+                <input id="EMIname" type="text" formControlName="EMIname"
+                    class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <span *ngIf="corporateForm.get('EMIname')?.errors?.['pattern'] && corporateForm.get('EMIname')?.touched"
+                    class="text-red-500 text-sm">
+                    Please enter only alphanumeric characters.
+                </span>
+            </div>
+            <div class="mb-4">
+                <label for="accountName" class="block text-sm font-medium text-gray-700">Account Name
+                    <sup style="color: red;">*</sup>
+                </label>
+
+                <input id="accountName" type="text" formControlName="accountName"
+                    class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <span
+                    *ngIf="corporateForm.get('accountName')?.errors?.['pattern'] && corporateForm.get('accountName')?.touched"
+                    class="text-red-500 text-sm">
+                    Please enter only alphanumeric characters.
+                </span>
+            </div>
+            <div class="mb-4">
+                <label for="accountNo" class="block text-sm font-medium text-gray-700">Account Number
+                    <sup style="color: red;">*</sup>
+                </label>
+                <input id="accountNo" type="text" formControlName="accountNo"
+                    class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            </div>
+        </div>
+
+        <div class="flex justify-between">
+            <button type="button" (click)="previousPage()"
+                class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Previous</button>
+            <div class="flex space-x-2">
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="nextPage()">Next</button>
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="savePage()"
+                    [disabled]="!isCurrentPageValid()">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- proof -->
+<div *ngIf="currentPage === 7">
+    <form [formGroup]="corporateForm" (ngSubmit)="nextPage()"
+        class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">Proofs</h2>
+        <!-- <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                Profile Picture
+                <sup style="color: red;">*</sup>
+            </label>
+            <input type="file" formControlName="proPic" (change)="detectFilesProfilePicture($event)" id="inputLastName"
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                accept="image/*" required>
+            <p *ngIf="proPicError" class="text-red-600 text-sm mt-1">
+                {{ proPicError }}
+            </p>
+        </div> -->
+        <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                Selfie/Live Photo Capture
+                <sup style="color: red;">*</sup>
+            </label>
+            <div class="relative">
+                <input type="file" formControlName="userSign"
+                    (change)="handleFileUpload($event, 'userSign', 'selfieError', 'uploadedImageUser')"
+                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" accept="image/*" required>
+                <p *ngIf="selfieError" class="text-red-600 text-sm mt-1">
+                    {{ selfieError }}
+                </p>
+                <div class="border border-gray-300 rounded-md p-2 flex items-center justify-between">
+                    <span *ngIf="uploadedImageUser; else placeholder" class="text-gray-600">
+                        {{ uploadedImageUser.name }}
+                    </span>
+
+                    <ng-template #placeholder>
+                        <span class="text-gray-400">Select file</span>
+                    </ng-template>
+
+                    <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded ml-2">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                Digital Signature
+                <sup style="color: red;">*</sup>
+            </label>
+            <!--  <input type="file" formControlName="digitalSign" (change)="detectFilesSign($event)" id="inputLastName"
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                accept="image/*" required>
+            <p *ngIf="digSignError" class="text-red-600 text-sm mt-1">
+                {{ digSignError }}
+            </p> -->
+            <div class="relative">
+                <input type="file" formControlName="digitalSign"
+                    (change)="handleFileUpload($event, 'digitalSign', 'digSignError', 'uploadedImageDigSign')"
+                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" accept="image/*" required>
+                <p *ngIf="digSignError" class="text-red-600 text-sm mt-1">
+                    {{ digSignError }}
+                </p>
+                <div class="border border-gray-300 rounded-md p-2 flex items-center justify-between">
+                    <span *ngIf="uploadedImageDigSign; else placeholder" class="text-gray-600">
+                        {{ uploadedImageDigSign.name }}
+                    </span>
+
+                    <ng-template #placeholder>
+                        <span class="text-gray-400">Select file</span>
+                    </ng-template>
+
+                    <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded ml-2">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                Operations Digital Signature
+                <sup style="color: red;">*</sup>
+            </label>
+            <div class="relative">
+                <input type="file" formControlName="opdigSign"
+                    (change)="handleFileUpload($event, 'opdigSign', 'opdigSignError', 'uploadedImageOpdigSign')"
+                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" accept="image/*" required>
+                <div class="border border-gray-300 rounded-md p-2 flex items-center justify-between">
+                    <span *ngIf="uploadedImageOpdigSign; else placeholder" class="text-gray-600">
+                        {{ uploadedImageOpdigSign.name }}
+                    </span>
+
+                    <ng-template #placeholder>
+                        <span class="text-gray-400">Select file</span>
+                    </ng-template>
+
+                    <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded ml-2">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+            <!--  <input type="file" formControlName="opdigSign" (change)="detectFilesOpDigSign($event)" id="inputLastName"
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                accept="image/*" required>
+            <p *ngIf="opdigSignError" class="text-red-600 text-sm mt-1">
+                {{ opdigSignError }}
+
+            </p> -->
+        </div>
+        <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                ID Proof Document Front
+                <sup style="color: red;">*</sup>
+            </label>
+            <div class="relative">
+                <input type="file" formControlName="docfront"
+                    (change)="handleFileUpload($event, 'docfront', 'docfrontError', 'uploadedImageDocFront')"
+                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" accept="image/*,application/pdf"
+                    required>
+                <p *ngIf="docfrontError" class="text-red-600 text-sm mt-1">
+                    {{ docfrontError }}
+                </p>
+                <div class="border border-gray-300 rounded-md p-2 flex items-center justify-between">
+                    <span *ngIf="uploadedImageDocFront; else placeholder" class="text-gray-600">
+                        {{ uploadedImageDocFront.name }}
+                    </span>
+
+                    <ng-template #placeholder>
+                        <span class="text-gray-400">Select file</span>
+                    </ng-template>
+
+                    <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded ml-2">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+            <!--     <input type="file" formControlName="docfront" (change)="detectFilesDocFront($event)" id="inputLastName"
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                accept="image/*" required>
+            <p *ngIf="docfrontError" class="text-red-600 text-sm mt-1">
+                {{ docfrontError }}
+            </p> -->
+        </div>
+        <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                ID Proof Document Back
+                <sup style="color: red;">*</sup>
+            </label>
+            <div class="relative">
+                <input type="file" formControlName="docBack"
+                    (change)="handleFileUpload($event, 'docBack', 'docBackError', 'uploadedImageDocBack')"
+                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" accept="image/*, application/pdf"
+                    required>
+                <p *ngIf="docBackError" class="text-red-600 text-sm mt-1">
+                    {{ docBackError }}
+                </p>
+                <div class="border border-gray-300 rounded-md p-2 flex items-center justify-between">
+                    <span *ngIf="uploadedImageDocBack; else placeholder" class="text-gray-600">
+                        {{ uploadedImageDocBack.name }}
+                    </span>
+
+                    <ng-template #placeholder>
+                        <span class="text-gray-400">Select file</span>
+                    </ng-template>
+
+                    <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded ml-2">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+            <!-- <input type="file" formControlName="docBack" (change)="detectFilesDocBack($event)" id="inputLastName"
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                accept="image/*" required>
+            <p *ngIf="docBackError" class="text-red-600 text-sm mt-1">
+                {{ docBackError }}
+            </p> -->
+        </div>
+        <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                Valid Business/Governemt issued License
+                <sup style="color: red;">*</sup>
+            </label>
+            <div class="relative">
+                <input type="file" formControlName="licenseSign"
+                    (change)="handleFileUpload($event, 'licenseSign', 'licenseSignError', 'uploadedImageLicense')"
+                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" accept="image/*, application/pdf"
+                    required>
+                <p *ngIf="licenseSignError" class="text-red-600 text-sm mt-1">
+                    {{ licenseSignError }}
+                </p>
+                <div class="border border-gray-300 rounded-md p-2 flex items-center justify-between">
+                    <span *ngIf="uploadedImageLicense; else placeholder" class="text-gray-600">
+                        {{ uploadedImageLicense.name }}
+                    </span>
+
+                    <ng-template #placeholder>
+                        <span class="text-gray-400">Select file</span>
+                    </ng-template>
+
+                    <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded ml-2">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+            <!--   <input type="file" formControlName="licenseSign" (change)="detectFilesLicense($event)" id="inputLastName"
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                accept="image/*" required>
+            <p *ngIf="licenseSignError" class="text-red-600 text-sm mt-1">
+                {{ licenseSignError }}
+            </p> -->
+        </div>
+        <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                AddressProof
+                <sup style="color: red;">*</sup>
+            </label>
+            <!-- <input type="file" formControlName="addressProof" (change)="detectFilesAddressProof($event)"
+                id="inputLastName"
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                accept="image/*" required>
+            <p *ngIf="addressProofError" class="text-red-600 text-sm mt-1">
+                {{ addressProofError }}
+            </p> -->
+            <div class="relative">
+                <input type="file" formControlName="addressProof"
+                    (change)="handleFileUpload($event, 'addressProof', 'addressProofError', 'uploadedImageAddress')"
+                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" accept="image/*, application/pdf"
+                    required>
+                <p *ngIf="addressProofError" class="text-red-600 text-sm mt-1">
+                    {{ addressProofError }}
+                </p>
+                <div class="border border-gray-300 rounded-md p-2 flex items-center justify-between">
+                    <span *ngIf="uploadedImageAddress; else placeholder" class="text-gray-600">
+                        {{ uploadedImageAddress.name }}
+                    </span>
+
+                    <ng-template #placeholder>
+                        <span class="text-gray-400">Select file</span>
+                    </ng-template>
+
+                    <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded ml-2">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="inputLastName" class="block text-sm font-medium text-gray-700">
+                TIN Letter (Optional)
+                <!-- <sup style="color: red;">*</sup> -->
+            </label>
+            <div class="relative">
+                <input type="file" formControlName="tinLetter"
+                    (change)="handleFileUpload($event, 'tinLetter', 'tinLetterError', 'uploadedImageTin')"
+                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" accept="image/*, application/pdf"
+                    required>
+                <p *ngIf="tinLetterError" class="text-red-600 text-sm mt-1">
+                    {{ tinLetterError }}
+                </p>
+                <div class="border border-gray-300 rounded-md p-2 flex items-center justify-between">
+                    <span *ngIf="uploadedImageTin; else placeholder" class="text-gray-600">
+                        {{ uploadedImageTin.name }}
+                    </span>
+
+                    <ng-template #placeholder>
+                        <span class="text-gray-400">Select file</span>
+                    </ng-template>
+
+                    <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded ml-2">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+            <!--  <input type="file" formControlName="tinLetter" (change)="detectFilesTINLetter($event)" id="inputLastName"
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                accept="image/*">
+            <p *ngIf="tinLetterError" class="text-red-600 text-sm mt-1">
+                {{ tinLetterError }}
+            </p> -->
+        </div>
+        <div class="mb-4">
+            <label for="multipleDocs" class="block text-sm font-medium text-gray-700">
+                Upload Multiple Documents(Optional)
+                <!-- <sup style="color: red;">*</sup> -->
+            </label>
+
+            <!-- File input with icon for adding documents -->
+            <div class="flex items-center space-x-2">
+                <input type="file" formControlName="multipleDocs" (change)="detectFilesMultipleDocs($event)"
+                    id="multipleDocs" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" multiple
+                    style="display:none">
+
+                <!-- Icon to open the file input -->
+
+                <button type="button" (click)="triggerFileInput()"
+                    class="p-2 rounded bg-blue-500 hover:bg-blue-700 text-white">
+                    <i class="fa fa-plus"></i> Add Documents
+                </button>
+            </div>
+
+            <!-- Display file names with delete icon -->
+            <div *ngIf="selectedFiles.length" class="mt-2 space-y-1">
+                <div *ngFor="let file of selectedFiles; let i = index" class="flex items-center text-sm text-gray-600">
+                    <i class="fa fa-file-text-o mr-1"></i> {{ file.name }}
+                    <button type="button" (click)="removeFile(i)" class="ml-2 text-red-500 hover:text-red-700">
+                        <i class="fa fa-trash"></i> <!-- Delete icon -->
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="flex justify-between">
+            <button type="button" (click)="previousPage()"
+                class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Previous</button>
+            <div class="flex space-x-2">
+                <!-- <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="nextPage()">Next</button> -->
+                <!-- <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="savePage()"
+                    [disabled]="!isCurrentPageValid()">Save</button> -->
+                <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="background-color: #0a365a;" (click)="submit()"
+                    [disabled]="!isCurrentPageValid()">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- kin -->
+<!-- <div *ngIf="currentPage === 8">
+    <form [formGroup]="corporateForm" (ngSubmit)="nextPage()"
+        class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">Next of kin</h2>
+        <div class="mb-4">
+            <label for="nameKin" class="block text-sm font-medium text-gray-700"> Name
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="nameKin" type="text" formControlName="nameKin"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('nameKin')?.errors?.['pattern'] && corporateForm.get('nameKin')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="fatherKin" class="block text-sm font-medium text-gray-700">Father name
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="fatherKin" type="text" formControlName="fatherKin"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="corporateForm.get('fatherKin')?.errors?.['pattern'] && corporateForm.get('fatherKin')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+        <div class="mb-4">
+            <label for="numberKin" class="block text-sm font-medium text-gray-700">Mobile number
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="numberKin" type="text" formControlName="numberKin"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span *ngIf="numberKin?.errors?.['pattern']" style="color: red;"><small>Please enter a valid phone number
+                    ending
+                    with '7XXXXXXXX'.</small></span>
+        </div>
+        <div class="mb-4">
+            <label for="relationship" class="block text-sm font-medium text-gray-700">Relationship
+                <sup style="color: red;">*</sup>
+            </label>
+            <select id="relationship" formControlName="relationship" (change)="onChangeRelation($event)"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="" disabled>Select</option>
+                <option value="FATHER">Father</option>
+                <option value="MOTHER">Mother</option>
+                <option value="SPOUSE">Spouse</option>
+                <option value="BROTHER">Brother</option>
+                <option value="SISTER">Sister</option>
+                <option value="OTHER">Other</option>
+            </select>
+        </div>
+        <div class="mb-4" *ngIf="relationTextBox">
+            <label for="relationText" class="block text-sm font-medium text-gray-700">Relationship
+                <sup style="color: red;">*</sup>
+            </label>
+            <input id="relationText" type="text" formControlName="relationText" placeholder="Enter a Value"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4">
+            <label for="kinAddress" class="block text-sm font-medium text-gray-700">Address(Location) <sup
+                    style="color: red;">*</sup></label>
+
+            <input id="kinAddress" type="text" formControlName="kinAddress"
+                class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <span
+                *ngIf="corporateForm.get('kinAddress')?.errors?.['pattern'] && corporateForm.get('kinAddress')?.touched"
+                class="text-red-500 text-sm">
+                Please enter only alphanumeric characters.
+            </span>
+        </div>
+
+        <div class="flex justify-between">
+            <button type="button" (click)="previousPage()"
+                class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Previous</button>
+
+            <button type="button"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                style="background-color: #0a365a;" (click)="submit()" [disabled]="!isCurrentPageValid()">Submit</button>
+        </div>
+    </form>
+</div> -->
+<!--  -->

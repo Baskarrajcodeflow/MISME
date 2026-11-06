@@ -1,0 +1,192 @@
+<div *ngIf="!isEnableRoute">
+    <div *ngIf="isLoading" class="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 bg-gray-800">
+        <div class="w-16 h-16 border-4 border-solid border-gray-300 rounded-full animate-spin border-t-transparent">
+        </div>
+    </div>
+    <div class="flex justify-between mt-4 items-center">
+        <!-- <div *ngIf="currentPage > 0" class="prev-arrow cursor-pointer" (click)="onPreviousPage()">
+        <i class="fa fa-chevron-left text-xl text-gray-600 hover:text-gray-800"></i>
+    </div> -->
+        <!-- <div class="next-arrow cursor-pointer" (click)="onNextPage()">
+        <i class="fa fa-chevron-right text-xl text-gray-600 hover:text-gray-800"></i>
+    </div> -->
+    </div>
+    <form [formGroup]="searchForm">
+        <div class="mb-4 flex flex-row space-x-4">
+            <div class="flex flex-col w-full max-w-lg">
+                <label class="mb-4 text-sm font-medium text-gray-700">Search By</label>
+                <select #commonSearchDropdown
+                    class="form-select block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    (change)="onChangeSearchBy($event)">
+                    <option></option>
+                    <!-- <option value="ALL">All</option> -->
+                    <option value="NAME">Name</option>
+                    <!-- <option value="ID_PROOF">ID Proof Number</option> -->
+                    <option value="PHONE">Mobile No</option>
+                </select>
+            </div>
+
+            <div class="flex flex-col w-full max-w-lg">
+                <label class="mb-4 text-sm font-medium text-gray-700">Search</label>
+                <div class="flex items-center border border-gray-300 rounded-md shadow-sm">
+                    <input type="text"
+                        class="form-select block w-full px-4 py-2 text-gray-700 bg-white rounded-l-md focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        [formControl]="searchText" placeholder="Search..." (keydown)="onKeydownSearch($event)">
+                    <i class="fa fa-search px-3 text-gray-400 cursor-pointer" (click)="onClickSearch()"></i>
+                    <button
+                        class="px-3 py-2 text-white hover:bg-red-600 rounded-r-md focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50"
+                        (click)="onResetSearch()" style="background-color: #0a365a;">
+                        Reset
+                    </button>
+                </div>
+                <div *ngIf="noResults" class="text-center text-gray-500 mt-2" style="padding-right: 330px;">
+                    No results found
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="container mx-auto p-4">
+        <div class="table-wrapper">
+            <table class="min-w-full table-auto">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-4 py-2">Name</th>
+                        <th class="px-4 py-2">Email</th>
+                        <th class="px-4 py-2">Submitted by</th>
+                        <th class="px-4 py-2">ID Proof Number</th>
+                        <th class="px-4 py-2">Phone</th>
+                        <th class="px-4 py-2">Sequence Number</th>
+                        <th class="px-4 py-2">Submitted Date</th>
+                        <th class="px-4 py-2">Status</th>
+                        <th class="px-4 py-2">Kyc Type</th>
+                        <th class="px-4 py-2">MM Wallet</th>
+                        <th class="px-4 py-2">Action</th>
+                        <th *ngIf="kycPrivelege.updatePrivelege" class="px-4 py-2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data; let i = index" style="cursor: pointer;">
+                        <!-- Name -->
+                        <td class="border px-4 py-2">
+                            <ng-container *ngIf="item?.kycType != 'MASTER AGENT' && item?.kycType != 'CORPORATE'">
+                                {{ item.agentKyc?.custInfoFirstName || item.customerKyc?.custInfoFirstName ||
+                                item.corporateKyc?.signatories[0]?.firstName || 'NIL' }}
+                                {{ item.agentKyc?.custInfoLastName || item.customerKyc?.custInfoLastName ||
+                                item.corporateKyc?.signatories[0]?.lastName || 'NIL' }}
+                           </ng-container>
+                           
+                            <ng-container *ngIf="item?.kycType == 'MASTER AGENT'">
+                                {{item.masterAgentKyc?.companyName}}
+                            </ng-container>
+                            <ng-container *ngIf="item?.kycType == 'CORPORATE'">
+                                {{item.corporateKyc?.companyName }}
+                            </ng-container>
+                        </td>
+                        <!-- item.masterAgentKyc?.signatories[0]?.lastName || -->
+                            <!-- item.masterAgentKyc?.signatories[0]?.firstName || -->
+                        <!-- Email -->
+                        <td class="border px-4 py-2">
+                           <ng-container *ngIf="item?.kycType != 'MASTER AGENT' && item?.kycType != 'CORPORATE'">
+                            {{ item.agentKyc?.custInfoEmail || item.customerKyc?.custInfoEmail 
+                           }}
+                           </ng-container>
+                           
+                            <ng-container *ngIf="item?.kycType == 'MASTER AGENT'">
+                                {{item.masterAgentKyc?.companyEmail}}
+                            </ng-container>
+                            <ng-container *ngIf="item?.kycType == 'CORPORATE'">
+                                {{item.corporateKyc?.companyEmail}}
+                            </ng-container>
+                        </td>
+                        <!-- Submitted By -->
+                        <td class="border px-4 py-2">
+                            {{ item.submittedBy?.firstName || 'NIL' }}
+                        </td>
+                        <!-- ID Proof Number -->
+                        <td class="border px-4 py-2">
+                            {{ item.agentKyc?.custProofNumber || item.customerKyc?.custProofNumber ||
+                            item.masterAgentKyc?.signatories[0]?.idProofNumber ||
+                            item.corporateKyc?.signatories[0]?.idProofNumber || 'NIL' }}
+                        </td>
+                        <!-- Phone -->
+                        <td class="border px-4 py-2">
+                            {{ '+93' + (item.submittedFor?.phone?.slice(-9) || 'NIL') }}
+                        </td>
+                        <!-- Sequence Number -->
+                        <td class="border px-4 py-2">
+                            {{ item.seqNo || 'NIL' }}
+                        </td>
+                        <!-- Submitted Date -->
+                        <td class="border px-4 py-2">
+                            {{ item.createdOn || 'NIL' }}
+                        </td>
+                        <!-- Status -->
+                        <td class="border px-4 py-2">
+                            {{ item.status || 'NIL' }}
+                        </td>
+                        <!-- Kyc Type -->
+                        <td class="border px-4 py-2">
+                            {{ item.kycType || 'NIL' }}
+                        </td>
+                        <!-- MM Wallet -->
+                        <td class="border px-4 py-2" (click)="onClickView(item)">
+                            {{ item.agentKyc?.custInfoMMWallet || item.customerKyc?.custInfoMMWallet ||
+                            item.masterAgentKyc?.companyWalletNumber || item.corporateKyc?.companyWalletNumber ||
+                            item.govtAgencyKyc?.walletNumber || item.ngoKyc?.walletNumber || 'NIL' }}
+                        </td>
+                        <td class="border px-4 py-2" *ngIf="kycPrivelege?.readPrivelege">
+                            <button type="submit" (click)="onClickView(item)" style="background-color: #0a365a;"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View
+                            </button>
+                        </td>
+                        <td class="border px-4 py-2" *ngIf="(item.status == 'REJECTED')">
+                            <button type="submit" (click)="onClickUpdate(item)" style="background-color: #0a365a;"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="flex justify-between mt-4" *ngIf="showPaginationButtons">
+                <!-- Previous Button -->
+                <button *ngIf="currentPage > 0"
+                    class="btn btn-primary px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    (click)="onPreviousPage()" style="background-color: #0a365a;">
+                    Previous
+                </button>
+                <!-- Next Button -->
+                <button class="btn btn-primary px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    (click)="onNextPage()" style="background-color: #0a365a;">
+                    Next
+                </button>
+            </div>
+            <div class="flex justify-between mt-4">
+                <button *ngIf="currentPageSearch > 0 && showPrevButtonsearch"
+                    class="btn btn-primary px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    (click)="onPreviousPageSearch()" [disabled]="currentPageSearch === 0"
+                    style="background-color: #0a365a;">
+                    Previous
+                </button>
+                <button *ngIf="showNextButtonSearch"
+                    class="btn btn-primary px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    (click)="onNextPageSearch()" style="background-color: #0a365a;">
+                    Next
+                </button>
+            </div>
+            <div class="row mt-4" *ngIf="selectedKycType">
+                <div class="col text-center">
+                    <p>Page {{ currentPage }}</p>
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="selectedSearchBy">
+                <div class="col text-center">
+                    <p>Page {{ currentPageSearch }}</p>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+<div *ngIf="isEnableRoute">
+    <app-customer-edit [data]="selectedCustomer"></app-customer-edit>
+</div>

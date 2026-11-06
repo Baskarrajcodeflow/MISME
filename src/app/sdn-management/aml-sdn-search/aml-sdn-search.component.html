@@ -1,0 +1,110 @@
+<div  class="card">
+  <div class="card-body">
+    <div class="w-full">
+      <form [formGroup]="searchForm" (ngSubmit)="onClickSearch()">
+        <div class="mb-4">
+          <div class="w-full">
+            <div class="form-group">
+              <label for="inputMiddleName" class="block text-sm font-medium text-gray-700">Name<span
+                  class="text-red-500">*</span></label>
+              <input type="text"
+                class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                formControlName="name" placeholder="Enter name to search" required>
+              <div
+                *ngIf="searchForm.get('name')?.invalid && (searchForm.get('name')?.touched || searchForm.get('name')?.dirty)"
+                class="text-red-500 text-sm">
+                <div *ngIf="searchForm.get('name')?.errors?.['required']"><small class="text-red-500">Name is
+                    required.</small></div>
+                <div *ngIf="searchForm.get('name')?.errors?.['pattern']"><small class="text-red-500">Name must contain
+                    only letters and spaces.</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="w-full">
+            <div class="form-group">
+              <label for="inputMiddleName" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+              <input type="date"
+                class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                formControlName="dob" placeholder="Enter date of birth">
+            </div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="w-full">
+            <div class="form-group">
+              <label for="inputMiddleName" class="block text-sm font-medium text-gray-700">Birth Country</label>
+              <select
+                class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                formControlName="birthCountry">
+                <option value="">Select Country</option>
+                <option *ngFor="let country of countries" [value]="country?.name">{{country?.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="mb-4">
+            <div class="w-full">
+              <div class="form-group">
+                <label for="inputMiddleName" class="block text-sm font-medium text-gray-700">Match</label>
+                <select class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" formControlName="percentage">
+                  <option *ngFor="let percent of percentages" [value]="percent">{{percent}}%</option>
+                </select>
+              </div>
+            </div>
+          </div> -->
+
+        <div class="flex space-x-4">
+          <button type="submit"
+            class="btn inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed"
+            [disabled]="!searchForm.valid">Search</button>
+          <button type="button" (click)="onReset()"
+            class="btn inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Reset</button>
+        </div>
+      </form>
+    </div>
+
+    <br><br>
+
+    <!-- <div class="w-full" *ngIf="afterSearch">
+        <div class="mb-4">
+          <textarea class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Comments here"></textarea>
+        </div>
+  
+        <div class="flex space-x-4">
+          <button class="btn inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Print</button>
+          <button (click)="onClickSave()" class="btn inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Save</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+    <div  class="h-full overflow-x-auto overflow-y-auto" *ngIf="afterSearch && !!searchResult && searchResult.length != 0">
+      <table class="min-w-full bg-blue border border-gray-300">
+        <thead style="background-color: rgb(10, 54, 90);">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">First
+              Name</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Last
+              Name</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Average
+              Weight</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let searchResult of searchResult" class="hover:bg-gray-100 cursor-pointer">
+            <td class="px-6 py-4 ">{{ searchResult.firstName }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ searchResult.lastName }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ searchResult.averageWeight }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="afterSearch && !!searchResult && !searchResult.length" class="text-center py-4">
+      <p class="text-gray-500">No matches found.</p>
+    </div>
+    </div>
+
+   <app-loader *ngIf="loading"></app-loader>

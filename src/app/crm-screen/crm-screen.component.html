@@ -1,0 +1,249 @@
+ <nav class="text-sm text-gray-500 ">
+  <ol class="list-reset flex">
+    <li><a routerLink="/dashboard" (click)="onNavigate('/dashboard')" class="text-blue-600 hover:underline">Dashboard</a></li>
+    <li><span class="mx-2">/</span></li>   
+    <li class="text-gray-700 font-medium">Search</li>
+  </ol>
+</nav>
+
+    <!-- <p class="text-sm text-gray-500 mb-6">
+      Find customers by entering any of the below details and get access to all information.
+    </p> -->
+<div class="flex items-center justify-center  bg-gray-100 p-8 rounded-md px-4">
+  <div class="w-3/4 items-center">
+   <!--  <nav *ngIf="searchResult.length != 0" class="-mb-px flex space-x-8" aria-label="Tabs">
+      <button (click)="activeTab = 'Search_Engine'; " [ngClass]="{
+        'border-blue-600 text-blue-600': activeTab === 'Search_Engine',
+        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'Search_Engine'
+      }" class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">
+        Search Engine
+      </button>
+      <button (click)="activeTab = 'Search_Result';" [ngClass]="{
+        'border-blue-600 text-blue-600': activeTab === 'Search_Result',
+        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'Search_Result'
+      }" class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">
+        Search Result
+      </button>
+
+
+    </nav> -->
+    <!-- <ng-container *ngIf="activeTab == 'Search_Engine'"> -->
+      <!--  <h2 class="text-lg font-semibold text-gray-800 mb-4 ">Search Customer</h2> -->
+     
+
+    <form class="flex flex-wrap gap-3" #searchForm="ngForm" (ngSubmit)="searchCustomer(searchForm)">
+      <!-- Row 1 -->
+         
+      <select required [(ngModel)]="selectedUserType" name="userType"
+          class="flex-1 min-w-[180px] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" (change)="onSelectUserType($event)">
+          <option value="" disabled>User Type</option>
+          <option value="CUSTOMER">Customer</option>
+          <option value="AGENT">Agent</option>
+          <option value="MERCHANT">Merchant</option>
+          <option value="MM_STAFF">MM Staff</option>
+          <option value="MASTER_AGENT">Master Agent</option>
+          <option value="CORPORATE">Corporate</option>
+        </select>
+      <!--   <select
+          class="flex-1 min-w-[180px] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" (change)="onSelectSearchKey($event)">
+          <option value="" >Search Key</option>
+         <option *ngFor="let item of searchOptions" [value]="item.value">{{item.label}}</option>         
+        </select> -->
+      <!-- OR -->
+      <!--<div class="text-gray-500 font-semibold px-1">OR</div>-->
+    
+       <input
+        class="w-3/4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+        type="text" placeholder="Full Name" (blur)="keySearchElement = true" (keypress)="onKeyPressName($event)" [(ngModel)]="searchName" name="name">
+       
+<!--          <div class="text-gray-500 font-semibold px-1">OR</div>-->      
+      <input  [(ngModel)]="searchEmail" name="email"
+        class="flex-1 min-w-[180px] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+        type="text" placeholder="Email" (blur)="keySearchElement = true">
+<!--         <div class="text-gray-500 font-semibold px-1">OR</div>
+ -->      <input  [(ngModel)]="searchPhone" name="phone"
+        class="flex-1 min-w-[180px] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+        type="text" placeholder="Phone Number" (blur)="keySearchElement = true" (keypress)="onKeyPressWalletOrPhone($event)"> 
+<!--              <div class="text-gray-500 font-semibold px-1">OR</div>
+ -->      <input  [(ngModel)]="searchWallet" name="wallet"
+        class="flex-1 min-w-[180px] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+        type="text" placeholder="Wallet Number" (blur)="keySearchElement = true" (keypress)="onKeyPressWalletOrPhone($event)">
+<!--       <div class="text-gray-500 font-semibold px-1">OR</div>
+ -->      <input  [(ngModel)]="searchIdProof" name="idProof"
+        class="flex-1 min-w-[180px] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+        type="text" placeholder="ID Proof Number" (blur)="keySearchElement = true">
+    </form>
+    <!-- Row 2 -->
+       <div class="flex justify-center mt-6">
+        <button class=" w-1/2 bg-[#f47a20] text-white font-semibold px-6 py-2 rounded hover:bg-orange-600 transition"
+          (click)="searchCustomer(searchForm)" [disabled]="(!searchForm.valid && !selectedUserType) && (!searchEmail || !searchPhone || !searchWallet || !searchName || !searchIdProof)">
+          Search Customer
+        </button>
+      </div>
+    
+
+    
+     
+
+    
+    
+  </div>
+  
+</div>
+<div class="flex items-center justify-center px-4 mt-2">
+  <div class="w-full">
+    <ng-container  *ngIf="activeTab == 'Search_Result' && searchResult.length != 0">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4 ">Search Results</h2>
+    <table class="w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Key Details
+          </th>
+          <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+           Basic Details
+          </th>
+        <!--   <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+           Company Details
+          </th> -->
+          <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Account Status
+          </th>
+           <!--  <th scope="col" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Logs
+          </th> -->
+        </tr>
+      </thead>
+      <app-loader *ngIf="isLoading"></app-loader>
+      
+     
+        <tbody class="bg-white divide-y divide-gray-200">
+          <ng-container *ngFor="let item of searchResult; let i = index">
+            <tr (click)="viewCustomer(item.userType, item.id, item)"
+              class="cursor-pointer transition duration-300 ease-in-out transform hover:bg-blue-50 hover:scale-102 hover:shadow-lg"
+              [ngClass]="{
+                    'bg-orange-50': i % 2 === 0,
+                    'bg-white': i % 2 !== 0
+                  }">
+              <td class="px-6 py-2 whitespace-nowrap">
+                <div class="flex items-center">
+                  <!-- <img [src]="transaction.profilePic" alt="Profile" class="w-10 h-10 rounded-full mr-4" /> -->
+                  <div class="text-medium font-medium text-gray-900">
+                       <p class="text-xs text-gray-500 p-1">
+                      Type :
+                      <span class=" text-sm text-gray-900">{{item?.userType}}</span>
+                    </p>
+                   
+                    <p class="text-xs text-gray-500 p-1">
+                      Phone :
+                      <span class=" text-sm text-gray-900">{{
+                        item?.phone
+                        }}</span>
+                    </p>
+                    <p class="text-xs text-gray-500 p-1">
+                      Wallet No :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.walletNo
+                        }}</span>
+                    </p>
+                    <!--  <p class="text-xs text-gray-500 p-1">
+                     ID Proof No :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.idProofNo
+                        }}</span>
+                    </p>
+ -->
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-2 whitespace-nowrap">
+               <div class="text-medium font-medium text-gray-900">
+                 <p class="text-xs text-gray-500 p-1">Email :
+                    <span class="text-sm  text-gray-900">
+                      {{ item?.email }}
+                    </span></p>
+                    <span class="text-xs text-gray-500 p-1">First Name :</span>
+                    <span class="text-sm">
+                      {{ item?.firstName }}
+                    </span>
+                    <p class="text-xs text-gray-500 p-1">
+                      Last Name :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.lastName
+                        }}</span>
+                    </p>
+                   <!--  <p class="text-xs text-gray-500 p-1">
+                      Gender :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.gender
+                        }}</span>
+                    </p> -->
+                    <!--  <p class="text-xs text-gray-500 p-1">
+                     Date of Birth :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.dob
+                        }}</span>
+                    </p> -->
+
+                  </div>
+                
+              </td>
+              <!-- <td class="px-6 py-2 whitespace-nowrap">
+               <div class="text-medium font-medium text-gray-900">
+                    <span class="text-xs text-gray-500 p-1">Company Name :</span>
+                    <span class="text-sm">
+                      {{ item?.companyName }}
+                    </span>
+                     <p class="text-xs text-gray-500 p-1">
+                      TIN Number :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.tinNumber
+                        }}</span>
+                    </p> 
+                     <p class="text-xs text-gray-500 p-1">
+                      Business License No :
+                      <span class="text-sm  text-gray-900">{{
+                        item?.businessLicenseNumber
+                        }}</span>
+                    </p> 
+                    
+
+                  </div>
+              </td> -->
+              <td class="px-6 py-2 whitespace-nowrap">
+                <div class="flex items-center space-x-3 mt-2"> <!-- // (click)="toggleState()"  -->
+                  
+                </div>                
+                <div class="flex items-center space-x-3">
+                  <div class="text-medium font-medium text-gray-900">
+                     <div class="flex items-center space-x-4">
+      <span class="font-semibold text-sm">Active</span>
+      <button disabled [ngClass]="item?.active ? 'bg-green-500' : 'bg-gray-300'"
+        class="relative w-10 h-6 rounded-full transition-colors duration-300">
+        <span [ngClass]="item?.active ? 'translate-x-7' : 'translate-x-1'"
+          class="absolute left-0 top-0 h-6 w-6 bg-white rounded-full shadow transform transition-transform duration-300"></span>
+      </button>
+    </div>
+                    
+                   
+                  </div>
+                  </div>
+              </td>
+            </tr>
+
+
+          </ng-container>
+
+        </tbody>
+      
+    </table>
+
+
+     </ng-container>
+     <ng-container  *ngIf="activeTab == 'Search_Result' && searchResult.length == 0 && !isLoading">
+       <div class="text-center py-10">
+         <p class="text-gray-500">No results found. Please try a different search.</p>
+       </div>
+       </ng-container>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+
+
+<app-generic-table
+  [columns]="amountLimitColumns"
+  [rows]="amountLimits"
+  (onSave)="handleSave($event)"
+  (onAddRowData)="addRow($event)"
+  (onDelete)="handleDelete($event)"
+  (onEdit)="handleEdit($event)">
+</app-generic-table>
+<app-loader *ngIf="isLoading"></app-loader>

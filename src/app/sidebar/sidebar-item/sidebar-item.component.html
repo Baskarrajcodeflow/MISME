@@ -1,0 +1,66 @@
+<!-- Module Item Container -->
+<div class="w-full">
+  
+  <!-- Accordion Header (Clickable) -->
+  <div
+    class="flex items-center justify-between w-full px-6 py-3.5 cursor-pointer transition-all duration-200"
+    [ngClass]="{
+      'bg-[#f4ece1] border-l-4 border-[#8c5e10]': isOpen,
+      'border-l-4 border-transparent hover:bg-[#f0ebd9]': !isOpen
+    }"
+    (click)="this.isOpen = !this.isOpen; toggleDropdown()"
+  >
+    <div class="flex items-center space-x-3">
+      <!-- Icon -->
+      <img 
+        [src]="module.icon" 
+        alt="Icon" 
+        class="w-5 h-5 object-contain transition-all duration-200" 
+        [ngClass]="isOpen ? 'opacity-100 sepia hue-rotate-[20deg]' : 'opacity-60'"
+      />
+      
+      <!-- Module Name -->
+      <span 
+        class="text-[15px] transition-colors duration-200" 
+        [ngClass]="isOpen ? 'font-bold text-[#8c5e10]' : 'font-medium text-gray-700'"
+      >
+        {{ module.name }}
+      </span>
+    </div>
+    
+    <!-- Chevron Icon -->
+    <svg
+      *ngIf="module.components?.length != 0"
+      class="transition-transform duration-300 ease-in-out w-4 h-4"
+      [ngClass]="isOpen ? 'rotate-180 text-[#8c5e10]' : 'text-gray-400'"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+    </svg>
+  </div>
+
+  <!-- Dropdown Content (Sub-links) -->
+  <div
+    *ngIf="module.components?.length != 0"
+    #dropdownMenu
+    [class.accordion-open]="isOpen"
+    class="accordion-content overflow-hidden bg-white"
+  >
+    <div class="py-1">
+      <a
+        *ngFor="let feature of module.components"
+        [routerLink]="feature.name"
+        [queryParams]="feature.queryParams"
+        (click)="getRouteLink()"
+        (click)="getComponentName(feature?.name)"
+        routerLinkActive="bg-[#f4ece1] text-[#8c5e10] font-semibold"
+        class="block px-6 py-2 ml-12 mr-4 my-0.5 text-[14px] text-gray-600 hover:text-[#8c5e10] hover:bg-[#f4ece1] transition-all duration-200 rounded-md"
+      >
+        {{ feature.displayLink }}
+      </a>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,412 @@
+<div class="bg-white rounded-xl shadow-md p-6">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div class="mb-4">
+    <h2 class="text-xl font-semibold text-[#4a517e]">Create Payment Journal Voucher</h2>
+    <p class="text-sm text-gray-500">Enter Payment Journal Transaction Details</p>
+  </div>
+
+  <div>
+    <span class="text-sm font-semibold text-gray-700 mb-1">
+      Current Date: <span class="text-gray-600 font-semibold text-md">{{ currentDate | date: 'MM/dd/yyyy' }}</span>
+    </span>
+  </div>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="journalForm">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Source Account Type <span class="text-red-500">*</span>
+        </label>
+
+        <select
+          formControlName="sourceAccType"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4a517e] focus:border-transparent"
+        >
+          <option value="">Select Source Account Type</option>
+          <option value="BANK">BANK</option>
+          <option value="CORPORATE">CORPORATE</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Destination Account Type<span class="text-red-500">*</span>
+        </label>
+
+        <select
+          formControlName="destinationAccType"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4a517e] focus:border-transparent"
+        >
+          <option value="">Select Destination Account Type</option>
+          <option value="CUSTOMER">CUSTOMER</option>
+           <option value="AGENT">AGENT</option>
+           <option value="SUBAGENT">SUBAGENT</option>
+           <option value="MERCHANT">MERCHANT</option>
+           <option value="CORPORATE">CORPORATE</option>
+        </select>
+      </div>
+      <!-- Source Account -->
+<div class="relative">
+
+  <label class="block text-sm font-medium text-gray-700 mb-1">
+    Source Account <span class="text-red-500">*</span>&nbsp;
+      <span class="text-sm font-semibold text-gray-700 mb-1 pt-2">
+         Available Balance: <span class="text-green-600 font-semibold text-md">{{ (currentBalance | number: '1.2-2') || '0.00' }}</span>
+        </span>
+  </label>
+
+  <input
+    type="text"
+    formControlName="sourceAcc"
+    (input)="searchSourceAccounts($event); checkSameAccounts()"
+    placeholder="Search Source Account Number"
+    autocomplete="off"
+    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4a517e]"
+  />
+
+  <!-- Suggestions Dropdown -->
+  <div
+    *ngIf="filteredSourceUsers.length > 0"
+    class="absolute z-50 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto"
+  >
+
+    <div
+      *ngFor="let user of filteredSourceUsers"
+      (click)="selectSourceAccount(user)"
+      class="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+    >
+
+      <!-- Account Number -->
+      <div class="font-semibold text-sm text-gray-800">
+        {{ user.name }} / {{ user.accountNo }}
+      </div>
+
+    </div>
+
+  </div>
+  <div
+  *ngIf="sourceUser"
+  class="mt-2 flex items-start justify-between rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 shadow-sm"
+>
+
+  <!-- Left -->
+  <div class="space-y-2 min-w-0">
+
+    <!-- Name + Badges -->
+    <div class="flex flex-wrap items-center gap-2">
+
+      <!-- Name -->
+      <p class="text-sm font-semibold text-gray-800">
+        {{ sourceUser.name }}
+      </p>
+
+      <!-- Wallet -->
+      <span
+        class="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-blue-700"
+      >
+        {{ sourceUser.walletType || 'USER' }}
+      </span>
+
+      <!-- KYC -->
+      <span
+        [ngClass]="{
+          'bg-green-100 text-green-700':
+            sourceUser.kycStatus === 'APPROVED',
+
+          'bg-yellow-100 text-yellow-700':
+            sourceUser.kycStatus === 'INREVIEW',
+
+          'bg-red-100 text-red-700':
+            sourceUser.kycStatus === 'REJECTED',
+
+          'bg-orange-100 text-orange-700':
+            sourceUser.kycStatus === 'INCOMPLETE',
+
+          'bg-gray-100 text-gray-600':
+            !sourceUser.kycStatus
+        }"
+        class="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+      >
+        {{
+          sourceUser.kycStatus
+            ? 'KYC ' + sourceUser.kycStatus
+            : 'KYC N/A'
+        }}
+      </span>
+
+    </div>
+
+    <!-- Account -->
+    <p class="text-xs text-gray-600">
+      <span class="font-semibold text-gray-500 uppercase">
+        Account:
+      </span>
+
+      <span class="ml-1 font-medium text-gray-700">
+        {{ sourceUser.accountNo }}
+      </span>
+    </p>
+
+     <p class="text-xs text-gray-600">
+      <span class="font-semibold text-gray-500 uppercase">
+        Company:
+      </span>
+
+      <span class="ml-1 font-medium text-gray-700">
+        {{ sourceUser.company || 'N/A' }}
+      </span>
+    </p>
+
+    <!-- Contact -->
+    <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+
+      <span class="flex items-center gap-1">
+        Phone: {{ sourceUser.phone || 'N/A' }}
+      </span>
+
+      <span class="flex items-center gap-1 truncate">
+        Email: {{ sourceUser.email || 'N/A' }}
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- Right Status -->
+  <span
+    [ngClass]="{
+      'bg-green-100 text-green-700':
+        sourceUser.accountStatus === 'ACTIVE',
+
+      'bg-red-100 text-red-700':
+        sourceUser.accountStatus !== 'ACTIVE'
+    }"
+    class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide h-fit"
+  >
+    {{ sourceUser.accountStatus || 'UNKNOWN' }}
+  </span>
+
+</div>
+  <!-- No Data -->
+<div
+  *ngIf="userNotFound"
+  class="absolute z-50 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 px-4 py-3 text-sm text-gray-500"
+>
+  No data available
+</div>
+
+</div>
+
+      <!-- Destination Account -->
+<!-- Destination Account -->
+<div class="relative">
+
+  <label class="block text-sm font-medium text-gray-700 mb-1">
+    Destination Account <span class="text-red-500">*</span>
+  </label>
+
+  <input
+    type="text"
+    formControlName="destinationAcc"
+    (input)="searchDestinationAccounts($event); checkSameAccounts()"
+    placeholder="Search Destination Account Number"
+    autocomplete="off"
+    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4a517e]"
+  />
+
+  <!-- Dropdown -->
+  <div
+    *ngIf="filteredDestinationUsers.length > 0"
+    class="absolute z-50 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto"
+  >
+
+    <div
+      *ngFor="let user of filteredDestinationUsers"
+      (click)="selectDestinationAccount(user)"
+      class="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+    >
+
+      <!-- Account Number -->
+      <div class="font-semibold text-sm text-gray-800">
+        {{ user.name }} / {{ user.accountNo }}
+      </div>
+
+    </div>
+
+  </div>
+  <!-- Destination User Info Card -->
+<!-- Compact User Info -->
+<div
+  *ngIf="destinationUser"
+  class="mt-2 flex items-start justify-between rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 shadow-sm"
+>
+
+  <!-- Left -->
+  <div class="space-y-2 min-w-0">
+
+    <!-- Name + Badges -->
+    <div class="flex flex-wrap items-center gap-2">
+
+      <!-- Name -->
+      <p class="text-sm font-semibold text-gray-800">
+        {{ destinationUser.name }}
+      </p>
+
+      <!-- Wallet -->
+      <span
+        class="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-blue-700"
+      >
+        {{ destinationUser.walletType || 'USER' }}
+      </span>
+
+      <!-- KYC -->
+      <span
+        [ngClass]="{
+          'bg-green-100 text-green-700':
+            destinationUser.kycStatus === 'APPROVED',
+
+          'bg-yellow-100 text-yellow-700':
+            destinationUser.kycStatus === 'INREVIEW',
+
+          'bg-red-100 text-red-700':
+            destinationUser.kycStatus === 'REJECTED',
+
+          'bg-orange-100 text-orange-700':
+            destinationUser.kycStatus === 'INCOMPLETE',
+
+          'bg-gray-100 text-gray-600':
+            !destinationUser.kycStatus
+        }"
+        class="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+      >
+        {{
+          destinationUser.kycStatus
+            ? 'KYC ' + destinationUser.kycStatus
+            : 'KYC N/A'
+        }}
+      </span>
+
+    </div>
+
+    <!-- Account -->
+    <p class="text-xs text-gray-600">
+      <span class="font-semibold text-gray-500 uppercase">
+        Account:
+      </span>
+
+      <span class="ml-1 font-medium text-gray-700">
+        {{ destinationUser.accountNo }}
+      </span>
+    </p>
+    <p class="text-xs text-gray-600">
+      <span class="font-semibold text-gray-500 uppercase">
+        Company:
+      </span>
+
+      <span class="ml-1 font-medium text-gray-700">
+        {{ destinationUser.company || 'N/A' }}
+      </span>
+    </p>
+
+    <!-- Contact -->
+    <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+
+      <span class="flex items-center gap-1">
+        Phone: {{ destinationUser.phone || 'N/A' }}
+      </span>
+
+      <span class="flex items-center gap-1 truncate">
+        Email: {{ destinationUser.email || 'N/A' }}
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- Right Status -->
+  <span
+    [ngClass]="{
+      'bg-green-100 text-green-700':
+        destinationUser.accountStatus === 'ACTIVE',
+
+      'bg-red-100 text-red-700':
+        destinationUser.accountStatus !== 'ACTIVE'
+    }"
+    class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide h-fit"
+  >
+    {{ destinationUser.accountStatus || 'UNKNOWN' }}
+  </span>
+
+</div>
+<div
+  *ngIf="destinationUserNotFound"
+  class="absolute z-50 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 px-4 py-3 text-sm text-gray-500"
+>
+  No data available
+</div>
+<div
+  *ngIf="
+    journalForm.get('destinationAcc')?.hasError('sameAccount')
+  "
+  class="text-red-500 text-sm mt-1"
+>
+  Source and Destination account cannot be same
+</div>
+</div>
+ 
+
+    </div>
+
+         <!-- Amount -->
+      <div class="mt-5">
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Amount <span class="text-red-500">*</span>
+        </label>
+
+        <input
+          type="number"
+          formControlName="amount"
+          placeholder="Enter Amount"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4a517e] focus:border-transparent"
+        />
+      </div>
+
+    <!-- Description Full Width -->
+    <div class="mt-5">
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        Description <span class="text-red-500">*</span>
+      </label>
+
+      <textarea
+        rows="3"
+        formControlName="description"
+        placeholder="Enter Description"
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4a517e] focus:border-transparent"
+      ></textarea>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end gap-3 mt-6">
+      <button
+        (click)="navigateToJournalEntries()"
+        type="button"
+        class="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50"
+      >
+        Cancel
+      </button>
+
+      <button
+        (click)="submitForm()"
+        type="submit"
+        [disabled]="journalForm.invalid"
+        class="px-6 py-2 rounded-lg bg-[#4a517e] text-white hover:bg-[#3b4164] shadow-sm disabled:opacity-50"
+      >
+        Create Entry
+      </button>
+    </div>
+  </form>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>

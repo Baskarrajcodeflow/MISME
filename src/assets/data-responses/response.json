@@ -1,0 +1,49 @@
+{
+    "paymentMoneyTransfer_subComponents" : 
+        [
+            {
+                "name" : "Product Master",
+                "id" : "productMaster"
+
+            },
+            {
+                "name" : "Transaction Limit",
+                "id" : "transactionLimit"
+
+            },
+            {
+                "name" : "Amount Limit",
+                "id" : "amountLimit"
+
+            },
+            {
+                "name" : "Third Party Charges and Commission",
+                "id" : "thirdPartyChargesCommission"
+
+            },
+            {
+                "name" : "Service Maintainance",
+                "id" : "serviceMaintainance"
+
+            },
+            {
+                "name" : "Fees and Commission",
+                "id" : "feesCommission"
+
+            },
+            {
+                "name" : "Cashback",
+                "id" : "cashback"
+
+            },
+            {
+                "name" : "Tax",
+                "id" : "tax"
+
+            }
+
+
+        ]
+        
+    
+}

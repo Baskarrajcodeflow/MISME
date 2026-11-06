@@ -1,0 +1,6 @@
+.customheight{
+    flex: 0 0 auto; /* Allow the aside to maintain its own height */
+    height: calc(100vh - var(--header-footer-height)); /* Calculate the height dynamically */
+    overflow-y: auto; /* Enable scrollbar for overflow */
+  }  
+  

@@ -1,0 +1,46 @@
+<div class="container mx-auto p-4" *ngIf="privilege?.readPrivelege">
+    <div class="flex justify-between items-center mb-4">
+        <div class="text-lg font-semibold">Transaction List</div>
+        <div class="flex justify-end">
+            <button
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        style="background-color: #0a365a;"
+            (click)="refreshData()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                class="w-5 h-5 mr-2 animate-spin">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4.929 4.929a10 10 0 0114.142 0M9 11H2V4m0 0h7m0 7v-7m7 7v-7" />
+            </svg>
+            Refresh
+        </button>
+        </div>
+    </div>
+
+<table class="min-w-full table-auto" >
+    <thead class="bg-gray-200">
+        <tr>
+            <th class="px-4 py-2">Transaction Date</th>
+            <th class="px-4 py-2">Transaction Number</th>
+            <th class="px-4 py-2">Service Name</th>
+            <th class="px-4 py-2">Debit Amount</th>
+            <th class="px-4 py-2">Credit Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of latestTransactions; let i = index">
+            <td class="border px-4 py-2">{{ item.date }}
+            <td class="border px-4 py-2">
+                {{ item.transNo }}
+            </td>
+            <td class="border px-4 py-2">{{ item.serviceName
+                }}
+            </td>
+            <td class="border px-4 py-2">{{ item.debitAmount }}
+            </td>
+            <td class="border px-4 py-2">{{ item.creditAmount }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

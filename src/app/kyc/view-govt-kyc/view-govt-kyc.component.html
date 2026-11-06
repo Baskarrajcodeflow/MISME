@@ -1,0 +1,1418 @@
+<div *ngIf="isLoading" class="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 bg-gray-800">
+    <div class="w-16 h-16 border-4 border-solid border-gray-300 rounded-full animate-spin border-t-transparent"></div>
+</div>
+<div class="scroll-container" #scrollContainer>
+    <span class="cursor-pointer" (click)="goback()">
+        <mat-icon>arrow_back</mat-icon>
+    </span>
+    <nav
+        class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex align-items-center -mt-[10px] justify-content-between">
+        <div class="navbar-brand">
+            <img src="assets/images/logo.png" alt="Logo" style="width: 120px; height: auto" />
+        </div>
+        <div class="card-header" style="padding-right: 180px">
+            <h4 class="card-title mb-0" style="font-weight: bold; font-size: 1.5rem">
+                <!-- فورم شناخت مناینده ماستر | شریک تجاری  -->
+            </h4>
+            <h4 class="card-title mb-0" style="font-weight: bold; font-size: 1.5rem; margin-top: 10px">
+                Govt Agency KYC Form
+            </h4>
+            <h4 style="padding-left: 120px; color: #1865a7; font-weight: bold" class="mt-1">
+                {{ seqNo }}
+            </h4>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <!-- <label class="mr-2">SuperAgent Photo:</label> -->
+            <i *ngIf="kycPrivelege?.updatePrivelege && userStatus === 'REJECTED'" class="fas fa-pencil-alt ml-2"
+                style="cursor: pointer" (click)="fileInput11.click()"></i>
+            <input type="file" #fileInput11 (change)="detectFilesPhoto($event)" style="display: none"
+                accept="image/*" />
+            <img src="{{imageUrl}}/kyc/static/{{ this.superImg }}" alt=""
+                style="width: 100px; height: 100px; margin-left: auto" />
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive" style="padding-top: 40px">
+                                    <form [formGroup]="superAgentForm" (ngSubmit)="onSubmitEdit()">
+                                        <table class="table">
+                                            <thead class="border-class pb-4">
+                                                <tr>
+                                                    <td class="bg-colo">Company Details</td>
+                                                    <td class="bg-colo th-second-row th-border-right"></td>
+                                                    <td class="bg-colo"></td>
+                                                    <td class="bg-colo th-second-row"></td>
+                                                </tr>
+                                            </thead>
+                                            <thead class="th-border">
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Account Title (Company Name):
+                                                        <input formControlName="accTitle" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('accTitle')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        عنوان صورت حساب
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        MM Wallet Number:
+                                                        <input formControlName="MMwallet" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('MMwallet')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :شماره حساب پولم
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Account Opening Date:
+                                                        <input formControlName="accOpenDate" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('accOpenDate')?.value ||
+                                  'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row"></td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Contact Person Name:
+                                                        <input formControlName="contactPerName" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('contactPerName')?.value ||
+                                  'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row"></td>
+                                                </tr>
+
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Contact Person Designation:
+                                                        <input formControlName="contactPerDesignation"
+                                                            [readonly]="readOnly" [value]="
+                                  superAgentForm.get('contactPerDesignation')
+                                    ?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row"></td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Number of Shareholders :
+                                                        <input formControlName="NoOfShareHolder" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('NoOfShareHolder')?.value ||
+                                  'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :ICCID شامره
+                                                    </td>
+                                                </tr>
+
+                                                <!-- <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left" class="td-width">
+                              Contact Person Tazkira/Passport Photo
+                              <img src="{{ imageUrl }}/kyc/static/{{
+                                  taskiraPhotoFront
+                                }}" alt="Signature" style="max-height: 50px; max-width: 150px" />
+                            </td>
+                            <td class="td-width th-border-right th-second-row"></td>
+                            <td style="text-align: left" class="td-width">
+                              Contact Person Digital Signature
+                              <img src="{{ imageUrl }}/kyc/static/{{
+                                  contactPersonSign
+                                }}" alt="Signature" style="max-height: 50px; max-width: 150px" />
+                            </td>
+                            <td class="td-width th-border-right th-second-row">
+                              شصت
+                            </td>
+                          </tr> -->
+
+                                                <!-- new -->
+                                            </thead>
+                                            <thead class="border-class pb-4">
+                                                <tr>
+                                                    <td class="bg-colo">
+                                                        Company Business License Details
+                                                    </td>
+                                                    <td class="bg-colo th-second-row th-border-right"></td>
+                                                    <td class="bg-colo"></td>
+                                                    <td class="bg-colo th-second-row"></td>
+                                                </tr>
+                                            </thead>
+                                            <thead class="th-border">
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        License Number :
+                                                        <input formControlName="licenseNo" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('licenseNo')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        : شامره جواز
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        License Issuance Authority:
+                                                        <input formControlName="licenseAuth" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('licenseAuth')?.value ||
+                                  'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row"></td>
+                                                </tr>
+                                                <!-- </thead>
+                                              <thead class="th-border"> -->
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Date of Issue:
+                                                        <input formControlName="issueDate" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('issueDate')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        : تاریخ صدور
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Date of Expiry:
+                                                        <input formControlName="expiryDate" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('expiryDate')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        : تاریخ ختم
+                                                    </td>
+                                                </tr>
+                                                <!-- </thead>
+                                              <thead class="th-border"> -->
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        TIN Number:
+                                                        <input formControlName="tinNo" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('tinNo')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        TIN شامره
+                                                    </td>
+
+                                                    <!-- <td style="text-align: left">
+                              Business License Photo
+                              <img src="{{ imageUrl }}/kyc/static/{{
+                                  businessLicensePhoto
+                                }}" alt="Signature" style="max-height: 50px; max-width: 150px" />
+                            </td>
+                            <td class="td-width th-second-row"></td> -->
+                                                </tr>
+                                            </thead>
+                                            <thead class="border-class pb-4">
+                                                <tr>
+                                                    <!-- not -->
+                                                    <td class="bg-colo">Company Business Activities</td>
+                                                    <td class="bg-colo th-second-row th-border-right"></td>
+                                                    <td class="bg-colo"></td>
+                                                    <td class="bg-colo th-second-row"></td>
+                                                </tr>
+                                            </thead>
+                                            <thead class="th-border">
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Business Name:
+                                                        <input formControlName="businessName" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('businessName')?.value ||
+                                  'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Nature of Business (Firm Type):
+                                                        <input formControlName="grossAnnualIncome" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('grossAnnualIncome')
+                                    ?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :نوعیت تجارت
+                                                    </td>
+                                                </tr>
+                                                <!-- </thead>
+                                              <thead class="th-border"> -->
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Monthly Income :
+                                                        <input formControlName="monthlyIncome" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('monthlyIncome')?.value ||
+                                  'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        عاید ماهانه
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Net Worth:
+                                                        <input formControlName="netWorth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('netWorth')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row"></td>
+                                                </tr>
+                                                <!-- </thead>
+                                              <thead class="th-border"> -->
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Source of Fund:
+                                                        <input formControlName="fundSrc" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('fundSrc')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :منبع وجوه مالی
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Monthly Turnover:
+                                                        <input formControlName="monthlyTurnover" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('monthlyTurnover')?.value ||
+                                  'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :معاملات ماهانه
+                                                    </td>
+                                                </tr>
+                                                <!-- </thead>
+                                              <thead class="th-border"> -->
+                                            </thead>
+                                            <!-- new -->
+                                            <thead class="border-class pb-4">
+                                                <tr>
+                                                    <td class="bg-colo">Company Address</td>
+                                                    <td class="bg-colo th-second-row th-border-right"></td>
+                                                    <td class="bg-colo"></td>
+                                                    <td class="bg-colo th-second-row"></td>
+                                                </tr>
+                                            </thead>
+                                            <thead class="th-border">
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Location:
+                                                        <input formControlName="cmpnyLoc" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('cmpnyLoc')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        موقعیت
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Street Number:
+                                                        <input formControlName="streetNo" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('streetNo')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :
+                                                    </td>
+                                                </tr>
+                                                <!-- </thead>
+                                              <thead class="th-border"> -->
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        House Number:
+                                                        <input formControlName="houseNo" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('houseNo')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row"></td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        District:
+                                                        <input formControlName="district" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('district')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        ولسوالی / ناحیه:
+                                                    </td>
+                                                </tr>
+                                                <!-- </thead>
+                                              <thead class="th-border"> -->
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Province:
+                                                        <input formControlName="province" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('province')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Country:
+                                                        <input formControlName="country" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('country')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row"></td>
+                                                </tr>
+                                                <tr class="mt-2 th-border-bottom">
+                                                    <td style="text-align: left" class="td-width">
+                                                        Office Phone Number:
+                                                        <input formControlName="offPhNo" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('offPhNo')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        :
+                                                    </td>
+                                                    <td style="text-align: left" class="td-width">
+                                                        Email Address:
+                                                        <input formControlName="cmpnyEmail" [readonly]="readOnly"
+                                                            [value]="
+                                  superAgentForm.get('cmpnyEmail')?.value || 'nil'
+                                " />
+                                                    </td>
+                                                    <td class="td-width th-border-right th-second-row">
+                                                        ایمیل آدرس
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left">
+                              Company Address Proof
+                              <img src="{{ imageUrl }}/kyc/static/{{
+                                  cmpnyAddressProofFront
+                                }}" alt="Signature" style="max-height: 50px; max-width: 150px" />
+                            </td>
+                            <td class="td-width th-second-row"></td>
+                          </tr> -->
+                                            </thead>
+                                            <!-- new -->
+                                            <!-- <thead class="border-class pb-4">
+                                                  <tr>
+                                                      <td class="bg-colo">Company Shareholder Details</td>
+                                                      <td class="bg-colo th-second-row th-border-right"></td>
+                                                      <td class="bg-colo"></td>
+                                                      <td class="bg-colo th-second-row">
+                                                      </td>
+                                                  </tr>
+                                              </thead>
+                                              <thead class="th-border">
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">
+                                                          First Name:
+                                                          <input formControlName="firstName" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('firstName')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">اسم
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Last Name:
+                                                          <input formControlName="lastName" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('lastName')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">تخلص
+                                                      </td>
+                                                  </tr>
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Father Name:
+                                                          <input formControlName="fatherName" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('fatherName')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">نام پدر</td>
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Tazkira/Passport Number:
+                                                          <input formControlName="tazkira" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('tazkira')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row"> شامره تذکره /
+                                                          پاسپورت </td>
+                                                  </tr>
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">Date of
+                                                          Birth:
+                                                          <input formControlName="dob" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('dob')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">:تاریخ
+                                                          تولد
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">Place of
+                                                          Birth:
+                                                          <input formControlName="birthPlace" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('birthPlace')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+  
+                                                      </td>
+                                                  </tr>
+  
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">Nationality:
+                                                          <input formControlName="Nationality" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('Nationality')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+  
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">Monthly Income:
+                                                          <input formControlName="shareholderIncome" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareholderIncome')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row"> عاید ماهانه</td>
+  
+                                                  </tr>
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Shareholding %:
+                                                          <input formControlName="shareholderPerc" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareholderPerc')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+  
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">Other Source of
+                                                          Income:
+                                                          <input formControlName="otherSrc" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('otherSrc')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+                                                      </td>
+                                                  </tr>
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Relationship
+                                                          (President/Vice-President/Shareholder):
+                                                          <input formControlName="shareholderRelation"
+                                                              [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareholderRelation')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+  
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">Phone Number:
+                                                          <input formControlName="shareholderPh" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareholderPh')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+                                                      </td>
+                                                  </tr>
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">
+                                                          TIN Number:
+                                                          <input formControlName="shareholderTin" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareholderTin')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">TIN شامره
+                                                      </td>
+                                                      <td style="text-align: left;">Shareholders Tazkira/Passport Photo
+                                                          <img src="{{imageUrl}}/kyc/static/{{shareholderPassportPhoto}}"
+                                                              alt="Signature"
+                                                              style="max-height: 50px; max-width: 150px;" />
+                                                      </td>
+                                                      <td class="td-width th-second-row"></td>
+                                                  </tr>
+                                              </thead> -->
+                                            <!-- <thead class="border-class pb-4">
+                                                  <tr>
+                                                      <td class="bg-colo">Current Address</td>
+                                                      <td class="bg-colo th-second-row th-border-right"></td>
+                                                      <td class="bg-colo"></td>
+                                                      <td class="bg-colo th-second-row">
+                                                      </td>
+                                                  </tr>
+                                              </thead>
+                                              <thead class="th-border">
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Location:
+                                                          <input formControlName="shareCurrLoc" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareCurrLoc')?.value || 'nil'" />
+                                                      </td>
+                                                      <td style="text-align: right;" class="td-width th-border-right">
+                                                          :موقعیت
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">District:
+                                                          <input formControlName="shareCurrDis" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareCurrDis')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+                                                          :ولسوالی/ناحیه:
+                                                      </td>
+                                                  </tr>
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">Province:
+                                                          <input formControlName="shareCurrPro" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareCurrPro')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+                                                          :ولایت/شهر
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Country:
+                                                          <input formControlName="shareCurrCount" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('shareCurrCount')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">:کشور
+                                                      </td>
+                                                  </tr>
+                                              </thead>
+                                              <thead class="border-class pb-4">
+                                                  <tr>
+                                                      <td class="bg-colo">Permanent Address</td>
+                                                      <td class="bg-colo th-second-row th-border-right"></td>
+                                                      <td class="bg-colo"></td>
+                                                      <td class="bg-colo th-second-row">
+                                                      </td>
+                                                  </tr>
+                                              </thead>
+                                              <thead class="th-border">
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Location:
+                                                          <input formControlName="sharePerLoc" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('sharePerLoc')?.value || 'nil'" />
+                                                      </td>
+                                                      <td style="text-align: right;" class="td-width th-border-right">
+                                                          :موقعیت
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">District:
+                                                          <input formControlName="sharePerDis" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('sharePerDis')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+                                                          :ولسوالی/ناحیه:
+                                                      </td>
+                                                  </tr>
+                                                  <tr class="mt-2 th-border-bottom">
+                                                      <td style="text-align: left;" class="td-width">Province:
+                                                          <input formControlName="sharePerPro" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('sharePerPro')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">
+                                                          :ولایت/شهر
+                                                      </td>
+                                                      <td style="text-align: left;" class="td-width">
+                                                          Country:
+                                                          <input formControlName="sharePerCount" [readonly]="readOnly"
+                                                              [value]="superAgentForm.get('sharePerCount')?.value || 'nil'" />
+                                                      </td>
+                                                      <td class="td-width th-border-right th-second-row">:کشور
+                                                      </td>
+                                                  </tr>
+                                              </thead> -->
+                                            <!-- <thead class="border-class pb-4">
+                          <tr>
+                            <td class="bg-colo">Authorized Signatory</td>
+                            <td class="bg-colo th-second-row th-border-right"></td>
+                            <td class="bg-colo"></td>
+                            <td class="bg-colo th-second-row"></td>
+                          </tr>
+                        </thead>
+                        <thead class="th-border">
+                          <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left" class="td-width">
+                              First Name:
+                              <input formControlName="firstNameAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('firstNameAuth')?.value ||
+                                  'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row">
+                              :
+                            </td>
+                            <td style="text-align: left" class="td-width">
+                              Last Name:
+                              <input formControlName="lastNameAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('lastNameAuth')?.value ||
+                                  'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row">
+                              :
+                            </td>
+                          </tr>
+                          <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left" class="td-width">
+                              Tazkira/Passport Number:
+                              <input formControlName="tazkiraAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('tazkiraAuth')?.value ||
+                                  'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row">
+                              :واردات
+                            </td>
+                            <td style="text-align: left" class="td-width">
+                              Date of Birth:
+                              <input formControlName="dobAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('dobAuth')?.value || 'nil'
+                                " />
+  
+                            </td>
+                            <td class="td-width th-border-right th-second-row">
+                              :تاریخ تولد
+                            </td>
+                          </tr>
+                          <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left" class="td-width">
+                              Place of Birth:
+                              <input formControlName="birthPlaceAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('birthPlaceAuth')?.value ||
+                                  'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row"></td>
+                            <td style="text-align: left" class="td-width">
+                              Nationality:
+                              <input formControlName="NationalityAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('NationalityAuth')?.value ||
+                                  'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row"></td>
+                          </tr>
+  
+                          <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left" class="td-width">
+                              Designation :
+                              <input formControlName="designationAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('designationAuth')?.value ||
+                                  'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row"></td>
+                            <td style="text-align: left" class="td-width">
+                              Resident Address (Location):
+                              <input formControlName="resiAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('resiAuth')?.value || 'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row"></td>
+                          </tr>
+                          <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left" class="td-width">
+                              Phone Number:
+                              <input formControlName="phAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('phAuth')?.value || 'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row"></td>
+                            <td style="text-align: left" class="td-width">
+                              Source of Income:
+                              <input formControlName="srcAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('srcAuth')?.value || 'nil'
+                                " />
+                            </td>
+                            <td class="td-width th-border-right th-second-row">
+                              منبع عاید
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td style="text-align: left" class="td-width">
+                              Monthly Income:
+                              <input formControlName="incomeAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('incomeAuth')?.value || 'nil'
+                                " />
+  
+                            </td>
+                            <td class="td-width th-border-right th-second-row">
+                              عاید ماهانه
+                            </td>
+                            <td style="text-align: left" class="td-width">
+                              Signatory Type:
+                              <input formControlName="typeAuth" [readonly]="readOnly" [value]="
+                                  superAgentForm.get('typeAuth')?.value || 'nil'
+                                " />
+  
+                            </td>
+                            <td class="td-width th-border-right th-second-row"></td>
+                          </tr>
+                          <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left">
+                              Authorized Signatory Photo
+                              <img src="{{ imageUrl }}/kyc/static/{{
+                                  AuthorizedSignPhotoFront
+                                }}" alt="Signature" style="max-height: 50px; max-width: 150px" />
+                            </td>
+                            <td class="td-width th-second-row"></td>
+                            <td style="text-align: left">
+                              Authorized Signatory Tazkira/Passport Photo
+                              <img src="{{ imageUrl }}/kyc/static/{{
+                                  AuthorizedSignTaskiraPhoto
+                                }}" alt="Signature" style="max-height: 50px; max-width: 150px" />
+                            </td>
+                            <td class="td-width th-second-row"></td>
+                          </tr>
+                          <tr class="mt-2 th-border-bottom">
+                            <td style="text-align: left">
+                              Authorization Letter (Power of Attorney) Photo
+                              <img src="{{ imageUrl }}/kyc/static/{{ powerPhoto }}" alt="Signature"
+                                style="max-height: 50px; max-width: 150px" />
+                            </td>
+                            <td class="td-width th-second-row"></td>
+                            <td style="text-align: left">
+                              Digital Signatures of Authorized Signatory
+                              <img src="{{ imageUrl }}/kyc/static/{{ DigitalSign }}" alt="Signature"
+                                style="max-height: 50px; max-width: 150px" />
+                            </td>
+                            <td class="td-width th-second-row"></td>
+                          </tr>
+                        </thead> -->
+                                            <thead class="border-class pb-4">
+                                                <tr>
+                                                    <td class="bg-colo">Undertaken</td>
+                                                    <td class="bg-colo th-second-row th-border-right"></td>
+                                                    <td class="bg-colo"></td>
+                                                    <td class="bg-colo th-second-row">تعــهد</td>
+                                                </tr>
+                                            </thead>
+                                            <thead class="th-border">
+                                                <tr>
+                                                    <td colspan="2" class="text-14">
+                                                        I hereby confirm that the above information is true
+                                                        and correct to the best of my knowledge and belief.
+                                                        And I accept the terms and conditions of ABMMC
+                                                        related to KYC policy and AML/CFT regulations.
+                                                    </td>
+                                                    <td colspan="2" class="text-14">
+                                                        بدینوسیله من تصدیق مینامیم که معلـــومات مذکور دقیق
+                                                        و صحیح می باشد. و من شرایط شرکت پولـــم افغــان
+                                                        بیسیم را در رابطـــه به پالــیسی KYC و مقـــررات
+                                                        مبارزه با پول شویی و متویل تروریزم می پذیرم
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <!-- <thead class="th-border">
+                          <tr>
+                            <th colspan="3" class="th-border-bottom">
+                              <tr>
+                                <td>President Name | اسم رییس :</td>
+                                <td>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  <input
+                                    formControlName="presidentName"
+                                    [readonly]="readOnly"
+                                    [value]="
+                                      superAgentForm.get('presidentName')
+                                        ?.value || 'nil'
+                                    "
+                                  />
+                                </td>
+                              </tr>
+                              <br />
+                              <tr>
+                                <td>Date | تاریخ :</td>
+                                <td>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  <input
+                                    formControlName="presidentDate"
+                                    [readonly]="readOnly"
+                                    [value]="
+                                      superAgentForm.get('presidentDate')
+                                        ?.value || 'nil'
+                                    "
+                                  />
+                                </td>
+                              </tr>
+                            </th>
+                          </tr>
+                        </thead>
+                        <thead class="th-border">
+                          <tr>
+                            <th colspan="3" class="th-border-bottom">
+                              <tr>
+                                <td>Vice President Name | اسم معاون :</td>
+                                <td>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  <input
+                                    formControlName="V_presidentName"
+                                    [readonly]="readOnly"
+                                    [value]="
+                                      superAgentForm.get('V_presidentName')
+                                        ?.value || 'nil'
+                                    "
+                                  />
+                                  
+                                </td>
+                              </tr>
+                              <br />
+                              <tr>
+                                <td>Date | تاریخ :</td>
+                                <td>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  <input
+                                    formControlName="V_presidentDate"
+                                    [readonly]="readOnly"
+                                    [value]="
+                                      superAgentForm.get('V_presidentDate')
+                                        ?.value || 'nil'
+                                    "
+                                  />
+                                </td>
+                              </tr>
+                            </th>
+                          </tr>
+                        </thead> -->
+                                            <thead class="th-border">
+                                                <tr>
+                                                    <td>
+                                                        Risk Category | نوعیت خطر :
+                                                        <sup style="color: red">*</sup>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        <input type="checkbox" value="low" [formControl]="riskLow"
+                                                            (change)="onCheckedRisk($event,'LOW')"
+                                                            style="border: 1px solid red" /><label class="pl-1 pr-2">Low
+                                                            | کم </label>
+                                                        <input type="checkbox" value="medium" [formControl]="riskMedium"
+                                                            (change)="onCheckedRisk($event,'MEDIUM')"
+                                                            style="border: 1px solid red" /><label class="pr-2">Medium |
+                                                            متوسط</label>
+                                                        <input type="checkbox" value="high" [formControl]="riskHigh"
+                                                            (change)="onCheckedRisk($event,'HIGH')"
+                                                            style="border: 1px solid red" /><label class="pr-2">High
+                                                            | بالا</label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Checked with Watchlist | چک شده با لیست تعزیرات:
+                                                        <sup style="color: red">*</sup>
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox" value="true" [formControl]="watchYes"
+                                                            (change)="onCheckedWatchlist($event,true)"
+                                                            style="border: 1px solid red"
+                                                            [checked]="watchTarget === true" /><label
+                                                            class="pl-1 pr-2">Yes</label>
+                                                        <input type="checkbox" value="false" [formControl]="watchNo"
+                                                            (change)="onCheckedWatchlist($event,true)"
+                                                            style="border: 1px solid red"
+                                                            [checked]="watchTarget === false" /><label
+                                                            class="pr-2">No</label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Remarks |
+                                                        <sup style="color: red">*</sup>
+                                                    </td>
+                                                    <td>
+                                                        <!-- <input *ngIf="!watchlistRemarksVal" class="col-lg-12 bordered-input" type="text"
+                                (input)="sendRemarksValue($event)" [formControl]="remark" style="border: 1px solid red"
+                                placeholder="Remarks" />
+                              <input *ngIf="watchlistRemarksVal" class="col-lg-12 bordered-input" type="text"
+                                [value]="watchlistRemarksVal" style="border: 1px solid red" /> -->
+                                                        <form [formGroup]="remarkForm">
+                                                            <input class="col-lg-12 bordered-input" type="text"
+                                                                (input)="sendRemarksValue($event)"
+                                                                formControlName="remark" style="border: 1px solid red;"
+                                                                placeholder="Remarks" [value]="watchlistRemarksVal">
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <thead class="border-class pb-4">
+                                                <tr>
+                                                    <td class="bg-colo">ABMMC Verification</td>
+                                                    <td class="bg-colo th-second-row th-border-right"></td>
+                                                    <td class="bg-colo"></td>
+                                                    <td class="bg-colo th-second-row">آدرس اصلی</td>
+                                                </tr>
+                                            </thead>
+                                            <thead class="th-border">
+                                                <!-- *ngIf="userStatus==='IN_REVIEW' || -->
+                                                <!-- userStatus==='REJECTED' || userStatus==='APPROVED'" -->
+                                                <tr *ngIf="userStatus==='IN_REVIEW' ||
+                          userStatus==='REJECTED' || userStatus==='APPROVED'">
+                                                    <td colspan="1" class="th-border-right">
+                                                        Signature/thumb | امضاء/شصت
+                                                        <i class="fas fa-upload cursor-pointer"
+                                                            (click)="fileInput2.click()"></i>
+                                                        <input type="file" #fileInput2 style="display: none"
+                                                            accept="image/jpeg, image/png, application/pdf"
+                                                            (change)="detectFilesCompliance($event)" />
+                                                        <span *ngIf="uploadedImageFileNameCompliance"
+                                                            class="text-sm text-gray-600">{{
+                                                            uploadedImageFileNameCompliance }}</span>
+                                                        <!-- old img -->
+                                                    </td>
+                                                    <th colspan="3" class="th-border-bottom">
+                                                <tr>
+                                                    <td>
+                                                        Approved By Compliance | تصدیق بخش پیروی از
+                                                        قوانین
+                                                        <sup style="color: red">*</sup>
+                                                    </td>
+                                                    <td>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <!-- <form [formGroup]="compForm"> -->
+                                                        <form [formGroup]="compForm">
+                                                            <input class="col-lg-12" formControlName="ComplianceInput"
+                                                                type="text"
+                                                                style="border: 1px solid red;width: 117%; max-width: 700px;"
+                                                                [readonly]="true">
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <br />
+
+                                                <tr>
+                                                    <td>
+                                                        Date | تاریخ :
+                                                        <sup style="color: red">*</sup>
+                                                    </td>
+                                                    <td>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <form [formGroup]="compForm">
+                                                            <input class="col-lg-12"
+                                                                formControlName="ComplianceDateInput" type="text"
+                                                                [readonly]="true">
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                </th>
+                                                </tr>
+                                                <div class="image-container"
+                                                    *ngIf="compSign && (userStatus=='APPROVED' || userStatus === 'VERIFIED_L1' || userStatus === 'VERIFIED_L2')">
+                                                    <img src="{{ imageUrl }}/kyc/static/{{this.compSign}}"
+                                                        alt="Signature" class="signature-image" />
+                                                </div>
+                                                <tr *ngIf="userStatus === 'VERIFIED_L1'">
+                                                    <td colspan="1" class="th-border-right">
+                                                        Compliance Head Signature/thumb | امضاء/شصت
+                                                        <i class="fas fa-upload cursor-pointer"
+                                                            (click)="fileInputCompHead.click()"></i>
+                                                        <input type="file" #fileInputCompHead style="display: none"
+                                                            accept="image/jpeg, image/png, application/pdf"
+                                                            (change)="detectFilesCompHeadSign($event)" />
+                                                        <span *ngIf="uploadedImageCompHeadSignName"
+                                                            class="text-sm text-gray-600">{{
+                                                            uploadedImageCompHeadSignName }}</span>
+                                                        <!-- old img -->
+                                                    </td>
+                                                    <th colspan="3" class="th-border-bottom"></th>
+                                                </tr>
+                                                <div class="image-container" *ngIf="compHedSign">
+                                                    <img src="{{imageUrl}}/kyc/static/{{this.compHedSign}}"
+                                                        alt="Signature" class="signature-image" />
+                                                </div>
+                                                <tr *ngIf="userStatus === 'VERIFIED_L2'">
+                                                    <td colspan="1" class="th-border-right">
+                                                        CEO Signature/thumb | امضاء/شصت
+                                                        <i class="fas fa-upload cursor-pointer"
+                                                            (click)="fileInputCEO.click()"></i>
+                                                        <input type="file" #fileInputCEO style="display: none"
+                                                            accept="image/jpeg, image/png, application/pdf"
+                                                            (change)="detectFilesCEOSign($event)" />
+                                                        <span *ngIf="uploadedImageCEOSignName"
+                                                            class="text-sm text-gray-600">{{
+                                                            uploadedImageCEOSignName }}</span>
+                                                        <!-- old ceo img was here -->
+                                                    </td>
+                                                    <th colspan="3" class="th-border-bottom"></th>
+                                                </tr>
+                                                <div class="image-container" *ngIf="ceoSign">
+                                                    <img src="{{imageUrl}}/kyc/static/{{this.ceoSign}}" alt="Signature"
+                                                        class="signature-image" />
+                                                </div>
+                                                <tr *ngIf="showAbmmcHigh && userStatus === 'IN_REVIEW'">
+                                                    <td colspan="1" class="th-border-right">
+                                                        Attachment
+                                                        <i class="fas fa-upload cursor-pointer"
+                                                            (click)="fileInputAttachment.click()"
+                                                            *ngIf="userStatus === 'IN_REVIEW'"></i>
+                                                        <input type="file" #fileInputAttachment style="display: none"
+                                                            accept="image/jpeg, image/png, application/pdf"
+                                                            (change)="detectFilesAttachment($event)" />
+                                                        <span *ngIf="uploadedImageAttachmentName"
+                                                            class="text-sm text-gray-600">{{
+                                                            uploadedImageAttachmentName }}</span>
+                                                    </td>
+                                                    <th colspan="3" class="th-border-bottom"></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </form>
+                                    <br />
+                                    <!-- *ngIf="showUpdate" -->
+                                    <div class="flex justify-end space-x-4">
+                                        <button type="submit" (click)="onSubmitEdit()" style="background-color: #0a365a"
+                                            *ngIf="kycPrivelege?.updatePrivelege &&
+                          userStatus === 'REJECTED'"
+                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Update Corporate
+                                        </button>
+                                        <button type="submit" (click)="checkRisk()" style="background-color: #0a365a"
+                                            *ngIf="userStatus != 'APPROVED' || userStatus != 'REJECTED'"
+                                            class="button-full-width bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Check Risk Profile</button>&nbsp;&nbsp;&nbsp;
+                                        <button *ngIf="userStatus != 'APPROVED' || userStatus != 'REJECTED'"
+                                            type="submit" (click)="checkSdn()" style="background-color: #0a365a"
+                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Check with SDN</button>&nbsp;&nbsp;&nbsp;
+                                        <button type="submit" (click)="viewShareholder()"
+                                            style="background-color: #0a365a"
+                                            class="button-full-width bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            View Shareholders
+                                        </button>
+                                        <button type="submit" (click)="viewAuthSignatory()"
+                                            style="background-color: #0a365a"
+                                            class="button-full-width bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            View Authorized signatory
+                                        </button>
+                                    </div>
+                                    <!-- <div class="py-4">
+                                          <div class="flex items-center space-x-4">
+                                              <label class="block">Select Product:</label>
+                                              <select
+                                                  class="flex-grow p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-tableHheaderBlue"
+                                                  placeholder="Description" (change)="onChangeGetProduct($event)">
+                                                  <option></option>
+                                                  <option *ngFor="let product of products" [value]="product?.id">
+                                                      {{
+                                                      product.productName }}</option>
+                                              </select>
+                                              <button type="submit" (click)="saveChangedProduct()"
+                                                  style="background-color: #0a365a;"
+                                                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save
+                                              </button>
+                                          </div>
+                                      </div> -->
+                                    <br />
+                                    <div class="flex items-center space-x-4">
+                                        <!-- <div class="flex-shrink-0">
+                        <span (click)="makePdf()" class="cursor-pointer">
+                          <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                        </span>
+                      </div> -->
+                                        <div class="flex-grow flex flex-col space-y-4">
+                                            <!-- First Row: Reject Reason and Reject Button -->
+                                            <div class="flex items-center space-x-4" *ngIf="
+                            userStatus != 'APPROVED' || userStatus != 'REJECTED'
+                          ">
+                                                <label class="block">Reject Reason:</label>
+                                                <input type="text" [formControl]="reason"
+                                                    class="flex-grow p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-tableHheaderBlue"
+                                                    placeholder="Enter reject reason here" />
+                                                <button type="button" (click)="onClickReject()"
+                                                    [disabled]="!reason.value" style="background-color: #0a365a"
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                    Reject
+                                                </button>
+                                            </div>
+                                            <div class="flex justify-end">
+                                                <div class="flex items-center space-x-4">
+                                                    <!-- Approve Button 1 -->
+                                                    <button type="submit" (click)="onClickApprove1()"
+                                                        *ngIf="showApprove1Btn" [disabled]="!isFormValidApprove1()"
+                                                        style="background-color: #0a365a" [ngClass]="{
+                                'bg-gray-300 text-gray-500 cursor-not-allowed':
+                                  !isFormValidApprove1(),
+                                'bg-blue-500 text-white': isFormValidApprove1()
+                              }" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        Verify L1
+                                                    </button>
+                                                    <!-- <button type="submit" (click)="onClickApprove1Only()"
+                                                      *ngIf="userStatus==='IN_REVIEW'"  [disabled]="!isFormValidApprove1()" 
+                                                      style="background-color: #0a365a;"
+                                                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Verify
+                                                      L1
+                                                  </button> -->
+                                                    <!-- Approve Button 2 -->
+                                                    <button type="submit" (click)="onClickApprove2()"
+                                                        *ngIf="showApprove2Btn" [disabled]="!isFormValidApprove2Only()"
+                                                        style="background-color: #0a365a"
+                                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        Verify L2
+                                                    </button>
+                                                    <button type="submit" (click)="onClickApprove2Only()"
+                                                        *ngIf="userStatus === 'VERIFIED_L1'"
+                                                        [disabled]="!isFormValidApprove2Only()"
+                                                        style="background-color: #0a365a"
+                                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        Verify L2
+                                                    </button>
+                                                    <!-- Final Approve Button -->
+                                                    <button type="submit" (click)="onClickApproveFinal()"
+                                                        *ngIf="showApproveFinalBtn" [disabled]="!isFormValidApprove()"
+                                                        style="background-color: #0a365a" [ngClass]="{
+                                'bg-gray-300 text-gray-500 cursor-not-allowed':
+                                  !isFormValidApprove(),
+                                'bg-blue-500 text-white': isFormValidApprove()
+                              }" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        Approve
+                                                    </button>
+                                                    <button type="submit" (click)="onClickApproveFinalOnly()"
+                                                        *ngIf="userStatus === 'VERIFIED_L2'"
+                                                        [disabled]="!isFormValidApproveFinalOnly()"
+                                                        style="background-color: #0a365a"
+                                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        Approve
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Alert Message -->
+                                        <div *ngIf="alertMessage" [ngClass]="{
+                          'bg-green-100 border-green-500 text-green-700':
+                            alertType === 'success',
+                          'bg-red-100 border-red-500 text-red-700':
+                            alertType === 'error'
+                        }" class="p-4 mb-4 rounded-md border-l-4 flex justify-between items-center">
+                                            <span>{{ alertMessage }}</span>
+                                            <button (click)="closeAlert()" class="text-xl font-bold">
+                                                &times;
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="bg-gray-50 flex flex-col justify-center items-center py-10"></div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- sdn Details -->
+                <div *ngIf="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 max-h-[80vh] overflow-y-auto">
+                        <h2 class="text-lg font-semibold mb-4">SDN Details</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-200">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">
+                                            Name
+                                        </th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">
+                                            Match Percentage
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of sdnDetails" class="hover:bg-gray-50">
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            {{ detail.firstName }}
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            {{ detail.averageWeight }}%
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button (click)="closeModal()" style="background-color: #0a365a"
+                            class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Close
+                        </button>
+                    </div>
+                </div>
+                <!-- Risk Profile -->
+                <div *ngIf="showRiskModal"
+                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 max-h-[80vh] overflow-y-auto">
+                        <h2 class="text-lg font-semibold mb-4">Risk Profile</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-200">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <!-- <th class="py-2 px-4 border-b border-gray-200 text-left">Name</th> -->
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">
+                                            Score
+                                        </th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">
+                                            Tier
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let detail of riskDetails" class="hover:bg-gray-50">
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            {{ detail.score }}
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            {{ detail.riskTier }}%
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button (click)="closeRiskModal()" style="background-color: #0a365a"
+                            class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Close
+                        </button>
+                    </div>
+                </div>
+                <!-- sdnAndRiskView -->
+                <div *ngIf="showSdnAndRiskView"
+                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 max-h-[80vh] overflow-y-auto">
+                        <h2 class="text-lg font-semibold mb-4">SDN View</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-200">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Name</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Match Percentage</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Sdn Source</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Date of Birth</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Address1</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Address2</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Address3</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Country</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">City</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">Postal Code</th>
+                                        <th class="py-2 px-4 border-b border-gray-200 text-left">State Or Province</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of sdnView; let i = index" class="hover:bg-gray-50">
+                                        <td class="py-2 px-4 border-b border-gray-200">{{ detail.fullName }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-200">{{ detail.averageWeight }}%</td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <a [href]="detail.sdnSource" target="_blank">{{ detail.sdnSource }}</a>
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <div *ngFor="let dob of detail.dobList">
+                                                {{ dob.dob }}
+                                            </div>
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <div *ngFor="let address of detail.addressList">
+                                                {{ address.address1 || 'NIL' }}
+                                            </div>
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <div *ngFor="let address of detail.addressList">
+                                                {{ address.address2 || 'NIL' }}
+                                            </div>
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <div *ngFor="let address of detail.addressList">
+                                                {{ address.address3 || 'NIL' }}
+                                            </div>
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <div *ngFor="let address of detail.addressList">
+                                                {{ address.country || 'NIL' }}
+                                            </div>
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <div *ngFor="let address of detail.addressList">
+                                                {{ address.city || 'NIL' }}
+                                            </div>
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <div *ngFor="let address of detail.addressList">
+                                                {{ address.postalCode || 'NIL' }}
+                                            </div>
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            <div *ngFor="let address of detail.addressList">
+                                                {{ address.stateOrProvince || 'NIL' }}
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <button (click)="closeRiskAndSdnModal()" style="background-color: #0a365a;"
+                            class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card" style="margin-top: 16px; border: 2px solid gray">
+        <div class="space-y-2 py-4 px-4">
+            <div *ngFor="let file of fileLists;let i = index" class="flex justify-between items-center border-b pb-2">
+                <div class="flex items-center space-x-2">
+                    <!--    <img *ngIf="file.type === 'image'" src="assets/img-icon.png" alt="image icon" class="w-6 h-6">
+                  <img *ngIf="file.type === 'pdf'" src="assets/pdf-icon.png" alt="pdf icon" class="w-6 h-6"> -->
+                    <p class="text-sm text-gray-700">{{ file.name }}</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-blue-600" (click)="viewFile(file.url)">
+                        <i class="fas fa-eye"></i>
+                        <!-- View Icon -->
+                    </button>
+                    <button class="text-gray-600 hover:text-blue-600" (click)="printFile(file.url)">
+                        <i class="fas fa-print"></i>
+                        <!-- Print Icon -->
+                    </button>
+                    <button class="text-gray-600 hover:text-blue-600" (click)="downloadFile(file.url)">
+                        <i class="fas fa-download"></i>
+                        <!-- Download Icon -->
+                    </button>
+                    <button *ngIf="userStatus === 'REJECTED' && isFileInOtherDocs(file.url)"
+                        class="text-red-600 hover:text-red-800" (click)="deleteFile(i)">
+                        <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card" style="margin-top: 16px; border: 2px solid gray;">
+        <div class="space-y-2 py-4 px-4">
+            <!-- First Row: Download PDF -->
+            <!-- <div class="flex justify-between items-center border-b pb-2">
+          <div class="flex items-center space-x-2">
+            <label>Download PDF</label>
+          </div>
+          <div class="flex items-center">
+            <span (click)="makePdf()" class="cursor-pointer text-gray-600 hover:text-blue-600">
+              <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+            </span>
+          </div>
+        </div> -->
+
+            <!-- Second Row: Download Risk -->
+            <div class="flex justify-between items-center border-b pb-2">
+                <div class="flex items-center space-x-2">
+                    <label>Download Risk Result</label>
+                </div>
+                <div class="flex items-center">
+                    <span (click)="riskChecked ? makeRiskPdf() : null"
+                        class="cursor-pointer text-gray-600 hover:text-blue-600"
+                        [class.cursor-not-allowed]="!riskChecked">
+                        <i class="fa fa-download fa-2x" aria-hidden="true" [class.text-gray-400]="!riskChecked"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Third Row: Download Sdn -->
+            <div class="flex justify-between items-center border-b pb-2">
+                <div class="flex items-center space-x-2">
+                    <label>Download Sdn Result</label>
+                </div>
+                <div class="flex items-center">
+                    <span (click)="sdnChecked ? makeSdnPdf() : null"
+                        class="cursor-pointer text-gray-600 hover:text-blue-600"
+                        [class.cursor-not-allowed]="!sdnChecked">
+                        <i class="fa fa-download fa-2x" aria-hidden="true" [class.text-gray-400]="!sdnChecked"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="dialog-container">
+    <button mat-icon-button class="close-icon" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+ 
+    <div class="table-container mt-[10px]">
+        <div class="scroll-table">
+          <table>
+            <thead style="background-color: rgb(10, 54, 90)">
+              <tr class="cursor-pointer divide-x divide-gray-200">
+                <th class="py-2 px-4 border">Amount</th>
+                <th class="py-2 px-4 border">Phone</th>
+                <th class="py-2 px-4 border">Service Name</th>
+                <th class="py-2 px-4 border">Status</th>
+                <th class="py-2 px-4 border">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let result of completedStatus"
+                class="hover:bg-gray-100 cursor-pointer divide-x divide-gray-200"
+              >
+                <td class="py-6 px-4 border font-medium text-sm">
+                  {{ result['amount'] }}
+                </td>
+                <td class="py-6 px-4 border font-medium text-sm">
+                  {{ result['customerPhone'] }}
+                </td>
+                <td class="py-6 px-4 border font-medium text-sm">
+                  {{ result['serviceName'] }}
+                </td>
+                <td class="py-6 px-4 border font-medium text-sm">
+                  {{ result['status'] }}
+                </td>
+                <td class="py-6 px-4 border font-medium text-sm">
+                  {{ result['message'] }}
+                </td>
+                         </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </div>
+  
+  <ng-container *ngIf="SalaryPrivelege?.authorizePrivelege">
+    <div *ngIf="data?.flag == 0"
+      class="w-full"
+      style="display: flex; justify-content: flex-end; margin-left: -16px"
+    >
+      <button
+      (click)="confirmDialog(true)"
+        type="submit"
+        class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+        style="background-color: #0a365a; margin-right: 10px"
+      >
+        Authorize
+      </button>
+      <button
+      (click)="confirmDialog(false)"
+        type="submit"
+        class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+        style="background-color: #0a365a"
+      >
+        Reject
+      </button>
+    </div>
+  </ng-container>
+  
+  <app-loader *ngIf="isLoading"></app-loader>
+  

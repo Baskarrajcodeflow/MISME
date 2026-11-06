@@ -1,0 +1,83 @@
+<form [formGroup]="merchantForm" (ngSubmit)="onSave()" class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
+  <h2 class="text-xl font-semibold text-center mb-6">Merchant Registration</h2>
+  <div class="grid grid-cols-1 gap-4">
+    <div class="mb-4">
+      <label for="companyName" class="block text-sm font-medium text-gray-700">Company Name</label>
+      <input id="companyName" type="text" formControlName="companyName" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div *ngIf="merchantForm.controls['companyName'].invalid && (merchantForm.controls['companyName'].dirty || merchantForm.controls['companyName'].touched)" class="text-red-500 text-sm mt-1">
+        Company Name is required.
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="licenseNumber" class="block text-sm font-medium text-gray-700">License Number</label>
+      <input id="licenseNumber" type="text" formControlName="licenseNumber" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div *ngIf="merchantForm.controls['licenseNumber'].invalid && (merchantForm.controls['licenseNumber'].dirty || merchantForm.controls['licenseNumber'].touched)" class="text-red-500 text-sm mt-1">
+        License Number is required.
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="userType" class="block text-sm font-medium text-gray-700">Choose Sub Agent</label>
+      <select id="userType" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" (change)="onSelectAgent($event)">
+        <option *ngFor="let subagent of subagents" [value]="subagent?.id">{{subagent?.firstName}}</option>
+      </select>
+      <!-- <div *ngIf="merchantForm.controls['userType'].invalid && (merchantForm.controls['userType'].dirty || merchantForm.controls['userType'].touched)" class="text-red-500 text-sm mt-1">
+        Please select a sub agent.
+      </div> -->
+    </div>
+
+    <div class="mb-4" *ngIf="isActiveAgentDropDown">
+      <label for="agent" class="block text-sm font-medium text-gray-700">Agent</label>
+      <select id="agent" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <option>{{agentName}}</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <input id="email" type="email" formControlName="email" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div *ngIf="merchantForm.controls['email'].invalid && (merchantForm.controls['email'].dirty || merchantForm.controls['email'].touched)" class="text-red-500 text-sm mt-1">
+        Please enter a valid email.
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+      <input id="phone" type="text" formControlName="phone" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div *ngIf="merchantForm.controls['phone'].invalid && (merchantForm.controls['phone'].dirty || merchantForm.controls['phone'].touched)" class="text-red-500 text-sm mt-1">
+        Phone must be 9 digits.
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="commissionPercentage" class="block text-sm font-medium text-gray-700">Commission Percentage</label>
+      <input id="commissionPercentage" type="text" formControlName="commissionPercentage" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div *ngIf="merchantForm.controls['commissionPercentage'].invalid && (merchantForm.controls['commissionPercentage'].dirty || merchantForm.controls['commissionPercentage'].touched)" class="text-red-500 text-sm mt-1">
+       Enter a valid Commission Percentage.
+      </div>
+    </div>
+
+    <div class="mb-4" *ngIf="!disableField">
+      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+      <input id="password" type="password" formControlName="password" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div *ngIf="merchantForm.controls['password'].invalid && (merchantForm.controls['password'].dirty || merchantForm.controls['password'].touched)" class="text-red-500 text-sm mt-1">
+        Password is required.
+      </div>
+    </div>
+
+    <div class="mb-4" *ngIf="!disableField">
+      <label for="password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+      <input id="password" type="password" formControlName="password" class="mt-1 block w-full h-8 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div *ngIf="merchantForm.controls['password'].invalid && (merchantForm.controls['password'].dirty || merchantForm.controls['password'].touched)" class="text-red-500 text-sm mt-1">
+        Password is required.
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-between mt-6">
+    <button type="button" (click)="onCancel()" class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Cancel</button>
+    <button type="submit" [disabled]="merchantForm.invalid" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            style="background-color: #0a365a;">Save</button>
+  </div>
+</form>

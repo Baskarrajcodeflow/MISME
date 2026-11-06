@@ -1,0 +1,139 @@
+<div class="max-w-6xl mx-auto p-6 bg-gray-100 ">
+  <!-- Header Section -->
+  <div class="mb-8 text-center">
+    <h1 class="text-4xl font-bold text-gray-800">Detailed Analysis</h1>
+    <p class="text-gray-600">A deeper insight into the file.</p>
+  </div>
+  <!-- Summary Section -->
+  <div *ngIf="summary" class="summary-section mb-8 bg-white p-6 rounded-lg shadow">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <!-- Ignored Records -->
+      <div *ngIf="dataPreviewResponse?.ignoredRecords?.length" class="summary-card bg-yellow-100 p-4  rounded">
+        <h3 class="text-lg font-medium text-gray-700">Ignored Records:</h3>
+        <ul class="list-disc list-inside">
+          <li *ngFor="let record of dataPreviewResponse!.ignoredRecords">
+            {{ record }}
+          </li>
+        </ul>
+      </div>
+      <div class="summary-card bg-gray-100 p-4 rounded">
+        <h3 class="text-sm text-gray-700">Total Duplicate Accounts</h3>
+        <p class="text-lg font-bold text-gray-900">{{ summary.totalDuplicateAccounts }}</p>
+      </div>
+      <div class="summary-card bg-blue-100 p-4 rounded">
+        <h3 class="text-sm text-blue-700">Total Entries excluding ignored records</h3>
+        <p class="text-lg font-bold text-blue-900">{{ summary.totalEntries }}</p>
+      </div>
+      <div class="summary-card bg-green-100 p-4 rounded">
+        <h3 class="text-sm text-green-700">Total Amount</h3>
+        <p class="text-lg font-bold text-green-900">{{ summary.totalAmount | currency }}</p>
+      </div>
+      <div class="summary-card bg-yellow-100 p-4 rounded">
+        <h3 class="text-sm text-yellow-700">Average Risk Score</h3>
+        <p class="text-lg font-bold text-yellow-900">{{ summary.averageRiskScore }}</p>
+      </div>
+    </div>
+
+
+
+  </div>
+
+  <div *ngIf="summary" class="action-section mt-4 mb-8 bg-white p-6 rounded-lg shadow">
+    <div class="mb-8 text-center">
+      <h4 class="text-1xl font-bold text-gray-800">Custom workflow</h4>
+      <p class="text-gray-600">Define Rules and Instructions.</p>
+    </div>
+
+    <div class="summary-card bg-purple-100 p-4 rounded">
+      <h3 class="text-sm text-purple-700">Risk Tiers</h3>
+      <span class="text-xs">* describe what to do when an account falls in one of the below category</span>
+      <ul>
+        <li *ngFor="let tier of objectKeys(summary.riskTierCounts)">
+          {{ tier }}
+          <select id="lowBalance" [ngModel]="lowBalanceAction()" (ngModelChange)="lowBalanceAction.set($event)"
+            class="text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+            <option value="" disabled>Actions</option>
+            <option *ngFor="let format of actions" [value]="format">
+              {{ format }}
+            </option>
+          </select>
+        </li>
+      </ul>
+    </div>
+    <div class="summary-card bg-pink-100 p-4 mt-2 rounded">
+      <h3 class="text-sm text-pink-700">Account status</h3>
+      <span class="text-xs">* describe what to do when an account falls in one of the below category</span>
+      <ul>
+        <li *ngFor="let status of objectKeys(summary.statusCounts)">
+          {{ status }}
+          <select id="lowBalance" [ngModel]="lowBalanceAction()" (ngModelChange)="lowBalanceAction.set($event)"
+            class=" text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+            <option value="" disabled>Actions</option>
+            <option *ngFor="let format of actions" [value]="format">
+              {{ format }}
+            </option>
+          </select>
+        </li>
+      </ul>
+    </div>
+
+    <div class="text-red-300 font-semibold mt-4">
+      Low Balance
+      <span class="text-xs">* describe what to do when account balance falls below total amount : {{ summary.totalAmount | currency }}</span>
+
+        <select id="lowBalance" [ngModel]="lowBalanceAction()" (ngModelChange)="lowBalanceAction.set($event)"
+          class="text-base border-gray-300 ml-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+          <option value="" disabled>Actions</option>
+          <option *ngFor="let format of lowBalanceActions" [value]="format">
+            {{ format }}
+          </option>
+        </select>
+    </div>
+  </div>
+  <!-- Data Entries Table -->
+  <div *ngIf="dataPreviewResponse?.dataEntry?.length" class="data-entries mb-6 bg-white p-6 rounded-lg shadow">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Data Entries</h2>
+    <table class="min-w-full bg-white rounded-lg shadow-sm">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Name</th>
+          <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Amount</th>
+          <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Account</th>
+          <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Account status</th>
+          <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Risk score</th>
+          <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Risk tire</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of dataPreviewResponse?.dataEntry" class="border-b hover:bg-gray-50">
+          <td class="py-4 px-6 text-gray-800">{{ entry.name }}</td>
+          <td class="py-4 px-6 text-gray-800">{{ entry.amount | currency }}</td>
+          <td class="py-4 px-6 text-gray-800">{{ entry.accountNumber }}</td>
+          <td class="py-4 px-6 text-gray-800">{{ entry.status }}</td>
+          <td class="py-4 px-6 text-gray-800">
+            {{ entry.riskScore }}
+          </td>
+          <td class="py-4 px-6 text-gray-800">{{ entry.riskTier }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons flex space-x-4">
+    <button (click)="onReUpload()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+      ReUpload
+    </button>
+    <button (click)="onSchedule()"
+      class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+      Schedule
+    </button>
+    <button (click)="onScheduleWithError()"
+      class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors">
+      Schedule with Error
+    </button>
+    <button (click)="onDeleteFile()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
+      Delete this File
+    </button>
+  </div>
+</div>

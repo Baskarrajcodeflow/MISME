@@ -1,0 +1,44 @@
+<div class="">
+    <div>
+        <!-- <app-validate-file></app-validate-file> -->
+        <app-corp-chooser (corporateSelected)="onCorporateSelected($event)"/>
+
+    </div>
+    <div *ngIf="makerCreate.selectedCorp()">
+        <app-csv-upload (fileUploaded)="onFileUploaded($event)"/>
+    </div>
+    <div *ngIf="makerCreate.fileUploaded()">
+        <app-csv-validation-report (validationEvent)="onValidationEvent($event)" />
+    </div>
+    <div *ngIf="makerCreate.fileValidated()">
+        <app-csv-validation-report />
+    </div>
+    <div *ngIf="makerCreate.fileAnalysed()">
+        <app-scheduler
+  (onScheduled)="handleScheduled($event)"
+  (onUploadNewFile)="handleUploadNewFile()"
+  (onClose)="handleClose()"
+  (onActivate)="handleActivate()"
+></app-scheduler> />
+    </div>
+    <div class="mt-[20px]"  *ngIf="showFiles">
+        <div class="action-buttons flex space-x-4 items-center justify-center">
+            <button (click)="onReUpload()"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                ReUpload File
+            </button>
+            <!-- <button (click)="onReSchedule()"
+                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                ReSchedule
+            </button> -->
+            <!-- <button (click)="onClose()"
+                class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors">
+                Close
+            </button> -->
+            <button  (click)="onNewFileUpload()"
+                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                Done
+            </button>
+        </div>
+    </div>
+</div>

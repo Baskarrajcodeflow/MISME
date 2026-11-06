@@ -1,0 +1,482 @@
+<div class="dialog-container">
+  <div class="flex items-center gap-3 mb-1 -mt-2">
+
+  <!-- Search Input With Icon -->
+  <div  *ngIf="this.data?.id == 4 && data?.message == 'reconciliation'" class="relative w-72">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search By Phone/Account No/UID"
+      class="pl-4 pr-10 py-2 border rounded-md w-full text-sm 
+             focus:outline-none focus:ring-2 focus:ring-blue-200"
+    />
+
+    <!-- Search Icon -->
+    <span (click)="filterTable()" class="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M21 21l-4.35-4.35m1.15-5.4a6.55 6.55 0 11-13.1 0 6.55 6.55 0 0113.1 0z" />
+      </svg>
+    </span>
+  </div>
+</div>
+  <button mat-icon-button class="close-icon" (click)="closeDialog()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <div *ngIf="this.data?.id == 0" class="overflow-x-auto mt-[10px]">
+    <div class="table-container-uploaded">
+      <div class="scroll-table">
+        <table class="min-w-full border border-gray-200 text-left">
+          <thead style="background-color: rgb(10, 54, 90)">
+            <tr class="cursor-pointer divide-x divide-gray-200">
+              <th class="py-2 px-4 border">Name</th>
+              <th class="py-2 px-4 border">Account</th>
+              <th class="py-2 px-4 border">Amount</th>
+              <th class="py-2 px-4 border">Email</th>
+              <th class="py-2 px-4 border">Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let row of parsedData"
+              class="hover:bg-gray-100 cursor-pointer divide-x divide-gray-200"
+            >
+              <td class="py-2 px-4 border">{{ row["name"] }}</td>
+              <td class="py-2 px-4 border">{{ row["account"] }}</td>
+              <td class="py-2 px-4 border">{{ row["amount"] }}</td>
+              <td class="py-2 px-4 border">{{ row["email"] }}</td>
+              <td class="py-2 px-4 border">{{ row["phone#"] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="this.data?.id == 2" class="overflow-x-auto mt-[10px]">
+    <!-- <table class="min-w-full h-[200px] border border-gray-200 text-left">
+    
+        </table> -->
+    <div class="table-container">
+      <div class="scroll-table">
+        <table>
+          <thead style="background-color: rgb(10, 54, 90)">
+            <tr class="cursor-pointer divide-x divide-gray-200">
+              <th class="py-2 px-4 border">KYC Name</th>
+              <th class="py-2 px-4 border">KYC Phone</th>
+              <th class="py-2 px-4 border">KYC Email</th>
+              <th class="py-2 px-4 border">Wallet Status</th>
+              <th class="py-2 px-4 border">Actual Name</th>
+              <th class="py-2 px-4 border">Account</th>
+              <th class="py-2 px-4 border">Amount</th>
+              <th class="py-2 px-4 border">Actual Email</th>
+              <th class="py-2 px-4 border">Actual Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let result of comparisonResults"
+              class="hover:bg-gray-100 cursor-pointer divide-x divide-gray-200"
+            >
+              <td class="py-6 px-4 border font-medium text-sm">
+                {{ result.kycName }}
+              </td>
+              <td class="py-6 px-4 border font-medium text-sm">
+                {{ result.kycPhone }}
+              </td>
+              <td class="py-6 px-4 border font-medium text-sm">
+                {{ result.kycEmail }}
+              </td>
+              <td class="py-6 px-4 border font-medium text-sm">
+                {{ result.walletStatus }}
+              </td>
+              <td
+                class="py-6 px-4 border font-medium text-sm"
+                [ngClass]="{ 'bg-red-100 text-red-600': result.nameMismatch }"
+              >
+                {{ result.actualName }}
+              </td>
+              <td class="py-6 px-4 border font-medium text-sm">
+                {{ result.actualAccount }}
+              </td>
+              <td class="py-6 px-4 border font-medium text-sm">
+                {{ result.actualAmount }}
+              </td>
+              <td
+                class="py-6 px-4 border font-medium text-sm"
+                [ngClass]="{ 'bg-red-100 text-red-600': result.emailMismatch }"
+              >
+                {{ result.actualEmail }}
+              </td>
+              <td
+                class="py-6 px-4 border font-medium text-sm"
+                [ngClass]="{ 'bg-red-100 text-red-600': result.phoneMismatch }"
+              >
+                {{ result.actualPhone }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="this.data?.id == 4 && data?.message != 'reconciliation'" class="overflow-x-auto mt-[10px]">
+       <div class="table-container-uploaded-new">
+      <div class="scroll-table">
+        <table class="min-w-full border border-gray-200 text-left">
+          <thead style="background-color: rgb(10, 54, 90)">
+            <tr class="cursor-pointer divide-x divide-gray-200">
+              <th class="py-2 px-4 border">UID</th>
+              <th class="py-2 px-4 border">Transaction Date</th>
+              <th class="py-2 px-4 border">Name</th>
+              <th class="py-2 px-4 border">Account No</th>
+              <th class="py-2 px-4 border">Amount</th>
+              <th class="py-2 px-4 border">Email</th>
+              <th class="py-2 px-4 border">Phone</th>
+              <th class="py-2 px-4 border">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let row of displayedDataNew"
+              class="hover:bg-gray-100 cursor-pointer divide-x divide-gray-200"
+            >
+              <td class="py-2 px-4 border">{{ row["id"] }}</td>
+              <td class="py-2 px-4 border">{{ row?.updatedOn | date : "medium"}}</td>
+              <td class="py-2 px-4 border">{{ row["name"] }}</td>
+              <td class="py-2 px-4 border">{{ row["accountNumber"] }}</td>
+              <td class="py-2 px-4 border">{{ row["amount"] | number : "1.2-2" }}</td>
+              <td class="py-2 px-4 border">{{ row["email"] }}</td>
+              <td class="py-2 px-4 border">{{ row["phone"] }}</td>
+              <td class="py-2 px-4 border">
+                <span
+                  [ngClass]="{
+                    'bg-green-100 text-green-700':
+                      row.processed == true,
+                    'bg-yellow-100 text-yellow-700':
+                      row.processed == false
+                  }"
+                  class="px-3 py-1 rounded-full font-medium text-sm inline-block"
+                >
+                  {{
+                    row.processed == true
+                      ? "Processed"
+                      : "Not Processed"
+                  }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flex justify-between mb-2">
+        <div>
+          <div class="mt-[9px] pl-[10px]">
+           <span class="font-serif font-semibold">Processed Data:</span>
+          </div>
+          <div class="mt-[4px] pl-[10px]">
+           <span class="font-serif font-semibold">Total Amount:</span> {{totalAmount  | number : "1.2-2"}}
+          </div>
+          <div class="mt-[4px] pl-[10px]">
+           <span class="font-serif font-semibold">Total Amount Processed:</span> {{totalAmountProcessed  | number : "1.2-2"}}
+          </div>
+          <div class="mt-[4px] pl-[10px] pb-1">
+           <span class="font-serif font-semibold">Total Amount UnProcessed:</span> {{totalAmountUnProcessed  | number : "1.2-2"}}
+          </div>
+          <div class="mt-[4px] pl-[10px] pb-1">
+           <span class="font-serif font-semibold">Closing Balance:</span> {{clsoingBalance  | number : "1.2-2"}}
+          </div>
+        </div>
+        <div class="pr-5 mt-[30px]">
+          <div class="mt-[9px] ">
+           <span class="font-serif font-semibold">Total Count:</span> {{completedStatus?.length}}
+          </div>
+          <div class="mt-[4px] ">
+           <span class="font-serif font-semibold">Total Processed Count:</span> {{processedCount}}
+          </div>
+          <div class="mt-[4px]  pb-1">
+           <span class="font-serif font-semibold">Total UnProcessed Count:</span> {{unprocessedCount}}
+          </div>
+        </div>
+      </div>
+    </div>
+     <div class="pagination mt-4 flex justify-center items-center">
+      <button
+        class="py-2 px-4 bg-gray-200 text-sm mr-2"
+        [disabled]="currentPage === 1"
+        (click)="changePageNew('prev')"
+      >
+        Previous
+      </button>
+      <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
+      <button
+        class="py-2 px-4 bg-gray-200 text-sm ml-2"
+        [disabled]="currentPage === totalPages"
+        (click)="changePageNew('next')"
+      >
+        Next
+      </button>
+    </div>
+    <!-- <div class="table-container-uploaded">
+      <div class="scroll-table">
+        <table class="min-w-full border border-gray-200 text-left">
+          <thead style="background-color: rgb(10, 54, 90)">
+            <tr class="cursor-pointer divide-x divide-gray-200">
+              <th class="py-2 px-4 border">UID</th>
+                          <th class="p-2 border">Transaction Date</th>
+              <th class="py-2 px-4 border">Name</th>
+              <th class="py-2 px-4 border">Account No</th>
+              <th class="py-2 px-4 border">Amount</th>
+              <th class="py-2 px-4 border">Email</th>
+              <th class="py-2 px-4 border">Phone</th>
+              <th class="py-2 px-4 border">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let row of completedStatus"
+              class="hover:bg-gray-100 cursor-pointer divide-x divide-gray-200"
+            >
+              <td class="py-2 px-4 border">{{ row["id"] }}</td>
+                          <td class="p-2 border">{{ row.updatedOn | date:"dd-MMM-yyyy hh:mm a" }}</td>
+              <td class="py-2 px-4 border">{{ row["name"] }}</td>
+              <td class="py-2 px-4 border">{{ row["accountNumber"] }}</td>
+              <td class="py-2 px-4 border">{{ row["amount"] }}</td>
+              <td class="py-2 px-4 border">{{ row["email"] }}</td>
+              <td class="py-2 px-4 border">{{ row["phone"] }}</td>
+              <td class="py-2 px-4 border">
+                <span
+                  [ngClass]="{
+                    'bg-green-100 text-green-700':
+                      row.processed == true,
+                    'bg-yellow-100 text-yellow-700':
+                      row.processed == false
+                  }"
+                  class="px-3 py-1 rounded-full font-medium text-sm inline-block"
+                >
+                  {{
+                    row.processed == true
+                      ? "Processed"
+                      : "Not Processed"
+                  }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> -->
+  </div>
+    <div *ngIf="this.data?.id == 4 && data?.message == 'reconciliation'" class="overflow-x-auto mt-[10px]">
+      <!-- Search Bar with Icon -->
+<!-- Search Section -->
+
+
+
+    <div class="table-container">
+      <div class="scroll-table">
+    <table class="min-w-full border border-gray-200 text-left">
+  <thead style="background-color: rgb(10, 54, 90)" class="text-white">
+    <tr class="divide-x divide-gray-200">
+              <th class="py-2 px-4 border">UID</th>
+      <th class="py-2 px-4 border">Name</th>
+      <th class="py-2 px-4 border">Account No</th>
+      <th class="py-2 px-4 border">Amount</th>
+      <th class="py-2 px-4 border">Email</th>
+      <th class="py-2 px-4 border">Phone</th>
+      <th class="py-2 px-4 border">Status</th>
+      <!-- <th class="py-2 px-4 border">Select</th> -->
+      
+
+   <th class="py-2 px-4 border">
+  <div class="flex items-center justify-center gap-2">
+    <span>Select All</span>
+    <input
+      type="checkbox"
+      [(ngModel)]="selectAll"
+      (change)="toggleSelectAll()"
+      class="w-4 h-4 cursor-pointer"
+    />
+  </div>
+</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr
+      *ngFor="let row of completedStatus"
+      class="hover:bg-gray-100 divide-x divide-gray-200"
+    >
+              <td class="py-2 px-4 border">{{ row["id"] }}</td>
+      <td class="py-2 px-4 border">{{ row.name }}</td>
+      <td class="py-2 px-4 border">{{ row.accountNumber }}</td>
+      <td class="py-2 px-4 border">{{ row.amount }}</td>
+      <td class="py-2 px-4 border">{{ row.email }}</td>
+      <td class="py-2 px-4 border">{{ row.phone }}</td>
+
+      <td class="py-2 px-4 border">
+        <span
+          [ngClass]="{
+            'bg-green-100 text-green-700': row.processed === true,
+            'bg-yellow-100 text-yellow-700': row.processed === false
+          }"
+          class="px-3 py-1 rounded-full font-medium text-sm inline-block"
+        >
+          {{ row.processed ? "Processed" : "Not Processed" }}
+        </span>
+      </td>
+
+      <td class="py-2 px-4 border text-center">
+        <input *ngIf="row.processed === true"
+          type="checkbox"
+          [(ngModel)]="row.selected"
+          (change)="onRowSelectChange(row)"
+          class="w-4 h-4 cursor-pointer"
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="SalaryPrivelege?.authorizePrivelege">
+  <div
+    *ngIf="this.data?.id == 2"
+    class="w-full"
+    style="display: flex; justify-content: flex-end; margin-left: -16px"
+  >
+    <button
+      (click)="authorize()"
+      type="submit"
+      class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+      style="background-color: #0a365a; margin-right: 10px"
+    >
+      Authorize
+    </button>
+    <button
+      (click)="confirmDialog()"
+      type="submit"
+      class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+      style="background-color: #0a365a"
+    >
+      Reject
+    </button>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="SalaryPrivelege?.authorizePrivelege">
+  <div
+    *ngIf="this.data?.id == 4 && data?.message == 'reconciliation'"
+    class="w-full"
+    style="display: flex; justify-content: flex-end; margin-left: -16px;margin-top: -5px;"
+  >
+<button
+(click)="submit()"
+  [disabled]="selectedRows.length === 0"
+  type="submit"
+  class="
+    px-4 py-2 text-sm font-medium rounded-md text-white
+    border border-transparent
+    focus:outline-none focus:ring-2 focus:ring-offset-2
+    disabled:opacity-50 disabled:cursor-not-allowed
+  "
+  [ngStyle]="{
+    'background-color': selectedRows.length === 0 ? '#9ca3af' : '#0a365a'
+  }"
+  style="margin-right: 10px"
+>
+  Submit
+</button>
+
+  </div>
+</ng-container>
+
+<app-loader *ngIf="isLoading"></app-loader>
+
+
+
+<div *ngIf="showDialog" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-[900px] max-h-[80vh] overflow-y-auto">
+
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold">Search Results</h2>
+      <button (click)="close()" class="text-xl font-bold">×</button>
+    </div>
+
+    <div class="border rounded-md overflow-auto max-h-[60vh]">
+      <table class="min-w-full border">
+        <thead class="bg-blue-900 text-white text-sm">
+          <tr>
+            <th class="p-2 border">UID</th>
+            <th class="p-2 border">Name</th>
+            <th class="p-2 border">Account No</th>
+            <th class="p-2 border">Amount</th>
+            <th class="p-2 border">Email</th>
+            <th class="p-2 border">Phone</th>
+            <th class="p-2 border">Status</th>
+            <th class="p-2 border">Select</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let row of searchData" class="hover:bg-gray-100">
+            <td class="p-2 border">{{ row.id }}</td>
+            <td class="p-2 border">{{ row.name }}</td>
+            <td class="p-2 border">{{ row.accountNumber }}</td>
+            <td class="p-2 border">{{ row.amount }}</td>
+            <td class="p-2 border">{{ row.email }}</td>
+            <td class="p-2 border">{{ row.phone }}</td>
+            <td class="p-2 border">
+              <span
+                [ngClass]="{
+                  'bg-green-100 text-green-700': row.processed,
+                  'bg-yellow-100 text-yellow-700': !row.processed
+                }"
+                class="px-3 py-1 rounded-full text-xs"
+              >
+                {{ row.processed ? 'Processed' : 'Not Processed' }}
+              </span>
+            </td>
+
+            <td class="p-2 border text-center">
+              <input 
+                *ngIf="row.processed"
+                type="checkbox"
+                [(ngModel)]="row.selected"
+                (change)="onRowSelectChangeForSearch(row)"
+                class="w-4 h-4 cursor-pointer"
+              />
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+    <!-- 🔥 ADD THIS CONFIRM BUTTON -->
+    <div class="flex justify-end mt-4">
+      <button 
+        class="bg-blue-600 text-white px-4 py-2 rounded shadow"
+        (click)="confirmSelectedRow()">
+        OK
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

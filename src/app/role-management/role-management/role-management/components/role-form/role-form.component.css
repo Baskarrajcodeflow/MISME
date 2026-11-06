@@ -1,0 +1,23 @@
+.role-management {
+    padding: 20px;
+  }
+  
+  .role-list {
+    float: left;
+    width: 30%;
+  }
+  
+  .role-form {
+    float: right;
+    width: 65%;
+  }
+  
+  .role-form h3, .role-form h4 {
+    margin-top: 10px;
+  }
+  
+  .role-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  

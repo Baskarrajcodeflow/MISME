@@ -1,0 +1,71 @@
+<div class="h-full overflow-x-auto overflow-y-auto">
+<table class="min-w-full border border-gray-300">
+  <thead style="background-color: rgb(10, 54, 90)">
+    <tr>
+      <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Created On</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Created By</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Total Amount</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Status</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Action</th>
+    </tr>
+  </thead>
+
+  <tbody class="bg-white divide-y divide-gray-200">
+
+    <!-- Loop through parent -->
+    <ng-container *ngFor="let item of reversalData">
+
+            <!-- Loop through reversals -->
+            <tr *ngIf="item?.status  === 'PENDING'" class="hover:bg-gray-100">
+      
+              <!-- Created On -->
+              <td class="px-6 py-4 whitespace-nowrap">
+                {{ item.reversalCreatedOn | date: "MMM d, y, h:mm:ss a" }}
+              </td>
+      
+              <!-- Created By -->
+              
+                      
+              <td class="px-6 py-4 whitespace-nowrap">
+                Name: {{ item.reversalCreatedBy.firstName }} {{ item.reversalCreatedBy.lastName }} <br />
+                Email: {{ item.reversalCreatedBy.email }} <br />
+                Phone: {{ item.reversalCreatedBy.phone }} <br />
+              </td>
+  <td class="px-6 py-4 whitespace-nowrap">
+                {{ item.totalAmount }}
+              </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+               <span
+          [ngClass]="{
+            'bg-green-100 text-green-700': item?.status  === 'APPROVED',
+            'bg-yellow-100 text-yellow-700': item?.status  === 'PENDING',
+            'bg-red-100 text-red-700': item?.status  === 'REJECTED'
+          }"
+          class="px-3 py-1 rounded-full font-medium text-sm inline-block"
+        >
+          {{ item?.status }}
+        </span>
+              </td>
+              <!-- Action -->
+              <td class="px-6 py-4 whitespace-nowrap">
+                <button
+                  (click)="nextpage(item,0)"
+                  class="px-2 py-1 rounded-lg text-white font-medium shadow-md hover:shadow-lg transition"
+                  style="background-color: rgb(10, 54, 90);"
+                >
+                  View
+                </button>
+              </td>
+      
+            </tr>
+        </ng-container>
+        
+
+
+  </tbody>
+  
+</table>
+
+
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

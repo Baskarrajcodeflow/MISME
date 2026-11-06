@@ -1,0 +1,219 @@
+<div class="container mx-auto p-4 m-h-[100px] table-container">
+  <form [formGroup]="form">
+    <div>
+      <div class="flex gap-4 mt-4">
+        <div class="w-1/2">
+          <div class="mb-4">
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Product Name</label
+            >
+            <input
+              formControlName="productName"
+              type="text"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Select Category</label
+            >
+            <select
+              formControlName="category"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>----</option>
+              <option>CUSTOMER</option>
+              <option>CORPORATE</option>
+              <option>AGENT</option>
+            </select>
+          </div>
+          <div class="mb-4" *ngIf="form.controls['category'].value == 'AGENT'">
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Agent Commission</label
+            >
+            <input
+              formControlName="agentCommission"
+              type="text"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+        <div class="w-1/2">
+          <div class="mb-4">
+            <label class="block text-gray-700" style="font-size: 14px"
+              >Description</label
+            >
+            <input
+              formControlName="description"
+              type="text"
+              class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div class="mb-4 flex gap-[10%] mt-[7%]">
+            <div class="mt-[9px]">is Default Product?</div>
+            <div>
+              <mat-radio-group
+                formControlName="isDefault"
+                aria-label="Select an option"
+              >
+                <mat-radio-button [value]="true">Yes</mat-radio-button>
+                <mat-radio-button [value]="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-red-600">Funding and Withdrawal</div>
+    <div class="mb-4 mt-[10px]">
+      <label class="block text-gray-700" style="font-size: 14px"
+        >Select Funding & Withdrawal Product</label
+      >
+      <select
+        formControlName="fundingAndWithdrawal"
+        (ngModelChange)="fpwDataChanged($event)"
+        class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option disabled>Select an option</option>
+        <option *ngFor="let item of fpwServiceArray" [ngValue]="item">
+          {{ item?.name }}
+        </option>
+      </select>
+    </div>
+  </form>
+
+  <form [formGroup]="myForm" *ngIf="this.form.controls['category'].value == 'AGENT'">
+    <div formArrayName="serviceFields">
+      <div
+        *ngFor="let serviceField of serviceFields.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div class="mb-4 mt-[10px]">
+          <label class="block text-gray-700" style="font-size: 14px"
+            >Select Funding & Withdrawal Service</label
+          >
+          <select  (ngModelChange)="fwpServiceDataChange($event, i)"
+            formControlName="fwpService"
+            class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option disabled>Select an option</option>
+            <option *ngFor="let item of fwpServiceData" [ngValue]="item">
+              {{ item?.ptService?.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-4 mt-[10px]">
+          <label class="block text-gray-700" style="font-size: 14px"
+            >Select Agency Fees & Commission</label
+          >
+          <select (ngModelChange)="fwpagencyfeesandCommission($event, i)"
+            formControlName="fwpagencyfeesandCommission"
+            class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option disabled>Select an option</option>
+            <option
+              *ngFor="let item of agencyFeesAndCommission"
+              [ngValue]="item"
+            >
+              {{ item?.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+      (click)="addServiceField()"
+    >
+      + AFAC Charge for Service
+    </button>
+  </form>
+
+  <div class="text-red-600">Payment and Money Transfer</div>
+  <form [formGroup]="form">
+    <div class="mb-4 mt-[10px]">
+      <label class="block text-gray-700" style="font-size: 14px"
+        >Select Payment and Money Transfer Product</label
+      >
+      <select
+        formControlName="paymentTransfer"
+        (ngModelChange)="ptDataChanged($event)"
+        class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option disabled>Select an option</option>
+        <option *ngFor="let item of ptServiceArray" [ngValue]="item">
+          {{ item?.name }}
+        </option>
+      </select>
+    </div>
+  </form>
+
+  <form [formGroup]="ptForm" *ngIf="this.form.controls['category'].value == 'AGENT'">
+    <div formArrayName="ptServiceFields">
+      <div
+        *ngFor="let serviceField of ptServiceFields.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div class="mb-4 mt-[10px]">
+          <label class="block text-gray-700" style="font-size: 14px"
+            >Select Funding & Withdrawal Service</label
+          >
+          <select (ngModelChange)="ptServiceDataChange($event, i)"
+            formControlName="ptservice"
+            class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option disabled>Select an option</option>
+            <option *ngFor="let item of ptServiceData" [ngValue]="item">
+              {{ item?.ptService?.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-4 mt-[10px]">
+          <label class="block text-gray-700" style="font-size: 14px"
+            >Select Agency Fees & Commission</label
+          >
+          <select (ngModelChange)="ptpagencyfeesandCommission($event, i)"
+            formControlName="ptpagencyfeesandCommission"
+            class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option disabled>Select an option</option>
+            <option
+              *ngFor="let item of agencyFeesAndCommission"
+              [ngValue]="item"
+            >
+              {{ item?.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+      (click)="addPtServiceField()"
+    >
+      + AFAC Charge for Service
+    </button>
+  </form>
+
+  <div class="mt-[15px] mb-[5px] flex justify-between">
+    <button
+      (click)="cancel()"
+      type="submit"
+      class="bg-gray-500 text-white py-1 px-3 rounded hover:bg-gray-700"
+    >
+      Cancel
+    </button>
+    <button
+    (click)="submit()"
+    type="submit"
+    class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+  >
+    Submit
+  </button>
+  </div>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>

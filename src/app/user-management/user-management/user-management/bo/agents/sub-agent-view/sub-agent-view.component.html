@@ -1,0 +1,573 @@
+<div class="container">
+  <div class="page-header">
+    <h3 class="page-title text-2xl font-bold mb-4">
+      Subagent KYC Form
+    </h3>
+  </div>
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card shadow-lg rounded-lg p-6 bg-white">
+        <div class="card-body">
+          <h4 class="card-title text-xl font-semibold mb-4">Subagent Information</h4>
+          <form [formGroup]="subAgentForm" (ngSubmit)="onSave()">
+            <div class="flex flex-wrap -mx-2">
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="custInfoFirstName" class="block text-gray-700 font-bold mb-2">First Name <sup
+                    class="text-red-500">*</sup></label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="custInfoFirstName"
+                  id="custInfoFirstName" placeholder="First Name" required>
+                  <div *ngIf="subAgentForm.get('custInfoFirstName')?.errors?.['required'] && subAgentForm.get('custInfoFirstName')?.touched" class="text-red-500">
+                    <div class="text-red-500"> First name is required</div>
+                  </div>
+                  <div *ngIf="subAgentForm.get('custInfoFirstName')?.errors?.['minlength'] && subAgentForm.get('custInfoFirstName')?.touched" class="text-red-500">
+                    <div class="text-red-500"> Name should contain at least 3 characters</div>
+                  </div>
+                  <div *ngIf="subAgentForm.get('custInfoFirstName')?.errors?.['pattern'] && subAgentForm.get('custInfoFirstName')?.touched" class="text-red-500">
+                    <div class="text-red-500"> Name should contain only alphabetic characters</div>
+                  </div> 
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="custInfoLastName" class="block text-gray-700 font-bold mb-2">Surname<sup
+                    class="text-red-500">*</sup></label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="custInfoLastName"
+                  id="custInfoLastName" placeholder="Surname" required>
+                  <div *ngIf="subAgentForm.get('custInfoLastName')?.errors?.['required'] && subAgentForm.get('custInfoLastName')?.touched" class="text-red-500">
+                    <div class="text-red-500"> Surname is required</div>
+                  </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="inputGender" class="block text-gray-700 font-bold mb-2">Gender
+                    <sup class="text-red-500">*</sup>
+                  </label>
+                  <select class="w-full px-3 py-2 border rounded" id="inputGender" formControlName="gender"
+                    placeholder="Gender" required>
+                    <option>Select gender</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="MALE">Male</option>
+                  </select>
+                  <div *ngIf="subAgentForm.get('gender')?.errors?.['required'] && subAgentForm.get('gender')?.touched" class="text-red-500">
+                    <div class="text-red-500">Gender is required</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="custInfoDob" class="block text-gray-700 font-bold mb-2">Date of Birth <sup
+                    class="text-red-500">*</sup></label>
+                <input type="date" class="w-full px-3 py-2 border rounded" formControlName="custInfoDob"
+                  id="custInfoDob" required>
+                  <div *ngIf="subAgentForm.get('custInfoDob')?.errors?.['required'] && subAgentForm.get('custInfoDob')?.touched" class="text-red-500">
+                    <div class="text-red-500">Date of birth is required</div>
+                  </div>
+                <div *ngIf="subAgentForm.get('custInfoDob')?.errors?.['underage']" class="text-red-500 mt-2">
+                  <div class="text-red-500">Age must be above 18.</div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="custInfoFatherName" class="block text-gray-700 font-bold mb-2">Father's Name <sup
+                    class="text-red-500">*</sup></label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="custInfoFatherName"
+                  id="custInfoFatherName" placeholder="Father's Name" required>
+                  <div *ngIf="subAgentForm.get('custInfoFatherName')?.errors?.['required'] && subAgentForm.get('custInfoFatherName')?.touched" class="text-red-500">
+                    <sup class="text-red-500">Father's Name is required</sup>
+                  </div>
+                  <div *ngIf="subAgentForm.get('custInfoFatherName')?.errors?.['pattern']" class="text-red-500">
+                    <sup class="text-red-500">Name should contain only alphabetic characters</sup>
+                  </div> 
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="inputFirstName" class="block text-gray-700 font-bold mb-2">Contact Number
+                    <sup class="text-red-500">*</sup>
+                  </label>
+                  <div class="flex items-center">
+                    <div class="mr-2">
+                      <select class="w-28 px-3 py-2 border rounded">
+                        <option *ngFor="let c of CountryList">+{{c?.countryCode}}</option>
+                      </select>
+                    </div>
+                    <input type="text" class="w-full px-3 py-2 border rounded" formControlName="custInfoAltPhone"
+                      id="inputFirstName" placeholder="Contact Number" required>
+                  </div>
+                  <div *ngIf="subAgentForm.get('custInfoAltPhone')?.invalid && subAgentForm.get('custInfoAltPhone')?.touched">
+                    <div *ngIf="subAgentForm.get('custInfoAltPhone')?.errors?.['required']">
+                      <div class="text-red-500">Phone number is required</div>
+                    </div>
+                    <div *ngIf="subAgentForm.get('custInfoAltPhone')?.errors?.['pattern']">
+                      <div class="text-red-500">Phone number must start with 7 and be exactly 9 digits</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="custInfoEmail" class="block text-gray-700 font-bold mb-2">Email <sup
+                    class="text-red-500">*</sup></label>
+                <input type="email" class="w-full px-3 py-2 border rounded" formControlName="custInfoEmail"
+                  id="custInfoEmail" placeholder="Email" required>
+                <div *ngIf="subAgentForm.get('custInfoEmail')?.invalid && subAgentForm.get('custInfoEmail')?.touched">
+                  <div *ngIf="subAgentForm.get('custInfoEmail')?.errors?.['required']">
+                    <div class="text-red-500">Email is required.</div>
+                  </div>
+                  <div *ngIf="subAgentForm.get('custInfoEmail')?.errors?.['email']">
+                    <div class="text-red-500">Invalid email address.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="custInfoTazkira" class="block text-gray-700 font-bold mb-2">Tazkira (ID Number) <sup
+                    class="text-red-500">*</sup></label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="custInfoTazkira"
+                  id="custInfoTazkira" placeholder="Tazkira" (input)="formatTazkira($event)" maxlength="16" required>
+                  <div *ngIf="subAgentForm.get('custInfoTazkira')?.errors?.['required'] && subAgentForm.get('custInfoTazkira')?.touched" class="text-red-500">
+                    <div class="text-red-500">Tazkira is required</div>
+                  </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="userType" class="block text-gray-700 font-bold mb-2">Choose Super Agent</label>
+                <select id="userType" class="w-full px-3 py-2 border rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" (change)="onSelectAgent($event)">
+                  <option *ngFor="let agent of agents" [value]="agent?.id">{{agent?.firstName}}</option>
+                </select>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="companyName" class="block text-gray-700 font-bold mb-2">Company Name</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="companyName" id="companyName" placeholder="Company Name">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="commissionPercentage" class="block text-gray-700 font-bold mb-2">Commission Percentage</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="commissionPercentage" id="commissionPercentage" placeholder="Commission Percentage">
+                <div *ngIf="subAgentForm.get('commissionPercentage')?.errors?.['pattern']">
+                 <div class="text-red-500">Please provide a valid commission percentage</div>
+                </div>
+              </div>
+
+              <!-- <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="licenseNumber" class="block text-gray-700 font-bold mb-2">License Number</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="licenseNumber" id="licenseNumber" placeholder="License Number">
+              </div> -->
+  
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="custInfoLicenseNo" class="block text-gray-700 font-bold mb-2">License Number<sup
+                  class="text-red-500">*</sup></label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="custInfoLicenseNo"
+                  id="custInfoLicenseNo" placeholder="License Number">
+                  <div *ngIf="subAgentForm.get('custInfoLicenseNo')?.errors?.['required'] && subAgentForm.get('custInfoLicenseNo')?.touched" class="text-red-500">
+                    <div class="text-red-500">License number is required</div>
+                  </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="custInfoLicenseNo" class="block text-gray-700 font-bold mb-2">License Expiry</label>
+                <input type="date" class="w-full px-3 py-2 border rounded" formControlName="custInfoLicenseExpiry"
+                  id="custInfoLicenseExpiry" placeholder="License Expiry Date">
+                  <div *ngIf="subAgentForm.get('custInfoLicenseExpiry')?.errors?.['required'] && subAgentForm.get('custInfoLicenseExpiry')?.touched" class="text-red-500">
+                    <div class="text-red-500">License expiry date is required</div>
+                  </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="inputLastName" class="block text-gray-700 font-bold mb-2">Photo
+                    <sup class="text-red-500">*</sup>
+                  </label>
+                  <input type="file" (change)="detectFiles($event)" class="w-full px-3 py-2 border rounded" formControlName="agentPhoto_img_0"
+                    id="inputLastName" placeholder="" required>
+                </div>
+                <div *ngIf="subAgentForm.get('agentPhoto_img_0')?.errors?.['required'] && subAgentForm.get('agentPhoto_img_0')?.touched" class="text-red-500">
+                  <sup class="text-red-500">Agent photo  is required</sup>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="inputPassword" class="block text-gray-700 font-bold mb-2">Password</label>
+                  <input type="password" class="w-full px-3 py-2 border rounded" formControlName="password"
+                    id="inputPassword" placeholder="Password" required>
+                  <div
+                    *ngIf="subAgentForm.get('password')?.invalid && (subAgentForm.get('password')?.touched || subAgentForm.get('password')?.dirty)">
+                    <div *ngIf="subAgentForm.get('password')?.errors?.['required']" class="text-red-500">Password is
+                      required.</div>
+                    <div *ngIf="subAgentForm.get('password')?.errors?.['minlength']" class="text-red-500">Password must be at
+                      least 6 characters long.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="inputConfirmPassword" class="block text-gray-700 font-bold mb-2">Confirm Password</label>
+                  <input type="password" class="w-full px-3 py-2 border rounded" formControlName="cnfpwd"
+                    id="inputConfirmPassword" placeholder="Confirm Password" #cpw (keyup)='checkPasswords()' required>
+                  <div
+                    *ngIf="subAgentForm.get('cnfpwd')?.invalid && subAgentForm.get('cnfpwd')?.touched || subAgentForm.get('cnfpwd')?.dirty"
+                    class="text-red-500">{{checkPasswords()}}</div>
+                </div>
+              </div>
+
+              <div class="w-full px-2 mb-4">
+                <h3 class="text-lg font-semibold">Address</h3>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="custInfoCountry" class="block text-gray-700 font-bold mb-2">Country
+                    <sup class="text-red-500">*</sup>
+                  </label>
+                  <select class="w-full px-3 py-2 border rounded" formControlName="custInfoCountry"
+                    (change)="onChangeCountry($event)" required>
+                    <option></option>
+                    <option *ngFor="let c of CountryList" [value]="c?.name">{{c?.name}}</option>
+                  </select>
+                  <div *ngIf="subAgentForm.get('custInfoCountry')?.errors?.['required'] && subAgentForm.get('custInfoCountry')?.touched" class="text-red-500">
+                    <div class="text-red-500">Country is required</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="province" class="block text-gray-700 font-bold mb-2">Province/City
+                    <sup class="text-red-500">*</sup>
+                  </label>
+                  <div>
+                    <select class="w-full px-3 py-2 border rounded" formControlName="currProvince"
+                      (change)="onChangeProvince($event)" required>
+                      <option *ngFor="let c of provinceList" [value]="c?.name">{{c?.name}}</option>
+                    </select>
+                    <div *ngIf="subAgentForm.get('currProvince')?.errors?.['required'] && subAgentForm.get('currProvince')?.touched" class="text-red-500">
+                      <sup class="text-red-500">Province is required</sup>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="inputDistrict" class="block text-gray-700 font-bold mb-2">District <sup
+                    class="text-red-500">*</sup></label>
+                <div>
+                  <select class="w-full px-3 py-2 border rounded" formControlName="currDistrict" required>
+                    <option *ngFor="let c of districtList" [value]="c?.name">{{c?.name}}</option>
+                  </select>
+                  <div *ngIf="subAgentForm.get('currDistrict')?.errors?.['required'] && subAgentForm.get('currDistrict')?.touched" class="text-red-500">
+                    <sup class="text-red-500">District is required</sup>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="currLocation" class="block text-gray-700 font-bold mb-2">Location<sup
+                  class="text-red-500">*</sup></label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="currLocation"
+                  id="currLocation" placeholder="Location">
+                  <div *ngIf="subAgentForm.get('currLocation')?.errors?.['required'] && subAgentForm.get('currLocation')?.touched" class="text-red-500">
+                    <sup class="text-red-500">Location is required</sup>
+                  </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="inputStreet" class="block text-gray-700 font-bold mb-2">Street</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="currStreet" id="inputStreet"
+                  placeholder="Street">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="currHouseNo" class="block text-gray-700 font-bold mb-2">House No</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="currHouseNo"
+                  id="currHouseNo" placeholder="House No">
+              </div>
+
+
+              <div class="w-full px-2 mb-4">
+                <h3 class="text-lg font-semibold">Next of Kin Details</h3>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="nokName" class="block text-gray-700 font-bold mb-2">Name</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="nokName" id="nokName"
+                  placeholder="Name">
+              </div>
+
+             
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="inputFirstName" class="block text-gray-700 font-bold mb-2">Mobile
+                  </label>
+                  <div class="flex items-center">
+                    <div class="mr-2">
+                      <select class="w-28 px-3 py-2 border rounded">
+                        <option *ngFor="let c of CountryList">+{{c?.countryCode}}</option>
+                      </select>
+                    </div>
+                    <input type="text" class="w-full px-3 py-2 border rounded" formControlName="nokMobile"
+                      id="inputFirstName" placeholder="Mobile">
+                  </div>
+                  <div *ngIf="subAgentForm.get('nokMobile')?.invalid && subAgentForm.get('nokMobile')?.touched">
+                    <!-- <div *ngIf="subAgentForm.get('nokMobile')?.errors?.['required']">
+                      <sup class="text-red-500"> Phone number is required</sup>
+                    </div> -->
+                    <div *ngIf="subAgentForm.get('nokMobile')?.errors?.['pattern']">
+                      <div class="text-red-500">Please provide a valid contact number</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="nokEmail" class="block text-gray-700 font-bold mb-2">Email</label>
+                <input type="email" class="w-full px-3 py-2 border rounded" formControlName="nokEmail" id="nokEmail"
+                  placeholder="Email">
+                  <div *ngIf="subAgentForm.get('nokEmail')?.invalid && subAgentForm.get('nokEmail')?.touched">
+                <div *ngIf="subAgentForm.get('nokEmail')?.errors?.['email']">
+                  <label class="text-red-500"><div class="text-red-500">Please provide a valid email</div></label>
+                </div>
+              </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="nokCountry" class="block text-gray-700 font-bold mb-2">Country
+                    <!-- <sup class="text-red-500">*</sup> -->
+                  </label>
+                  <select class="w-full px-3 py-2 border rounded" formControlName="nokCountry"
+                    (change)="onChangeCountry1($event)">
+                    <option></option>
+                    <option *ngFor="let c of CountryList" [value]="c?.name">{{c?.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="nokProvince" class="block text-gray-700 font-bold mb-2">Province/City
+                  </label>
+                  <div>
+                    <select class="w-full px-3 py-2 border rounded" formControlName="nokProvince"
+                      (change)="onChangeProvince1($event)">
+                      <option *ngFor="let c of provinceList" [value]="c?.name">{{c?.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="inputDistrict" class="block text-gray-700 font-bold mb-2">District </label>
+                <div>
+                  <select class="w-full px-3 py-2 border rounded" formControlName="nokDistrict">
+                    <option *ngFor="let c of districtList" [value]="c?.name">{{c?.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="nokLocation" class="block text-gray-700 font-bold mb-2">Location</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="nokLocation"
+                  id="nokLocation" placeholder="Location">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="nokStreet" class="block text-gray-700 font-bold mb-2">Street</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="nokStreet" id="inputStreet"
+                  placeholder="Street">
+
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="nokHouseNo" class="block text-gray-700 font-bold mb-2">House No</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="nokHouseNo" id="nokHouseNo"
+                  placeholder="House No">
+              </div>
+              
+              <div class="w-full px-2 mb-4">
+                <h3 class="text-lg font-semibold">Organization/Business Information</h3>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgName" class="block text-gray-700 font-bold mb-2">Organization Name</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgName" id="orgName"
+                  placeholder="Organization Name">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgTypeOfActivity" class="block text-gray-700 font-bold mb-2">Type of Activity</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgTypeOfActivity"
+                  id="orgTypeOfActivity" placeholder="Type of Activity">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgSourceOfIncome" class="block text-gray-700 font-bold mb-2">Source of Income</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgSourceOfIncome"
+                  id="orgSourceOfIncome" placeholder="Source of Income">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgMonthlyIncome" class="block text-gray-700 font-bold mb-2">Monthly Income</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgMonthlyIncome"
+                  id="orgMonthlyIncome" placeholder="Monthly Income">
+                  <div *ngIf="subAgentForm.get('orgMonthlyIncome')?.errors?.['pattern'] && subAgentForm.get('orgMonthlyIncome')?.touched" class="text-red-500">
+                    <div class="text-red-500">Please enter a valid monthly income.</div>
+                  </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgTurnover" class="block text-gray-700 font-bold mb-2">Monthly Turnover</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgTurnover"
+                  id="orgTurnover" placeholder="Monthly Turnover">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgPhone" class="block text-gray-700 font-bold mb-2">Phone</label>
+                <div class="flex items-center">
+                  <div class="mr-2">
+                    <select class="w-28 px-3 py-2 border rounded">
+                      <option *ngFor="let c of CountryList">+{{c?.countryCode}}</option>
+                    </select>
+                  </div>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgPhone" id="orgPhone"
+                  placeholder="Phone">
+              </div>
+              <div *ngIf="subAgentForm.get('orgPhone')?.touched && subAgentForm.get('orgPhone')?.errors?.['pattern']">
+                <div *ngIf="subAgentForm.get('orgPhone')?.errors?.['pattern']">
+                  <div class="text-red-500">Please provide a valid contact number</div>
+              </div>
+              </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgEmail" class="block text-gray-700 font-bold mb-2">Email</label>
+                <input type="email" class="w-full px-3 py-2 border rounded" formControlName="orgEmail" id="orgEmail"
+                  placeholder="Email">
+                  <div *ngIf="subAgentForm.get('orgEmail')?.invalid && subAgentForm.get('orgEmail')?.touched">
+                  <div *ngIf="subAgentForm.get('orgEmail')?.errors?.['email']">
+                    <div class="text-red-500">Invalid email address.</div>
+                  </div>
+                  </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="orgCountry" class="block text-gray-700 font-bold mb-2">Country
+                  </label>
+                  <select class="w-full px-3 py-2 border rounded" formControlName="orgCountry"
+                    (change)="onChangeCountry2($event)">
+                    <option></option>
+                    <option *ngFor="let c of CountryList" [value]="c?.name">{{c?.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="orgProvince" class="block text-gray-700 font-bold mb-2">Province/City
+                  </label>
+                  <div>
+                    <select class="w-full px-3 py-2 border rounded" formControlName="orgProvince"
+                      (change)="onChangeProvince2($event)">
+                      <option *ngFor="let c of provinceList" [value]="c?.name">{{c?.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="inputDistrict" class="block text-gray-700 font-bold mb-2">District</label>
+                <div>
+                  <select class="w-full px-3 py-2 border rounded" formControlName="orgDistrict">
+                    <option *ngFor="let c of districtList" [value]="c?.name">{{c?.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgHouseNo" class="block text-gray-700 font-bold mb-2">House No</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgHouseNo" id="orgHouseNo"
+                  placeholder="House No">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgLocation" class="block text-gray-700 font-bold mb-2">Location</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgLocation"
+                  id="orgLocation" placeholder="Location">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgStreet" class="block text-gray-700 font-bold mb-2">Street</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="orgStreet" id="inputStreet"
+                  placeholder="Street">
+              </div>
+
+              <div class="w-full px-2 mb-4"><h3 class="text-lg font-semibold">Proffessional details</h3>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgHouseNo" class="block text-gray-700 font-bold mb-2">Employee Name</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="empName" id="empName"
+                  placeholder="Employee Name">
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgStreet" class="block text-gray-700 font-bold mb-2">Occupation</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="Occupation" id="Occupation"
+                  placeholder="Occupation">
+              </div>
+
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <label for="orgLocation" class="block text-gray-700 font-bold mb-2">Salary</label>
+                <input type="text" class="w-full px-3 py-2 border rounded" formControlName="salary" id="salary"
+                  placeholder="Salary">
+              </div>
+
+              <div class="w-full px-2 mb-4">
+                <h3 class="text-lg font-semibold">Undertaken</h3>
+              </div>
+
+              <div class="w-full sm:w-1/2 px-2 mb-4">
+                <div class="mb-4">
+                  <label for="undertakenSign" class="block text-gray-700 font-bold mb-2">Undertaken Sign
+                    <sup class="text-red-500">*</sup>
+                  </label>
+                  <input type="file" (change)="detectFilesUndertaken($event)" class="w-full px-3 py-2 border rounded"
+                    id="undertakenSign" formControlName="undertakenSign_img_0" required>
+                    <div *ngIf="subAgentForm.get('undertakenSign_img_0')?.errors?.['required'] && subAgentForm.get('undertakenSign_img_0')?.touched" class="text-red-500">
+                     Undertaken Sign is required
+                    </div>
+                </div>
+              </div>
+               <div class="w-full px-2 mb-4">
+                <button type="button" (click)="onCancel()"
+                  class="px-4 py-2 bg-gray-300 text-black rounded-md shadow-sm hover:bg-gray-400">Cancel</button>
+                <button type="submit" style="background-color: #0a365a;float: right;"
+                  class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+          <div class="w-full px-2 mb-4">
+            <button (click)="retryUploadSignature()" *ngIf="subAgentId && !signatureUploaded"
+              style="background-color: #0a365a;"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 float-right mr-2">
+              Retry Signature Upload
+            </button>
+
+            <button (click)="retryUploadPhoto()" *ngIf="subAgentId && !photoUploaded" style="background-color: #0a365a;"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 float-right mr-2">
+              Retry Photo Upload
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-loader *ngIf="isLoading"></app-loader>
+</div>

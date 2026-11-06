@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - MiSME</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  
+  <style>
+    /* Exact color grading from the screenshot */
+    .bg-exact-gradient {
+      background: radial-gradient(circle at 10% 20%, #654112 0%, #442406 40%, #251203 100%);
+    }
+    .bg-exact-orange {
+      background-color: #f59e0b;
+    }
+    .hover-exact-orange:hover {
+      background-color: #d97706;
+    }
+    /* Custom Scrollbar for the form area */
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #d1d5db;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body class="m-0 p-0 antialiased font-sans w-full min-h-screen bg-[#f3f4f6]">
+  
+  <!-- Full Screen Split Container -->
+  <div class="flex flex-col md:flex-row w-full min-h-screen">
+    
+    <!-- LEFT SIDE: Exactly 50% Width, Exact Gradient -->
+    <div class="md:w-1/2 hidden md:flex flex-col justify-between p-14 md:p-16 bg-exact-gradient text-white relative">
+      
+      <!-- Top Logo Area -->
+      <div class="flex items-center space-x-3">
+        <div class="w-[52px] h-[52px] bg-exact-orange rounded-xl flex items-center justify-center shadow-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+        </div>
+        <div>
+          <h1 class="text-[19px] font-bold leading-tight tracking-wide">MiSME</h1>
+          <p class="text-[12px] text-gray-200">Namibia SME Digital Business Ecosystem</p>
+        </div>
+      </div>
+
+      <!-- Middle Hero Text -->
+      <div class="z-10 mt-4">
+        <h2 class="text-[34px] font-bold leading-[1.2] mb-4 tracking-tight">Payments, merchant tools, credit<br>and trade in one place.</h2>
+        <p class="text-[15px] text-gray-200 leading-relaxed mb-8 pr-4">
+          Namibia's SME digital business ecosystem, with KYC onboarding and role-based access behind every screen.
+        </p>
+        
+        <!-- 2x2 Feature Grid -->
+        <div class="grid grid-cols-2 gap-4 pr-2">
+          <div class="flex items-start p-4 bg-white/5 rounded-xl border border-white/20">
+            <svg class="w-4 h-4 text-white mr-2.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            <span class="text-[13px] font-medium leading-snug">Card, QR and payment-link collections</span>
+          </div>
+          <div class="flex items-start p-4 bg-white/5 rounded-xl border border-white/20">
+            <svg class="w-4 h-4 text-white mr-2.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            <span class="text-[13px] font-medium leading-snug">Digital Khata credit ledger</span>
+          </div>
+          <div class="flex items-start p-4 bg-white/5 rounded-xl border border-white/20">
+            <svg class="w-4 h-4 text-white mr-2.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            <span class="text-[13px] font-medium leading-snug">B2B trade and invoicing</span>
+          </div>
+          <div class="flex items-start p-4 bg-white/5 rounded-xl border border-white/20">
+            <svg class="w-4 h-4 text-white mr-2.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            <span class="text-[13px] font-medium leading-snug">KYC onboarding with role-based access</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Footer -->
+      <div class="text-[12px] text-amber-200/60">
+        © AfriqPay · Secured by AfriqPay Identity
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: Exactly 50% Width, Soft Off-White Background -->
+    <div class="w-full md:w-1/2 bg-[#f8f9fa] flex flex-col justify-center items-center py-10 px-6 sm:px-12 overflow-y-auto custom-scroll">
+      
+      <!-- Inner Wrapper: Constrains form width to match screenshot -->
+      <div class="w-full max-w-[460px]">
+        
+        <!-- Top Text -->
+        <div class="mb-6 px-2">
+          <h2 class="text-[28px] font-bold text-gray-900 mb-2 tracking-tight">Sign in to MiSME</h2>
+          <p class="text-[14px] text-gray-500 leading-relaxed">
+            Use your MiSME account. Your identity provider offers password or passkey sign-in, including your phone's supported fingerprint, face or unlock PIN.
+          </p>
+        </div>
+
+        <!-- Form Card Wrapper: White card with soft border/shadow -->
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8">
+          <ng-container [ngSwitch]="userType">
+            
+            <!-- Login Form - UserType - Agent -->
+            <div *ngSwitchCase="userTypeConst.agent" class="w-full flex flex-col justify-center">
+              <div class="mb-6 text-center">
+                <h2 class="text-[18px] font-bold text-gray-900">Login - Agent</h2>
+              </div>
+              
+              <div>
+                <form #loginForm="ngForm">
+                  <div class="mb-4">
+                    <label class="block text-[13px] font-medium text-gray-700 mb-1.5">Username</label>
+                    <input id="username" name="username" [(ngModel)]="username" type="email" autocomplete="username"
+                      pattern="" required
+                      class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800" />
+                    <div *ngIf="username && username.length < 9" class="text-red-500 text-xs mt-1">
+                      Invalid
+                    </div>
+                    <div *ngIf="username == null || username == ''" class="text-red-500 text-xs mt-1">
+                      Required
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <label for="password" class="block text-[13px] font-medium text-gray-700 mb-1.5">User Type</label>
+                    <select class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800" required>
+                      <option>Super Agent</option>
+                      <option>Merchant</option>
+                      <option>Micro Merchant</option>
+                      <option>USSD Staff</option>
+                    </select>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <label for="password" class="block text-[13px] font-medium text-gray-700 mb-1.5">Password</label>
+                    <input type="password" name="password" [(ngModel)]="password" id="password"
+                      class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800"
+                      required />
+                  </div>
+
+                  <div class="flex items-center justify-between mb-6">
+                    <a href="#" class="text-[13px] text-gray-700 font-medium hover:underline">Forgot Password?</a>
+                  </div>
+                  
+                  <button type="submit"
+                    class="w-full py-3.5 bg-exact-orange hover-exact-orange text-white font-bold rounded-xl transition duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-[15px]"
+                    (click)="onSubmit()">
+                    Sign In
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!--  Login Form - UserType - Backoffice -->
+            <div *ngSwitchCase="userTypeConst.backoffice">
+              
+              <div *ngIf="!showOTP" class="mb-6 text-center">
+                <div class="text-[18px] font-bold text-gray-900">Login - Backoffice</div>
+              </div>
+
+              <div *ngIf="changePassword == false && login">
+                <div *ngIf="showOTP" class="text-[18px] font-bold text-gray-900 mb-6 text-center">
+                  Welcome to SME Backoffice
+                </div>
+                
+                <form #loginForm="ngForm">
+                  <div class="mb-4">
+                    <label class="block text-[13px] font-medium text-gray-700 mb-1.5">Username</label>
+                    <input [readonly]="showOTP" id="username" name="username" [(ngModel)]="username"
+                      [pattern]="emailPattern" type="email" autocomplete="username" pattern="" required
+                      #newPasswordCtrl="ngModel"
+                      class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800 disabled:opacity-75" />
+                    <div *ngIf="username && !username.match(emailPattern)" class="text-red-500 text-xs mt-1">
+                      Invalid User Name
+                    </div>
+                    <div *ngIf="username?.length == 0" class="text-red-500 text-xs mt-1">
+                      Username is required
+                    </div>
+                  </div>
+
+                  <div *ngIf="!showOTP" class="mb-4 relative">
+                    <label for="password" class="block text-[13px] font-medium text-gray-700 mb-1.5">Password</label>
+                    <input [maxlength]="12" [type]="showPassword ? 'text' : 'password'" name="password"
+                      [(ngModel)]="password" #newPassword="ngModel" id="password"
+                      class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800"
+                      required pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" />
+                    <span (click)="togglePasswordVisibility()" class="absolute right-3 top-[36px] cursor-pointer text-gray-400 hover:text-gray-600">
+                      <i [ngClass]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                    </span>
+                    <div *ngIf="newPassword?.errors && (newPassword.dirty || newPassword.touched)" class="text-red-500 text-[11px] mt-1.5 leading-tight">
+                      <div *ngIf="password.length == 0">Password is required.</div>
+                      <!-- <div *ngIf="newPassword.errors">
+                        Password must contain at least one uppercase letter, 0-9 digits, and be at least 8 characters long.
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <div *ngIf="!showOTP" (click)="changePass(true)" class="flex items-center justify-between mb-6 mt-2">
+                    <div class="text-[13px] text-gray-700 font-medium hover:underline cursor-pointer">
+                      Forgot Password?
+                    </div>
+                  </div>
+                </form>
+
+           <div *ngIf="showOTP" class="mb-4">
+  <label class="block text-[13px] font-medium text-gray-700 mb-2">OTP</label>
+  <div class="flex justify-start">
+    <form [formGroup]="otpForm" class="flex gap-2">
+      
+      <!-- Box 1 -->
+      <input type="text" maxlength="1" inputmode="numeric"
+        style="color: #000000 !important; font-family: Arial, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; letter-spacing: normal !important; padding: 0 !important;"
+        class="w-[48px] h-[48px] text-center bg-white border border-slate-300 rounded-xl transition-all shadow-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black" 
+        formControlName="otp1" (input)="onOtpInput($event, otp2, null)" #otp1>
+        
+      <!-- Box 2 -->
+      <input type="text" maxlength="1" inputmode="numeric"
+        style="color: #000000 !important; font-family: Arial, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; letter-spacing: normal !important; padding: 0 !important;"
+        class="w-[48px] h-[48px] text-center bg-white border border-slate-300 rounded-xl transition-all shadow-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black" 
+        formControlName="otp2" (input)="onOtpInput($event, otp3, otp1)" #otp2>
+        
+      <!-- Box 3 -->
+      <input type="text" maxlength="1" inputmode="numeric"
+        style="color: #000000 !important; font-family: Arial, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; letter-spacing: normal !important; padding: 0 !important;"
+        class="w-[48px] h-[48px] text-center bg-white border border-slate-300 rounded-xl transition-all shadow-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black" 
+        formControlName="otp3" (input)="onOtpInput($event, otp4, otp2)" #otp3>
+        
+      <!-- Box 4 -->
+      <input type="text" maxlength="1" inputmode="numeric"
+        style="color: #000000 !important; font-family: Arial, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; letter-spacing: normal !important; padding: 0 !important;"
+        class="w-[48px] h-[48px] text-center bg-white border border-slate-300 rounded-xl transition-all shadow-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black" 
+        formControlName="otp4" (input)="onOtpInput($event, otp5, otp3)" #otp4>
+        
+      <!-- Box 5 -->
+      <input type="text" maxlength="1" inputmode="numeric"
+        style="color: #000000 !important; font-family: Arial, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; letter-spacing: normal !important; padding: 0 !important;"
+        class="w-[48px] h-[48px] text-center bg-white border border-slate-300 rounded-xl transition-all shadow-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black" 
+        formControlName="otp5" (input)="onOtpInput($event, otp6, otp4)" #otp5>
+        
+      <!-- Box 6 -->
+      <input type="text" maxlength="1" inputmode="numeric"
+        style="color: #000000 !important; font-family: Arial, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; letter-spacing: normal !important; padding: 0 !important;"
+        class="w-[48px] h-[48px] text-center bg-white border border-slate-300 rounded-xl transition-all shadow-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black" 
+        formControlName="otp6" (input)="onOtpInput($event, null, otp5)" #otp6>
+        
+    </form>
+  </div>
+  <p class="text-gray-600 text-[12px] text-center mt-4">OTP expires in <span class="text-red-600 font-semibold">{{ formattedTime }}</span></p>
+  <p *ngIf="!otpSent" class="text-center text-[12px] mt-3">
+    Didn't receive the OTP?
+    <a (click)="resendOtp()" class="text-amber-600 font-semibold cursor-pointer hover:underline">Resend OTP</a>
+  </p>
+</div>
+
+                <button *ngIf="!showOTP" type="submit" class="w-full py-3.5 mt-4 bg-exact-orange hover-exact-orange text-white font-bold rounded-xl transition duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-[15px]" (click)="onSubmit()">
+                  Sign In
+                </button>
+              </div>
+
+              <!-- Forgot Password Flow -->
+              <div *ngIf="changePasswordotp">
+                <div class="mb-4">
+                  <label class="block text-[13px] font-medium text-gray-700 mb-1.5">Registered Email</label>
+                  <input #newEmailCtrl="ngModel" id="username" name="username" [(ngModel)]="email" type="email" autocomplete="username" pattern="" required
+                    class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800" />
+                  <div *ngIf="newEmailCtrl?.errors" class="text-red-500 text-xs mt-1">
+                    Email is required
+                  </div>
+                </div>
+                <button [disabled]="!email" (click)="sendOtp()" type="submit"
+                  class="w-full py-3.5 bg-exact-orange hover-exact-orange text-white font-bold rounded-xl transition duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-[15px]">
+                  Request OTP
+                </button>
+              </div>
+
+              <div *ngIf="otpVerify">
+                <div class="mb-4">
+                  <label class="block text-[13px] font-medium text-gray-700 mb-2">Enter OTP</label>
+                  <form [formGroup]="ForgotPassOtpForm" class="flex space-x-1.5">
+                    <input type="text" maxlength="1" class="w-[42px] h-[42px] text-center text-lg bg-[#f4f7f9] border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800" formControlName="otp1Forgot" (input)="onOtpInputForgotPass($event, otp2Forgot, null)" #otp1Forgot (keyup)="onOtpKeyUp()">
+                    <input type="text" maxlength="1" class="w-[42px] h-[42px] text-center text-lg bg-[#f4f7f9] border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800" formControlName="otp2Forgot" (input)="onOtpInputForgotPass($event, otp3Forgot, otp1Forgot)" #otp2Forgot (keyup)="onOtpKeyUp()">
+                    <input type="text" maxlength="1" class="w-[42px] h-[42px] text-center text-lg bg-[#f4f7f9] border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800" formControlName="otp3Forgot" (input)="onOtpInputForgotPass($event, otp4Forgot, otp2Forgot)" #otp3Forgot (keyup)="onOtpKeyUp()">
+                    <input type="text" maxlength="1" class="w-[42px] h-[42px] text-center text-lg bg-[#f4f7f9] border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800" formControlName="otp4Forgot" (input)="onOtpInputForgotPass($event, otp5Forgot, otp3Forgot)" #otp4Forgot (keyup)="onOtpKeyUp()">
+                    <input type="text" maxlength="1" class="w-[42px] h-[42px] text-center text-lg bg-[#f4f7f9] border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800" formControlName="otp5Forgot" (input)="onOtpInputForgotPass($event, otp6Forgot, otp4Forgot)" #otp5Forgot (keyup)="onOtpKeyUp()">
+                    <input type="text" maxlength="1" class="w-[42px] h-[42px] text-center text-lg bg-[#f4f7f9] border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800" formControlName="otp6Forgot" (input)="onOtpInputForgotPass($event, null, otp5Forgot)" #otp6Forgot (keyup)="onOtpKeyUp()">
+                  </form>
+                  <div *ngIf="ForgotPassOtpForm.invalid && ForgotPassOtpForm.touched" class="text-red-500 text-xs mt-1">
+                    OTP is required
+                  </div>
+                  <p class="text-gray-600 text-[12px] text-center mt-4">OTP expires in <span class="text-red-600 font-semibold">{{ formattedTimeForgotPass }}</span></p>
+                </div>
+                <button [disabled]="!fullOtp" (click)="onSaveOtp()" type="submit"
+                  class="w-full py-3.5 bg-exact-orange hover-exact-orange text-white font-bold rounded-xl transition duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-[15px]">
+                  Verify OTP
+                </button>
+              </div>
+
+              <div *ngIf="changePasswordNew">
+                <form #passwordForm="ngForm" (ngSubmit)="onSubmit()">
+                  <div class="mb-4">
+                    <label class="block text-[13px] font-medium text-gray-700 mb-1.5">New Password</label>
+                    <input [(ngModel)]="newpasswordfield" name="newpassword" type="password" required
+                      pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" [maxLength]="12"
+                      class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800"
+                      #newPassword="ngModel"/>
+                    <div *ngIf="newPassword?.errors && (newPassword.dirty || newPassword.touched)" class="text-red-500 text-[11px] mt-1.5 leading-tight">
+                      <div *ngIf="newpasswordfield.length == 0">Password is required.</div>
+                      <div *ngIf="newPassword.errors">
+                        Password must contain at least one uppercase letter, 0-9 digits, and be at least 8 characters long.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="block text-[13px] font-medium text-gray-700 mb-1.5">Confirm Password</label>
+                    <input [(ngModel)]="confirmpassword" name="confirmpassword" type="password" required
+                      class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800"
+                      #confirmPassword="ngModel" />
+                    <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="text-red-500 text-xs mt-1">
+                      <div *ngIf="confirmPassword.errors">
+                        Confirm password is required.
+                      </div>
+                    </div>
+                    <div *ngIf="confirmpassword && confirmpassword !== newpasswordfield" class="text-red-500 text-xs mt-1">
+                      Passwords do not match.
+                    </div>
+                  </div>
+                </form>
+                <button (click)="pwdReset()" type="submit"
+                  class="w-full py-3.5 bg-exact-orange hover-exact-orange text-white font-bold rounded-xl transition duration-200 shadow-sm text-[15px]">
+                  Change Password
+                </button>
+              </div>
+
+              <div *ngIf="changePassword">
+                <form #loginForm="ngForm">
+                  <div class="mb-4">
+                    <label class="block text-[13px] font-medium text-gray-700 mb-1.5">Old Password</label>
+                    <input id="username" name="username" [(ngModel)]="oldpassword" type="password" pattern="" required
+                      pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" [maxLength]="12"
+                      class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800"
+                      #oldPassword="ngModel" />
+                    <div *ngIf="oldPassword?.errors && (oldPassword.dirty || oldPassword.touched)" class="text-red-500 text-[11px] mt-1.5 leading-tight">
+                      <div *ngIf="oldpassword.length == 0">Old Password is required.</div>
+                      <div *ngIf="oldPassword.errors">
+                        Password must contain at least one uppercase letter, 0-9 digits, and be at least 8 characters long.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <label for="password" class="block text-[13px] font-medium text-gray-700 mb-1.5">New Password</label>
+                    <input type="password" name="password" [(ngModel)]="newpassword" pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}"
+                      [maxLength]="12" id="password"
+                      class="w-full p-2.5 bg-[#f4f7f9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm text-gray-800"
+                      required #newSetPassword="ngModel" />
+                    <div *ngIf="newSetPassword?.errors && (newSetPassword.dirty || newSetPassword.touched)" class="text-red-500 text-[11px] mt-1.5 leading-tight">
+                      <div *ngIf="newpassword.length == 0">New Password is required.</div>
+                      <div *ngIf="newSetPassword.errors">
+                        Password must contain at least one uppercase letter, 0-9 digits, and be at least 8 characters long.
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit"
+                    class="w-full py-3.5 mt-2 bg-exact-orange hover-exact-orange text-white font-bold rounded-xl transition duration-200 shadow-sm text-[15px]"
+                    (click)="changePasswordApi()">
+                    Change Password
+                  </button>
+                </form>
+              </div>
+            </div>
+            <!-- Login Form - UserType - Customer -->
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

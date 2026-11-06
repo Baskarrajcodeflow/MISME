@@ -1,0 +1,15 @@
+<div *ngFor="let featureName of getFeatureNames()" class="ml-4">
+  <div class="border rounded mb-2">
+    <div class="bg-gray-300 px-4 py-2 cursor-pointer" (click)="toggleFeatureAccordion(featureName)">
+      <h4 class="text-md font-semibold">{{ featureName }}</h4>
+    </div>
+    <div *ngIf="isFeatureAccordionOpen(featureName)" class="bg-white px-4 py-2">
+      <div *ngFor="let permission of getFilteredPermissions(featureName)">
+        <label class="block mb-1">
+          <input type="checkbox" [checked]="selectedRole?.roles?.split(',')?.includes(permission.id.toString())" (change)="emitTogglePermission(permission)" class="mr-2">
+          {{ permission.permissionName }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

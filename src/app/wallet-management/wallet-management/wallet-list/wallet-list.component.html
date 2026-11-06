@@ -1,0 +1,81 @@
+<div class="container mx-auto p-4" *ngIf="privilege?.readPrivelege">
+  <div class="space-y-2">
+    <label for="walletTypeFilter" class="block text-sm font-medium text-gray-700">Filter by Wallet Type</label>
+    <select id="walletTypeFilter"
+      class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+      [(ngModel)]="selectedWalletType" (change)="filterWallets()">
+      <option value="">All</option>
+      <option *ngFor="let type of walletTypes" [value]="type">{{ type }}</option>
+    </select>
+  </div>
+
+  <div class="mt-4 overflow-auto" style="max-height: 500px;">
+    <table class="min-w-full bg-white border border-gray-300">
+      <thead style="background-color: rgb(10, 54, 90);">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Account Number</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Base User Id</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Head Account Number
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Sub Head Account
+            Number</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Wallet Number</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Wallet Type</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Account Description
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Action</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Action</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let wallet of filteredWallets; let i = index" class="hover:bg-gray-100 cursor-pointer">
+          <td class="px-6 py-4 whitespace-nowrap">{{ wallet.accountNo }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ wallet.baseUserId }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ wallet.headAccountNo }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ wallet.subAccountNo }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ wallet.walletNo }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ wallet.walletType }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ wallet.accountDescription }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="relative inline-block w-64">
+              <button
+                class="w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 rounded shadow focus:outline-none focus:shadow-outline flex justify-between items-center"
+                (click)="toggleDropdown(i)">
+                <span>Select Wallet Status</span>
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M7 10l5 5 5-5H7z" />
+                </svg>
+              </button>
+
+              <div *ngIf="dropdownOpen[i]"
+                class="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+                <div class="p-2">
+                  <label *ngFor="let status of statuses" class="block py-1">
+                    <input type="checkbox" class="mr-2" [checked]="wallet[status]"
+                      (change)="onStatusChange(wallet, status, $event)" />
+                    {{ statusMapping[status] }}
+                  </label>
+                </div>
+                <div class="p-2 flex justify-end">
+                  <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  (click)="confirmSelection(wallet, i)">
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td> <button type="submit" (click)="onClickAuthorize(wallet)" [disabled]="wallet.active"
+              *ngIf="privilege?.authorizePrivelege" style="background-color: #0a365a;float: right;"
+              class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+              {{!wallet.active?'Authorize':'Authorized'}}
+            </button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="isLoading">
+  <app-loader></app-loader>
+</div>

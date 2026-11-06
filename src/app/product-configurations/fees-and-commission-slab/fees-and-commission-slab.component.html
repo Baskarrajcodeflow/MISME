@@ -1,0 +1,10 @@
+
+
+<app-generic-table
+  [columns]="feesAndCommisionArray"
+  [rows]="feesAndCommision"
+  (onSave)="handleSave($event)"
+  (onAddRowData)="addRow($event)"
+  (onDelete)="handleDelete($event)"
+  (onEdit)="handleEdit($event)">
+</app-generic-table>

@@ -1,0 +1,63 @@
+<div class="flex gap-2">
+    <form [formGroup]="refundForm">
+        <input placeholder="Enter Txn Id" type="text" formControlName="batchId"
+            class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            id="end-date" />
+        <button (click)="search()"
+            class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            style="background-color: #0a365a">&nbsp;&nbsp;&nbsp;
+            Search
+        </button>
+    </form>
+</div>
+
+<div class="mt-[10px]" #content>
+
+    <div class="max-w-4xl mx-auto bg-white p-8 shadow-lg border border-gray-200 print">
+        <div class="button-container" style="padding-left: 700px;">
+            <button (click)="reverse()" *ngIf="privilege?.createPrivelege" [disabled]="isReverseButtonDisabled"
+                class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                style="background-color: #0a365a;">
+                Reverse
+            </button>
+        </div>
+        <br>
+        <div class="mt-8">
+            <table *ngIf="showAllTable" class="w-full table-auto border-collapse">
+                <thead>
+                    <tr class="bg-[#f47a20] text-white text-left text-sm">
+                        <th class="p-2 border border-gray-200 text-center">Account</th>
+                        <th class="p-2 border border-gray-200 text-center">
+                            BatchId
+                        </th>
+                        <th class="p-2 border border-gray-200 text-center">
+                            Description
+                        </th>
+                        <th class="p-2 border border-gray-200 text-center">Service Name</th>
+                        <th class="p-2 border border-gray-200 text-center">TimeStamp</th>
+                        <th class="p-2 border border-gray-200 text-center">Credit</th>
+                        <th class="p-2 border border-gray-200 text-center">Debit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of refundDetails" class="text-sm text-gray-700">
+                        <td class="p-2 border border-gray-200">{{ item?.account }}</td>
+                        <td class="p-2 border border-gray-200">
+                            {{ item?.batchId }}
+                        </td>
+                        <td class="p-2 border border-gray-200">
+                            {{ item?.description }}
+                        </td>
+                        <td class="p-2 border border-gray-200">{{ item?.serviceName }}</td>
+                        <td class="p-2 border border-gray-200">{{ item?.timeStamp | date:"medium"}}</td>
+                        <td class="p-2 border border-gray-200">{{ item?.credit }}</td>
+                        <td class="p-2 border border-gray-200">{{ item?.debit }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>

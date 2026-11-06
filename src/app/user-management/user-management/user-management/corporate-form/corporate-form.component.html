@@ -1,0 +1,26 @@
+<div class="container mx-auto p-4">
+    <h2 *ngIf="!userId" class="text-2xl font-bold mb-4">Corporate Registration</h2>
+    <h2 *ngIf="userId" class="text-2xl font-bold mb-4">Edit Corporate Customer</h2>
+    <form [formGroup]="userCreateForm" (ngSubmit)="onSubmit()" class="grid grid-cols-2 gap-4">
+      <div *ngFor="let field of fields" class="mb-0">
+        <label [for]="field.id" class="block text-gray-700">{{ field.label }}</label>
+        <input *ngIf="field.type !== 'select' && field.type !== 'textarea'" 
+               [id]="field.id" [formControlName]="field.name" 
+               [type]="field.type" class="w-full px-3 py-2 border rounded" />
+        <select *ngIf="field.type === 'select'" 
+                [id]="field.id" [formControlName]="field.name" 
+                class="w-full px-3 py-2 border rounded">
+          <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+        </select>
+        <div *ngIf="userCreateForm.get(field.name)?.invalid && userCreateForm.get(field.name)?.touched" class="text-red-500">
+          <span *ngIf="userCreateForm.get(field.name)?.errors?.['required']">{{ field.label }} is required.</span>
+          <span *ngIf="userCreateForm.get(field.name)?.errors?.['minlength']">{{ field.label }} must be at least {{ field.errors?.['minlength']?.requiredLength }} characters.</span>
+          <span *ngIf="userCreateForm.get(field.name)?.errors?.['email']">Invalid email format.</span>
+        </div>
+      </div>
+      <div class="col-span-2 text-right">
+        <button type="submit" class="px-4 py-2 text-white bg-tableHheaderBlue rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600" [disabled]="userCreateForm.invalid">Submit</button>
+      </div>
+    </form>
+  </div>
+  

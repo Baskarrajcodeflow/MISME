@@ -1,0 +1,21 @@
+.box-body{
+    padding:1rem;
+  }
+  
+  .error-message{
+    color:red;
+  }
+
+  /* .amount-container {
+    display: flex;
+    justify-content: flex-end;
+  } */
+  .amount-container div {
+    white-space: nowrap; 
+  }
+
+  .table-container {
+    max-height: 410px; /* Set the desired height */
+    overflow-y: auto;
+  }
+  

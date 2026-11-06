@@ -1,0 +1,47 @@
+<!-- src/app/scheduler/scheduler.component.html -->
+<div class="p-4 bg-white rounded-lg shadow-md">
+    <!-- Date Selector -->
+    <div class="mb-4">
+      <label for="date" class="block text-sm font-medium text-gray-700">Select Date</label>
+      <input
+        type="date"
+        id="date"
+        [(ngModel)]="selectedDate"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+  
+    <!-- Time Selector -->
+    <div class="mb-4">
+      <label for="time" class="block text-sm font-medium text-gray-700">Select Time</label>
+      <input
+        type="time"
+        id="time"
+        [(ngModel)]="selectedTime"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+  
+    <!-- Buttons -->
+    <div class="flex space-x-4">
+      <button
+        (click)="uploadNewFile()"
+        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+      >
+        Upload New File
+      </button>
+      <button
+        (click)="close()"
+        class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none"
+      >
+        Close
+      </button>
+      <button
+        (click)="activate()"
+        class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none"
+      >
+        Activate
+      </button>
+    </div>
+  </div>
+  

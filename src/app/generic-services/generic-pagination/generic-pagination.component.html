@@ -1,0 +1,21 @@
+<div class="mt-4 flex justify-between items-center">
+    <button
+      class="px-4 py-2 bg-gray-300 rounded"
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      [ngClass]="{'opacity-50 cursor-not-allowed': currentPage === 1}"
+    >
+      Previous
+    </button>
+    <p>Page {{ currentPage }} <ng-container *ngIf="totalPages && totalPages > 0"> of {{ totalPages }}</ng-container></p>
+    <button
+      class="px-4 py-2 bg-gray-300 rounded"
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages || !showNext"
+      [ngClass]="{'opacity-50 cursor-not-allowed': currentPage === totalPages || !showNext}"
+    >
+      Next
+    </button>
+  </div>
+
+  <!-- <app-generic-pagination [data]="senderData" (customEvent)="receiverData($event)" ></app-generic-pagination> -->

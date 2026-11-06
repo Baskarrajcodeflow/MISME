@@ -1,0 +1,63 @@
+<div class="w-full  ga mx-auto" *ngIf="SalaryPrivelege?.readPrivelege">
+    <!-- Tab Headers -->
+    <div class="flex justify-between border-b border-gray-200">
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 1, 'border-transparent': activeTab !== 1 }"
+        (click)="setActiveTab(1)">
+        Upload New File
+      </button>
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 2, 'border-transparent': activeTab !== 2 }"
+        (click)="setActiveTab(2)">
+        
+       Uploaded Files
+      </button>
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 3, 'border-transparent': activeTab !== 3 }"
+        (click)="setActiveTab(3)">
+       
+        Approved Files
+      </button>
+      <!-- <button 
+      class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+      [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 4, 'border-transparent': activeTab !== 4 }"
+      (click)="setActiveTab(4)">
+      
+Processed Files
+    </button> -->
+    <button 
+    class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+    [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 5, 'border-transparent': activeTab !== 5 }"
+    (click)="setActiveTab(5)">
+    
+Rejected Files
+  </button>
+    </div>
+  
+    <!-- Tab Content -->
+    <div class="p-4">
+      <div *ngIf="activeTab === 1">
+       <app-bulk-salary-processing></app-bulk-salary-processing>
+      </div>
+      <div *ngIf="activeTab === 2">
+        <h4 class="text-md font-semibold">Files Awaiting for Approval</h4>
+       <app-table></app-table>
+      </div>
+      <div *ngIf="activeTab === 3">
+        <h4 class="text-md font-semibold">Approved Files</h4>
+       <app-sheduled-table></app-sheduled-table>
+      </div>
+      <div *ngIf="activeTab === 4">
+        <h4 class="text-md font-semibold">Processed Files</h4>
+        <app-process-files-table></app-process-files-table>
+      </div>
+      <div *ngIf="activeTab === 5">
+        <h4 class="text-md font-semibold">RejectedFiles</h4>
+        <app-rejected-table></app-rejected-table>
+      </div>
+    </div>
+  </div>
+  

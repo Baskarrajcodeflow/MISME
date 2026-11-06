@@ -1,0 +1,62 @@
+<div class="container mx-auto p-4">
+    <form [formGroup]="businessProfileForm"  class="space-y-4">
+      <div>
+        <label class="block text-gray-700">Business Name</label>
+        <input type="text" formControlName="businessName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <!-- <div *ngIf="businessProfileForm.get('businessName')?.invalid && (businessProfileForm.get('businessName')?.dirty || businessProfileForm.get('businessName')?.touched)">
+          <span class="text-red-600 text-sm">This field is required.</span>
+        </div> -->
+      </div>
+  
+      <div>
+        <label class="block text-gray-700">Business Sector/Type</label>
+        <input type="text" formControlName="businessSectorType" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <!-- <div *ngIf="businessProfileForm.get('businessSectorType')?.invalid && (businessProfileForm.get('businessSectorType')?.dirty || businessProfileForm.get('businessSectorType')?.touched)">
+          <span class="text-red-600 text-sm">This field is required.</span>
+        </div> -->
+      </div>
+  
+      <div>
+        <label class="block text-gray-700">Business License Issuer</label>
+        <input type="text" formControlName="businessLicenseIssuer" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <!-- <div *ngIf="businessProfileForm.get('businessLicenseIssuer')?.invalid && (businessProfileForm.get('businessLicenseIssuer')?.dirty || businessProfileForm.get('businessLicenseIssuer')?.touched)">
+          <span class="text-red-600 text-sm">This field is required.</span>
+        </div> -->
+      </div>
+  
+      <div>
+        <label class="block text-gray-700">Business Monthly Income</label>
+        <input type="text" formControlName="businessMonthlyIncome" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <!-- <div *ngIf="businessProfileForm.get('businessMonthlyIncome')?.invalid && (businessProfileForm.get('businessMonthlyIncome')?.dirty || businessProfileForm.get('businessMonthlyIncome')?.touched)">
+          <span class="text-red-600 text-sm">Please enter a valid income.</span>
+        </div> -->
+      </div>
+  
+      <div>
+        <label class="block text-gray-700">Location</label>
+        <input type="text" formControlName="location" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <!-- <div *ngIf="businessProfileForm.get('location')?.invalid && (businessProfileForm.get('location')?.dirty || businessProfileForm.get('location')?.touched)">
+          <span class="text-red-600 text-sm">This field is required.</span>
+        </div> -->
+      </div>
+  
+      <div>
+        <label class="block text-gray-700">District</label>
+        <input type="text" formControlName="district" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <!-- <div *ngIf="businessProfileForm.get('district')?.invalid && (businessProfileForm.get('district')?.dirty || businessProfileForm.get('district')?.touched)">
+          <span class="text-red-600 text-sm">This field is required.</span>
+        </div> -->
+      </div>
+  
+      <div>
+        <label class="block text-gray-700">Province</label>
+        <input type="text" formControlName="province" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        /
+      </div>
+  
+      <div>
+        <!-- <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Submit</button> -->
+      </div>
+    </form>
+  </div>
+  

@@ -1,0 +1,79 @@
+<div class="flex justify-center items-center">
+    <div class="mt-10 bg-white rounded-2xl shadow-lg border border-gray-200 p-6 w-full max-w-3xl">
+  <h3 class="text-lg font-semibold text-gray-800 mb-6">
+    Period Lock Controls
+  </h3>
+
+  <div class="space-y-5">
+
+    <!-- Soft Lock Toggle -->
+    <div class="flex justify-between items-center">
+      <span class="text-sm font-medium text-gray-700">
+        Soft Lock
+      </span>
+      <mat-slide-toggle
+        [(ngModel)]="softLock"
+        (change)="onSoftToggle()"
+        color="accent"
+        [checked]="softLock"
+        class="mat-elevation-z4">
+      </mat-slide-toggle>
+    </div>
+
+    <!-- Hard Lock Toggle -->
+    <div class="flex justify-between items-center">
+      <span class="text-sm font-medium text-gray-700">
+        Hard Lock
+      </span>
+      <mat-slide-toggle
+        [(ngModel)]="hardLock"
+        (change)="onHardToggle()"
+        color="warn"
+        [checked]="hardLock"
+        class="mat-elevation-z4">
+      </mat-slide-toggle>
+    </div>
+
+  </div>
+
+  <!-- Status Badge -->
+  <div class="mt-6">
+    <span
+      class="px-3 py-1 rounded-full text-xs font-semibold"
+      [ngClass]="{
+        'bg-green-100 text-green-700': !isLocked(),
+        'bg-yellow-100 text-yellow-700': softLock,
+        'bg-red-100 text-red-700': hardLock
+      }">
+      {{
+        hardLock ? 'Hard Locked' :
+        softLock ? 'Soft Locked' :
+        'Active (Unlocked)'
+      }}
+    </span>
+  </div>
+
+  <!-- Unlock Section -->
+  <div *ngIf="isLocked()" class="border-t mt-6 pt-6">
+    <label class="block text-sm font-medium text-gray-700 mb-2">
+      Reason for Unlock <span class="text-red-500">*</span>
+    </label>
+
+    <textarea
+      [(ngModel)]="unlockReason"
+      rows="3"
+      class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+      placeholder="Enter unlock reason...">
+    </textarea>
+
+    <div class="flex justify-end mt-4">
+      <button
+        (click)="unlockPeriod()"
+        class="px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 shadow-sm">
+        Unlock
+      </button>
+    </div>
+  </div>
+
+</div>
+</div>

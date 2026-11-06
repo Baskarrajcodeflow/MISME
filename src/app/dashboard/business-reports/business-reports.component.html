@@ -1,0 +1,123 @@
+<div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <h3 class="px-6 py-4 font-semibold">Registered User Statistics</h3>
+
+  <table class="min-w-full table-auto mx-auto">
+    <thead class="bg-gray-100 text-gray-600 text-sm">
+      <tr>
+        <th class="px-6 py-3 text-left">User Type</th>
+        <th class="px-6 py-3 text-left">User Count</th>
+        <th class="px-6 py-3 text-left">Cumulative Count</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-700 text-sm divide-y divide-gray-100">
+      <tr *ngFor="let item of userData" class="hover:bg-gray-50">
+        <td class="px-4 py-2 font-medium">{{ item.userType }}</td>
+        <td class="px-4 py-2">
+          <span
+            [ngClass]="{
+              'text-gray-500': item.userCount === 0
+            }"
+          >
+            {{ item.userCount }}
+          </span>
+        </td>
+        <td class="px-4 py-2">
+          <span class="text-gray-600 font-semibold">
+            {{ item.cumulativeCount }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Footer -->
+  <div
+    class="flex justify-between items-center px-6 py-3 bg-gray-50 text-sm text-gray-500"
+  >
+    <span>1–{{ userData.length }} of {{ userData.length }}</span>
+    <div class="flex items-center gap-2">
+      <button class="px-2 py-1 rounded bg-gray-200 text-gray-600">&lt;</button>
+      <span>1/1</span>
+      <button class="px-2 py-1 rounded bg-gray-200 text-gray-600">&gt;</button>
+    </div>
+  </div>
+</div>
+<div class="bg-white shadow-md rounded-lg overflow-hidden my-4">
+            <h3 class="px-6 py-4 font-semibold">KYC Application Statistics</h3>
+
+  <table class="min-w-full table-auto">
+    <thead class="bg-gray-100 text-gray-600 text-sm">
+      <tr>
+
+        <th class="px-4 py-2 text-left">KYC Type</th>
+        <th class="px-4 py-2 text-left">Incomplete</th>
+        <th class="px-4 py-2 text-left">In Review</th>
+        <th class="px-4 py-2 text-left">Verified L1</th>
+        <th class="px-4 py-2 text-left">Verified L2</th>
+        <th class="px-4 py-2 text-left">Approved</th>
+        <th class="px-4 py-2 text-left">Rejected</th>
+      </tr>
+    </thead>
+
+    <tbody class="text-gray-700 text-sm divide-y divide-gray-100">
+      <tr *ngFor="let item of kycData" class="hover:bg-gray-50">
+        <td class="px-4 py-2 font-medium">{{ item.kycType }}</td>
+
+        <!-- Incomplete -->
+        <td class="px-4 py-2">
+          <span [ngClass]="item.incomplete > 0 ? 'text-gray-600 font-semibold' : 'text-gray-500'">
+            {{ item.incomplete }}
+          </span>
+        </td>
+
+         <!-- In Review -->
+        <td class="px-4 py-2">
+          <span [ngClass]="item.inReview > 0 ? 'text-gray-600 font-semibold' : 'text-gray-500'">
+            {{ item.inReview }}
+          </span>
+        </td>
+
+        <!-- Verified L1 -->
+        <td class="px-4 py-2">
+          <span [ngClass]="item.verifiedLevel1 > 0 ? 'text-gray-600 font-semibold' : 'text-gray-500'">
+            {{ item.verifiedLevel1 }}
+          </span>
+        </td>
+
+        <!-- Verified L2 -->
+        <td class="px-4 py-2">
+          <span [ngClass]="item.verifiedLevel2 > 0 ? 'text-gray-600 font-semibold' : 'text-gray-500'">
+            {{ item.verifiedLevel2 }}
+          </span>
+        </td>
+
+        <!-- Approved -->
+        <td class="px-4 py-2">
+          <span class="text-gray-600 font-semibold">{{ item.approved }}</span>
+        </td>
+
+        <!-- Rejected -->
+        <td class="px-4 py-2">
+          <span [ngClass]="item.rejected > 0 ? 'text-gray-600 font-semibold' : 'text-gray-500'">
+            {{ item.rejected }}
+          </span>
+        </td>
+
+       
+
+        
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Footer -->
+  <!-- <div class="flex justify-between items-center px-6 py-3 bg-gray-50 text-sm text-gray-500">
+    <span>1–{{ kycData.length }} of {{ kycData.length }}</span>
+    <div class="flex items-center gap-2">
+      <button class="px-2 py-1 rounded bg-gray-200 text-gray-600">&lt;</button>
+      <span>1/1</span>
+      <button class="px-2 py-1 rounded bg-gray-200 text-gray-600">&gt;</button>
+    </div>
+  </div> -->
+</div>
+

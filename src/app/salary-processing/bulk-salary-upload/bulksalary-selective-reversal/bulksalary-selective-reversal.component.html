@@ -1,0 +1,53 @@
+<div class="w-full  ga mx-auto" *ngIf="SalaryPrivelege?.readPrivelege">
+    <!-- Tab Headers -->
+    <div class="flex justify-between border-b border-gray-200">
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 1, 'border-transparent': activeTab !== 1 }"
+        (click)="setActiveTab(1)">
+        Selective Reversal
+      </button>
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 2, 'border-transparent': activeTab !== 2 }"
+        (click)="setActiveTab(2)">
+        
+       Pending Reversal
+      </button>
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 3, 'border-transparent': activeTab !== 3 }"
+        (click)="setActiveTab(3)">
+       
+        Approved
+      </button>
+      <button 
+        class="px-4 py-2 -mb-px font-semibold text-gray-600 border-b-2 transition-colors duration-300"
+        [ngClass]="{ 'border-blue-500 text-blue-500': activeTab === 4, 'border-transparent': activeTab !== 4 }"
+        (click)="setActiveTab(4)">
+       
+        Rejected
+      </button>
+    </div>
+  
+    <!-- Tab Content -->
+    <div class="p-4">
+      <div *ngIf="activeTab === 1">
+        <h4 class="text-md font-semibold">Salary Selective Reversal</h4>
+       <app-reconciliation-files></app-reconciliation-files>
+      </div>
+      <div *ngIf="activeTab === 2">
+        <h4 class="text-md font-semibold">Pending Reversal</h4>
+       <app-pending-bulksalary-reversal></app-pending-bulksalary-reversal>
+      </div>
+      <div *ngIf="activeTab === 3">
+        <h4 class="text-md font-semibold">Approved Reversal</h4>
+       <app-selective-reversal-mail></app-selective-reversal-mail>
+      </div>
+    <div *ngIf="activeTab === 4">
+        <h4 class="text-md font-semibold">Rejected Reversal</h4>
+       <app-rejected-reversal></app-rejected-reversal>
+      </div>
+    </div>
+  </div>
+  

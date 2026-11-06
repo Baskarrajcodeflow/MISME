@@ -1,0 +1,115 @@
+<div class="p-4">
+  <!-- Search by Account Number -->
+  <!-- <div class="mb-4">
+    <label for="accountNumber" class="block text-sm font-medium text-gray-700">Search by Account Number</label>
+    <input
+      id="accountNumber"
+      type="text"
+      [(ngModel)]="accountNumber"
+      (input)="searchByAccountNumber()"
+      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      placeholder="Enter account number"
+    />
+  </div> -->
+
+  <div class=" mb-4">
+    <label for="selectCorp" class="block text-gray-700 font-bold mb-2">Select Corporate</label>
+    <ng-select 
+    [items]="cities"
+    [(ngModel)]="selectedCity" 
+    [searchFn]="customSearchFn"
+    (change)="onCityChange($event)"
+    bindLabel="name"
+    bindValue="id"
+    placeholder="Search Corporate name / Account Number">
+  </ng-select>
+  
+  </div>
+
+  <div *ngIf="corpData" class="flex flex-col items-center  mt-8">
+    <div class="w-full bg-white shadow-lg border-t-2 border-green-500 rounded-lg overflow-hidden ">
+      <!-- Card Content with Side-by-Side Layout -->
+      <div class="p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div>
+          <span class="text-gray-500 text-xs uppercase">ID:</span>
+          <p class="text-gray-900 text-sm font-medium">{{ corpData.id }}</p>
+        </div>
+        <div>
+          <span class="text-gray-500 text-xs uppercase">Corporate Name:</span>
+          <p class="text-gray-900 text-sm font-medium">{{ corpData.firstName }} {{ corpData.lastName }}</p>
+        </div>
+        <div>
+          <span class="text-gray-500 text-xs uppercase">Account Number:</span>
+          <p class="text-gray-900 text-sm font-medium">{{ corpData.accountNumber }}</p>
+        </div>
+        <div>
+          <span class="text-gray-500 text-xs uppercase">Email:</span>
+          <p class="text-gray-900 text-sm font-medium">{{ corpData.email }}</p>
+        </div>
+        <div>
+          <span class="text-gray-500 text-xs uppercase">Phone Number:</span>
+          <p class="text-gray-900 text-sm font-medium">{{ corpData.phone }}</p>
+        </div>
+        <div>
+          <span class="text-gray-500 text-xs uppercase">Gender:</span>
+          <p class="text-gray-900 text-sm font-medium">{{ corpData.gender }}</p>
+        </div>
+        <div>
+          <span class="text-gray-500 text-xs uppercase">Corporate Type:</span>
+          <p class="text-gray-900 text-sm font-medium">{{ corpData.corpType }}</p>
+        </div>
+        <div>
+          <span class="text-gray-500 text-xs uppercase">Created On:</span>
+          <p class="text-gray-900 text-sm font-medium">{{ corpData.createdOn | date:'MMM d, y, h:mm:ss a' }}</p>
+        </div>
+      </div>
+    </div>
+    
+    
+  </div>
+  
+
+
+  <!-- Search by Corporate Name -->
+  <!-- <div class="mb-4">
+    <label for="corporateName" class="block text-sm font-medium text-gray-700">Search by Corporate Name</label>
+    <input
+      id="corporateName"
+      type="text"
+      [(ngModel)]="corporateName"
+      (input)="searchByName()"
+      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      placeholder="Enter corporate name"
+    />
+  </div>
+ -->
+  <!-- Results Table -->
+  <!-- <table class="min-w-full bg-white">
+    <thead>
+      <tr>
+        <th class="px-6 py-3 border-b border-gray-300 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+        <th class="px-6 py-3 border-b border-gray-300 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Corporate Name</th>
+        <th class="px-6 py-3 border-b border-gray-300 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account Number</th>
+        <th class="px-6 py-3 border-b border-gray-300 bg-gray-50"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let corp of corporates" 
+      (click)="selectCorporate(corp)" 
+      [ngClass]="{'bg-green-100': selectedCorporate === corp, 'hover:bg-gray-100 cursor-pointer': selectedCorporate !== corp}">
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ corp.id }}</td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ corp.firstName }} {{ corp?.lastName }}</td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ corp?.walletAccount?.accountNo }}</td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+      <button *ngIf="SalaryPrivelege?.createPrivelege" 
+              [ngClass]="{'text-green-600': selectedCorporate === corp, 'text-indigo-600 hover:text-indigo-900': selectedCorporate !== corp}">
+        {{ selectedCorporate === corp ? 'Selected' : 'Select' }}
+      </button>
+    </td>
+  </tr>
+  
+  
+    </tbody>
+  </table> -->
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

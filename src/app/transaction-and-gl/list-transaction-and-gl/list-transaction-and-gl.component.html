@@ -1,0 +1,94 @@
+<div class="container mx-auto p-4" *ngIf="privilege?.readPrivelege">
+    <div class="button-container" *ngIf="privilege?.createPrivelege">
+        <button (click)="onClickCreate()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Create
+        </button>
+    </div>
+    <form [formGroup]="ListForm">
+        <div>
+            <div class="flex gap-4 mt-4">
+                <div class="w-1/2">
+                    <div class="mb-4">
+                        <label class="block text-gray-700" style="font-size: 14px">Select Category</label>
+                        <select [formControl]="category" (change)="onChangeCategory($event)"
+                            class="mt-1 p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>----</option>
+                            <option value="HEAD">Head</option>
+                            <option value="SUBHEAD">Sub Head</option>
+                            <option value="LEAF">Leaf</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <table class="min-w-full table-auto" *ngIf="showHeadTable">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2">Account Number</th>
+                <th class="px-4 py-2">Description</th>
+                <th class="px-4 py-2">Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of allHead; let i = index">
+                <!-- <td class="border px-4 py-2">{{ item.accountNo }}
+                </td> -->
+                <td class="border px-4 py-2">
+                    {{ item.accountDescription }}
+                </td>
+                <td class="border px-4 py-2">
+                    {{ item.type }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="min-w-full table-auto" *ngIf="showSubTable">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2">Account Number</th>
+                <th class="px-4 py-2">Head Account Number</th>
+                <th class="px-4 py-2">Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of allSubhead; let i = index">
+                <td class="border px-4 py-2">{{ item.accountNo }}
+                </td>
+                <td class="border px-4 py-2">
+                    {{ item.headAccountNo }}
+                </td>
+                <td class="border px-4 py-2">
+                    {{ item.type }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="min-w-full table-auto" *ngIf="showLeafTable">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2">Account Number</th>
+                <th class="px-4 py-2">Head Account Number</th>
+                <th class="px-4 py-2">Sub Account Number</th>
+                <th class="px-4 py-2">Type</th>
+                <th class="px-4 py-2">Head Description</th>
+                <th class="px-4 py-2">Sub Head Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of allLeaf; let i = index">
+                <td class="border px-4 py-2">{{ item.accountNo }}
+                <td class="border px-4 py-2">
+                    {{ item.headAccountNo }}
+                </td>
+                <td class="border px-4 py-2">{{ item.subAccountNo }}
+                </td>
+                <td class="border px-4 py-2">{{ item.type }}
+                </td>
+                <td class="border px-4 py-2">{{ item.headDescription }}
+                <td class="border px-4 py-2">{{ item.subDescription }}
+
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,45 @@
+<div class="max-w-sm rounded overflow-hidden shadow-lg bg-white m-4">
+    <div class="px-6 py-4">
+      <div class="font-bold text-xl mb-2">System Administration</div>
+      <p class="text-gray-700 text-base">
+        Monitor and manage system status, resources, and security.
+      </p>
+    </div>
+    <div class="px-6 py-4">
+      <div class="mb-4">
+        <p class="text-gray-900 font-semibold">System Overview:</p>
+        <p class="text-gray-700">Server Status: {{ serverStatus }}</p>
+        <p class="text-gray-700">CPU Usage: {{ cpuUsage }}%</p>
+        <p class="text-gray-700">Memory Usage: {{ memoryUsage }}%</p>
+        <p class="text-gray-700">Disk Space Usage: {{ diskUsage }}%</p>
+        <p class="text-gray-700">Pending Updates: {{ pendingUpdates }}</p>
+        <p class="text-gray-700">Security Alerts: {{ securityAlerts }}</p>
+      </div>
+      <div class="mb-4">
+        <p class="text-gray-900 font-semibold">Admin Actions:</p>
+      </div>
+      <div class="flex flex-wrap -mx-2">
+        <div class="w-full sm:w-1/2 px-2 mb-4">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" (click)="viewLogs()">
+            View Logs
+          </button>
+        </div>
+        <div class="w-full sm:w-1/2 px-2 mb-4">
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full" (click)="manageConfigs()">
+            Manage Configs
+          </button>
+        </div>
+        <div class="w-full sm:w-1/2 px-2 mb-4">
+          <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded w-full" (click)="applyUpdates()">
+            Apply Updates
+          </button>
+        </div>
+        <div class="w-full sm:w-1/2 px-2 mb-4">
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full" (click)="viewSecurityAlerts()">
+            View Security Alerts
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

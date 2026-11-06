@@ -1,0 +1,874 @@
+<div class="w-full p-4 sm:p-6">
+
+  <!-- Page tabs -->
+  <div class="mb-6 flex flex-wrap gap-2 border-b border-gray-200">
+    <button type="button" (click)="setActivePage('manual')" class="border-b-2 px-4 py-3 text-sm font-medium transition"
+      [class.border-blue-600]="activePage === 'manual'" [class.text-blue-600]="activePage === 'manual'"
+      [class.border-transparent]="activePage !== 'manual'" [class.text-gray-500]="activePage !== 'manual'">Manual
+      Notification</button>
+    <button type="button" (click)="setActivePage('upload')" class="border-b-2 px-4 py-3 text-sm font-medium transition"
+      [class.border-blue-600]="activePage === 'upload'" [class.text-blue-600]="activePage === 'upload'"
+      [class.border-transparent]="activePage !== 'upload'" [class.text-gray-500]="activePage !== 'upload'">Excel
+      Upload</button>
+  </div>
+
+  <ng-container *ngIf="activePage === 'manual'">
+
+
+    <!-- ====================================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ====================================================== -->
+
+    <div class="mb-6">
+
+      <h2 class="text-xl font-semibold text-gray-800">
+        Manual Notification
+      </h2>
+
+      <p class="mt-1 text-sm text-gray-500">
+        Search users and send SMS, email or push notifications.
+      </p>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- SEARCH CARD -->
+    <!-- ====================================================== -->
+
+    <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
+
+      <div class="border-b border-gray-200 px-5 py-4">
+
+        <h3 class="text-base font-semibold text-gray-800">
+          Search Users
+        </h3>
+
+        <p class="mt-1 text-xs text-gray-500">
+          Select one search type and enter the corresponding value.
+        </p>
+
+      </div>
+
+
+      <form [formGroup]="searchForm" (ngSubmit)="searchUsers()" class="p-5">
+
+        <div class="grid grid-cols-1 items-end gap-4 md:grid-cols-3">
+
+          <!-- ================================================== -->
+          <!-- SEARCH BY -->
+          <!-- ================================================== -->
+
+          <div>
+
+            <label for="searchMeta" class="mb-1.5 block text-sm font-medium text-gray-700">
+              Search By
+            </label>
+
+            <select id="searchMeta" formControlName="searchMeta"
+              class="w-full rounded-md border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-800 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+
+              <option value="PHONE">
+                Phone
+              </option>
+
+              <option value="EMAIL">
+                Email
+              </option>
+
+              <option value="WALLET">
+                Wallet
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- ================================================== -->
+          <!-- SEARCH VALUE -->
+          <!-- ================================================== -->
+
+          <div>
+
+            <label for="keyword" class="mb-1.5 block text-sm font-medium text-gray-700">
+              {{ searchMeta === 'PHONE'
+              ? 'Phone Number'
+              : searchMeta === 'EMAIL'
+              ? 'Email Address'
+              : 'Wallet Number'
+              }}
+            </label>
+
+            <input id="keyword" type="text" formControlName="keyword" [placeholder]="
+              searchMeta === 'PHONE'
+                ? 'Enter phone number'
+                : searchMeta === 'EMAIL'
+                  ? 'Enter email address'
+                  : 'Enter wallet number'
+            " class="w-full rounded-md border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-800 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              [class.border-red-500]="
+              searchForm.get('keyword')?.touched &&
+              searchForm.get('keyword')?.hasError('required')
+            " />
+
+            <p *ngIf="
+              searchForm.get('keyword')?.touched &&
+              searchForm.get('keyword')?.hasError('required')
+            " class="mt-1 text-xs text-red-500">
+              Please enter
+              {{
+              searchMeta === 'PHONE'
+              ? 'a phone number'
+              : searchMeta === 'EMAIL'
+              ? 'an email address'
+              : 'a wallet number'
+              }}.
+            </p>
+
+          </div>
+
+
+          <!-- ================================================== -->
+          <!-- BUTTONS -->
+          <!-- ================================================== -->
+
+          <div class="flex items-end gap-2">
+
+            <button type="submit" [disabled]="isSearching"
+              class="flex-1 rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60">
+
+              <span *ngIf="!isSearching">
+                Search
+              </span>
+
+              <span *ngIf="isSearching" class="flex items-center justify-center gap-2">
+
+                <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+
+                Searching...
+
+              </span>
+
+            </button>
+
+
+            <button type="button" (click)="resetSearch()"
+              class="rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+              Reset
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- Search API Error -->
+
+        <div *ngIf="searchError" class="mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3">
+
+          <p class="text-sm text-red-600">
+            {{ searchError }}
+          </p>
+
+        </div>
+
+      </form>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- USER LIST -->
+    <!-- ====================================================== -->
+
+    <div class="mt-5 rounded-lg border border-gray-200 bg-white shadow-sm">
+
+      <!-- Header -->
+
+      <div
+        class="flex flex-col gap-2 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+
+        <div>
+
+          <h3 class="text-base font-semibold text-gray-800">
+            User List
+          </h3>
+
+          <p *ngIf="users.length > 0" class="mt-0.5 text-xs text-gray-500">
+            {{ users.length }} user(s) found
+          </p>
+
+        </div>
+
+
+        <div *ngIf="selectedUserCount > 0" class="text-sm font-medium text-blue-600">
+          {{ selectedUserCount }} selected
+        </div>
+
+      </div>
+
+
+      <!-- ==================================================== -->
+      <!-- EMPTY STATE -->
+      <!-- ==================================================== -->
+
+      <div *ngIf="users.length === 0 && !isSearching" class="flex min-h-[180px] items-center justify-center px-5 py-10">
+
+        <div class="text-center">
+
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-4.35-4.35m2.35-5.65a8 8 0 11-16 0 8 8 0 0116 0z" />
+
+            </svg>
+
+          </div>
+
+          <p class="text-sm font-medium text-gray-600">
+            No users found
+          </p>
+
+          <p class="mt-1 text-xs text-gray-400">
+            Search for users using the filter above.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================================================== -->
+      <!-- USER TABLE -->
+      <!-- ==================================================== -->
+
+      <div *ngIf="users.length > 0" class="overflow-x-auto">
+
+        <table class="min-w-full divide-y divide-gray-200">
+
+          <thead class="bg-gray-50">
+
+            <tr>
+
+              <!-- Select All -->
+
+              <th class="w-12 px-4 py-3 text-center">
+
+                <input type="checkbox" [(ngModel)]="selectAll" [ngModelOptions]="{ standalone: true }"
+                  (change)="toggleSelectAll()"
+                  class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+
+              </th>
+
+
+              <th
+                class="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                ID
+              </th>
+
+
+              <th
+                class="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                First Name
+              </th>
+
+
+              <th
+                class="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Last Name
+              </th>
+
+
+              <th
+                class="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Email
+              </th>
+
+
+              <th
+                class="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Phone
+              </th>
+
+
+              <th
+                class="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Wallet Number
+              </th>
+
+
+              <th
+                class="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                User Type
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody class="divide-y divide-gray-200 bg-white">
+
+            <tr *ngFor="let user of users" class="transition hover:bg-gray-50">
+
+              <!-- Checkbox -->
+
+              <td class="px-4 py-3 text-center">
+
+                <input type="checkbox" [(ngModel)]="user.selected" [ngModelOptions]="{ standalone: true }"
+                  (change)="toggleUserSelection()"
+                  class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+
+              </td>
+
+
+              <!-- ID -->
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                {{ user.id || '-' }}
+              </td>
+
+
+              <!-- First Name -->
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                {{ user.firstName || '-' }}
+              </td>
+
+
+              <!-- Last Name -->
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                {{ user.lastName || '-' }}
+              </td>
+
+
+              <!-- Email -->
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-600">
+                {{ user.email || '-' }}
+              </td>
+
+
+              <!-- Phone -->
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-600">
+                {{ user.phone || '-' }}
+              </td>
+
+
+              <!-- Wallet -->
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-600">
+                {{ user.walletNumber || '-' }}
+              </td>
+
+
+              <!-- User Type -->
+
+              <td class="whitespace-nowrap px-4 py-3">
+
+                <span class="inline-flex rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                  {{ user.userType || '-' }}
+                </span>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- SEND NOTIFICATION -->
+    <!-- ====================================================== -->
+
+    <div *ngIf="users.length > 0" class="mt-5 rounded-lg border border-gray-200 bg-white shadow-sm">
+
+      <!-- Header -->
+
+      <div class="border-b border-gray-200 px-5 py-4">
+
+        <h3 class="text-base font-semibold text-gray-800">
+          Send Notification
+        </h3>
+
+        <p *ngIf="selectedUserCount > 0" class="mt-1 text-xs text-gray-500">
+          Sending notification to
+          <span class="font-semibold text-gray-700">
+            {{ selectedUserCount }}
+          </span>
+          selected user(s).
+        </p>
+
+        <p *ngIf="selectedUserCount === 0" class="mt-1 text-xs text-amber-600">
+          Select at least one user to send a notification.
+        </p>
+
+      </div>
+
+
+      <form [formGroup]="notificationForm" (ngSubmit)="sendNotification()" class="p-5">
+
+        <!-- ================================================== -->
+        <!-- NOTIFICATION CHANNELS -->
+        <!-- ================================================== -->
+
+        <div>
+
+          <label class="mb-2 block text-sm font-medium text-gray-700">
+            Notification Type
+          </label>
+
+          <p class="mb-3 text-xs text-gray-500">
+            Select one or more notification channels.
+          </p>
+
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+
+            <!-- ================================================= -->
+            <!-- SMS -->
+            <!-- ================================================= -->
+
+            <label class="flex cursor-pointer items-center gap-3 rounded-md border px-4 py-3 transition"
+              [class.border-blue-500]="isChannelSelected('SMS')" [class.bg-blue-50]="isChannelSelected('SMS')"
+              [class.border-gray-300]="!isChannelSelected('SMS')">
+
+              <input type="checkbox" [checked]="isChannelSelected('SMS')" (change)="toggleChannel('SMS')"
+                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+
+              <div>
+
+                <p class="text-sm font-medium text-gray-800">
+                  SMS
+                </p>
+
+                <p class="text-xs text-gray-500">
+                  Send an SMS message
+                </p>
+
+              </div>
+
+            </label>
+
+
+            <!-- ================================================= -->
+            <!-- EMAIL -->
+            <!-- ================================================= -->
+
+            <label class="flex cursor-pointer items-center gap-3 rounded-md border px-4 py-3 transition"
+              [class.border-blue-500]="isChannelSelected('EMAIL')" [class.bg-blue-50]="isChannelSelected('EMAIL')"
+              [class.border-gray-300]="!isChannelSelected('EMAIL')">
+
+              <input type="checkbox" [checked]="isChannelSelected('EMAIL')" (change)="toggleChannel('EMAIL')"
+                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+
+              <div>
+
+                <p class="text-sm font-medium text-gray-800">
+                  Email
+                </p>
+
+                <p class="text-xs text-gray-500">
+                  Send an email
+                </p>
+
+              </div>
+
+            </label>
+
+
+            <!-- ================================================= -->
+            <!-- PUSH -->
+            <!-- ================================================= -->
+
+            <label class="flex cursor-pointer items-center gap-3 rounded-md border px-4 py-3 transition"
+              [class.border-blue-500]="isChannelSelected('FCM')" [class.bg-blue-50]="isChannelSelected('FCM')"
+              [class.border-gray-300]="!isChannelSelected('FCM')">
+
+              <input type="checkbox" [checked]="isChannelSelected('FCM')" (change)="toggleChannel('FCM')"
+                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+
+              <div>
+
+                <p class="text-sm font-medium text-gray-800">
+                  Push
+                </p>
+
+                <p class="text-xs text-gray-500">
+                  Send a push notification
+                </p>
+
+              </div>
+
+            </label>
+
+          </div>
+
+
+          <!-- No Channel Error -->
+
+          <p *ngIf="
+            notificationForm.touched &&
+            selectedChannels.length === 0
+          " class="mt-2 text-xs text-red-500">
+            Please select at least one notification type.
+          </p>
+
+        </div>
+
+
+        <!-- ================================================== -->
+        <!-- EMAIL SUBJECT -->
+        <!-- ================================================== -->
+
+        <div *ngIf="hasEmailChannel" class="mt-5">
+
+          <label for="emailSubject" class="mb-1.5 block text-sm font-medium text-gray-700">
+            Email Subject
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input id="emailSubject" type="text" formControlName="subject" [maxlength]="emailSubjectMaxLength"
+            placeholder="Enter email subject"
+            class="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            [class.border-red-500]="
+            notificationForm.get('subject')?.touched &&
+            (
+              notificationForm.get('subject')?.hasError('required') ||
+              notificationForm.get('subject')?.hasError('maxlength')
+            )
+          " />
+
+          <div class="mt-1 flex justify-between">
+
+            <p *ngIf="
+              notificationForm.get('subject')?.touched &&
+              notificationForm.get('subject')?.hasError('required')
+            " class="text-xs text-red-500">
+              Email subject is required.
+            </p>
+
+            <p *ngIf="
+              notificationForm.get('subject')?.touched &&
+              notificationForm.get('subject')?.hasError('maxlength')
+            " class="text-xs text-red-500">
+              Maximum {{ emailSubjectMaxLength }} characters allowed.
+            </p>
+
+            <span class="ml-auto text-xs text-gray-400">
+              {{ notificationForm.get('subject')?.value?.length || 0 }}
+              / {{ emailSubjectMaxLength }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================== -->
+        <!-- CONTENT / MESSAGE -->
+        <!-- ================================================== -->
+
+        <div class="mt-5">
+
+          <label for="notificationContent" class="mb-1.5 block text-sm font-medium text-gray-700">
+            Message
+            <span class="text-red-500">*</span>
+          </label>
+
+          <textarea id="notificationContent" rows="7" formControlName="content" [maxlength]="contentMaxLength"
+            [placeholder]="
+            hasEmailChannel
+              ? 'Enter notification message'
+              : hasSmsChannel
+                ? 'Enter SMS message'
+                : 'Enter push notification message'
+          " class="w-full resize-y rounded-md border border-gray-300 px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            [class.border-red-500]="
+            notificationForm.get('content')?.touched &&
+            (
+              notificationForm.get('content')?.hasError('required') ||
+              notificationForm.get('content')?.hasError('maxlength')
+            )
+          "></textarea>
+
+
+          <div class="mt-1 flex justify-between">
+
+            <div>
+
+              <p *ngIf="
+                notificationForm.get('content')?.touched &&
+                notificationForm.get('content')?.hasError('required')
+              " class="text-xs text-red-500">
+                Message is required.
+              </p>
+
+              <p *ngIf="
+                notificationForm.get('content')?.touched &&
+                notificationForm.get('content')?.hasError('maxlength')
+              " class="text-xs text-red-500">
+                Maximum {{ contentMaxLength }} characters allowed.
+              </p>
+
+            </div>
+
+            <span class="ml-auto text-xs text-gray-400">
+              {{ contentLength }} / {{ contentMaxLength }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================== -->
+        <!-- SEND ERROR -->
+        <!-- ================================================== -->
+
+        <div *ngIf="sendError" class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3">
+
+          <p class="text-sm text-red-600">
+            {{ sendError }}
+          </p>
+
+        </div>
+
+
+        <!-- ================================================== -->
+        <!-- SELECTED CHANNEL SUMMARY -->
+        <!-- ================================================== -->
+
+        <div *ngIf="selectedChannels.length > 0" class="mt-5 rounded-md border border-blue-100 bg-blue-50 px-4 py-3">
+
+          <p class="text-xs font-medium text-blue-700">
+            Selected channels
+          </p>
+
+          <div class="mt-2 flex flex-wrap gap-2">
+
+            <span *ngIf="hasSmsChannel" class="rounded-full bg-white px-2.5 py-1 text-xs font-medium text-blue-700">
+              SMS
+            </span>
+
+            <span *ngIf="hasEmailChannel" class="rounded-full bg-white px-2.5 py-1 text-xs font-medium text-blue-700">
+              Email
+            </span>
+
+            <span *ngIf="hasPushChannel" class="rounded-full bg-white px-2.5 py-1 text-xs font-medium text-blue-700">
+              Push
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================== -->
+        <!-- SEND BUTTON -->
+        <!-- ================================================== -->
+
+        <div class="mt-6 flex justify-end border-t border-gray-100 pt-5">
+
+          <button type="submit" [disabled]="
+            isSending ||
+            selectedUserCount === 0 ||
+            selectedChannels.length === 0
+          "
+            class="rounded-md bg-blue-600 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">
+
+            <span *ngIf="!isSending">
+              Send Notification
+            </span>
+
+            <span *ngIf="isSending" class="flex items-center gap-2">
+
+              <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+
+              </svg>
+
+              Sending...
+
+            </span>
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+
+  </ng-container>
+
+  <!-- Bulk file upload page -->
+<section *ngIf="activePage === 'upload'" class="mx-auto max-w-5xl">
+  <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+    <h2 class="text-xl font-semibold text-gray-800">File Upload</h2>
+    <p class="mt-2 text-sm text-gray-500">
+      Maximum file size: 140 KB. Supported formats: XLSX.
+    </p>
+
+    <div class="mt-6">
+      <label for="uploadFormat" class="mb-2 block text-sm font-medium text-gray-700">File Format</label>
+      <select id="uploadFormat" [(ngModel)]="uploadFormat" (ngModelChange)="onUploadFormatChange(bulkUploadFile)"
+        class="w-full rounded-md border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+        <!-- <option value="CSV">CSV</option> -->
+        <option value="XLSX">Excel (.xlsx)</option>
+        <!-- <option value="JSON">JSON</option> -->
+      </select>
+    </div>
+
+    <div class="mt-5 rounded-md border-2 border-dashed border-blue-300 bg-gray-50 px-5 py-10 text-center"
+      (dragover)="allowUploadDrop($event)" (drop)="onUploadFileDrop($event)">
+      <p class="text-sm text-gray-600">Drag and drop your file here</p>
+      <p class="my-2 text-sm text-gray-500">or</p>
+      <label for="bulkUploadFile"
+        class="inline-flex cursor-pointer rounded-md bg-gray-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-700">
+        Select File
+      </label>
+      <input #bulkUploadFile id="bulkUploadFile" type="file" class="hidden"
+        [accept]="uploadFormat === 'CSV' ? '.csv' : uploadFormat === 'XLSX' ? '.xlsx' : '.json'"
+        (change)="onUploadFileSelected($event)" />
+
+      <p *ngIf="selectedUploadFile" class="mt-4 text-sm font-medium text-gray-700">
+        Selected: {{ selectedUploadFile.name }}
+      </p>
+      <p *ngIf="isProcessingFile" class="mt-2 text-sm text-blue-600">
+        Reading file and validating records...
+      </p>
+    </div>
+
+    <p *ngIf="uploadError"
+      class="mt-3 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+      {{ uploadError }}
+    </p>
+  </div>
+
+  <!-- Results appear automatically after a file has been processed. -->
+  <div *ngIf="hasProcessedUpload"
+    class="mt-5 rounded-lg border border-gray-200 bg-white shadow-sm">
+    <div class="flex flex-wrap border-b border-gray-200">
+      <button type="button" (click)="uploadResultTab = 'errors'"
+        class="border-b-2 px-5 py-3 text-sm font-medium"
+        [class.border-red-500]="uploadResultTab === 'errors'"
+        [class.text-red-600]="uploadResultTab === 'errors'"
+        [class.border-transparent]="uploadResultTab !== 'errors'"
+        [class.text-gray-500]="uploadResultTab !== 'errors'">
+        Errors ({{ uploadRowErrors.length + (uploadError ? 1 : 0) }})
+      </button>
+      <button type="button" (click)="uploadResultTab = 'uploaded'"
+        class="border-b-2 px-5 py-3 text-sm font-medium"
+        [class.border-blue-600]="uploadResultTab === 'uploaded'"
+        [class.text-blue-600]="uploadResultTab === 'uploaded'"
+        [class.border-transparent]="uploadResultTab !== 'uploaded'"
+        [class.text-gray-500]="uploadResultTab !== 'uploaded'">
+        Uploaded Data ({{ uploadedRows.length }})
+      </button>
+    </div>
+
+    <!-- Errors tab -->
+    <div *ngIf="uploadResultTab === 'errors'" class="overflow-x-auto p-4">
+      <div class="mb-3 flex items-center justify-between">
+        <h3 class="text-sm font-semibold text-red-600">Validation Errors</h3>
+        <span class="text-sm text-gray-500">Total row errors: {{ uploadRowErrors.length }}</span>
+      </div>
+
+      <div *ngIf="uploadError" class="mb-3 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+        {{ uploadError }}
+      </div>
+
+      <div *ngIf="uploadRowErrors.length > 0; else noUploadErrors"
+        class="max-h-96 space-y-2 overflow-y-auto rounded-lg bg-gray-100 p-4">
+        <div *ngFor="let error of uploadRowErrors"
+          class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+          <p class="font-medium">Row {{ error.rowNumber }} — {{ error.name }}</p>
+          <ul class="mt-1 list-disc space-y-1 pl-5">
+            <li *ngFor="let message of error.errors">{{ message }}</li>
+          </ul>
+        </div>
+      </div>
+      <ng-template #noUploadErrors>
+        <div *ngIf="!uploadError" class="rounded-md bg-green-50 px-4 py-6 text-center text-sm text-green-700">
+          No validation errors.
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Uploaded data tab: displays ALL rows, not only valid rows. -->
+    <div *ngIf="uploadResultTab === 'uploaded'" class="overflow-x-auto">
+      <div class="p-4 text-sm text-gray-600">
+        Records found in file: <strong>{{ uploadedRows.length }}</strong>
+        <span *ngIf="uploadRowErrors.length > 0" class="ml-2 text-amber-700">
+          ({{ uploadRowErrors.length }} row(s) have validation errors)
+        </span>
+      </div>
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Name</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Email Address</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Phone Number</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Wallet Number</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Message Content</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Channel Type</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <tr *ngFor="let row of uploadedRows; let i = index" class="hover:bg-gray-50"
+            [class.bg-red-50]="isUploadRowInvalid(i)">
+            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">{{ row.name || '-' }}</td>
+            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">{{ row.emailAddress || '-' }}</td>
+            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">{{ row.phoneNumber || '-' }}</td>
+            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">{{ row.walletNumber || '-' }}</td>
+            <td class="max-w-xs whitespace-pre-wrap px-4 py-3 text-sm text-gray-700">{{ row.messageContent || '-' }}</td>
+            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">{{ row.channelType || '-' }}</td>
+          </tr>
+          <tr *ngIf="uploadedRows.length === 0">
+            <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">No records to display.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Actions stay below both result tabs. -->
+  <div class="mt-5 flex flex-wrap items-center justify-end gap-3">
+    <button type="button" (click)="resetBulkUpload(bulkUploadFile)"
+      class="rounded-md bg-red-500 px-7 py-2.5 text-sm font-medium text-white hover:bg-red-600">
+      Re-Upload
+    </button>
+    <button type="button" (click)="sendNotificationByFileUpload()"
+      [disabled]="!isUploadValid || isSendingBulkNotification"
+      class="rounded-md bg-green-600 px-7 py-2.5 text-sm font-medium text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50">
+      {{ isSendingBulkNotification ? 'Sending...' : 'Send Notification' }}
+    </button>
+  </div>
+
+  <p *ngIf="hasProcessedUpload && !isUploadValid && (uploadRowErrors.length > 0 || uploadError)"
+    class="mt-2 text-right text-xs text-amber-700">
+    Resolve all file and row validation errors before sending notifications.
+  </p>
+</section>
+
+</div>

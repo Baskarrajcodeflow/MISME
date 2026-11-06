@@ -1,0 +1,9 @@
+<div class="role-list">
+    <h2>Existing Roles</h2>
+    <ul>
+      <li *ngFor="let role of roles" (click)="selectRole(role)">
+        {{ role.roleName }}
+      </li>
+    </ul>
+  </div>
+  

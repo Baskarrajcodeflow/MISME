@@ -1,0 +1,77 @@
+<div *ngIf="isLoading" class="loader-overlay">
+    <div class="spinner"></div>
+</div>
+<h2 class="text-xl font-semibold text-[#153B63] mb-6">
+    Search By Batch ID
+</h2>
+<div class="flex items-end gap-4">
+    <div class="flex-1">
+        <input type="text" placeholder="Enter Batch ID/Transaction ID/reference NO..." [(ngModel)]="batchId"
+            (input)="onInputChange()" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                   focus:outline-none focus:ring-2 focus:ring-[#153B63]">
+    </div>
+    <button (click)="search()" [disabled]="isClicked"
+        class="px-6 py-2 text-white rounded-md flex items-center gap-2 transition hover:opacity-90"
+        style="background-color:#153B63" [class.pointer-events-none]="isClicked" [class.opacity-50]="isClicked"
+        [class.cursor-not-allowed]="isClicked">
+        <i class="fa fa-search"></i>
+        Search
+    </button>
+</div>
+<div *ngIf="searched" class="grid grid-cols-8 gap-6 items-start mt-20">
+    <div>
+        <p class="text-sm text-gray-500 mb-1">Batch ID</p>
+        <p class="text-base font-semibold text-green-600 break-words">
+            {{ searchResult.batchId }}
+        </p>
+    </div>
+    <div>
+        <p class="text-sm text-gray-500 mb-1">Transaction Status</p>
+        <p class="text-base font-semibold text-green-600">
+            {{ searchResult.status }}
+        </p>
+    </div>
+    <div>
+        <p class="text-sm text-gray-500 mb-1">Service Name</p>
+        <p class="text-base font-semibold text-green-600 break-words">
+            {{ searchResult.serviceName }}
+        </p>
+    </div>
+    <div>
+        <p class="text-sm text-gray-500 mb-1">Amount</p>
+        <p class="text-base font-semibold text-green-600">
+            {{ searchResult.amount }}
+        </p>
+    </div>
+    <div>
+        <p class="text-sm text-gray-500 mb-1">Sender WalletNo</p>
+        <p class="text-base font-semibold text-green-600 break-words">
+            {{ searchResult.senderWalletNo }}
+        </p>
+    </div>
+    <div>
+        <p class="text-sm text-gray-500 mb-1">Transaction Id</p>
+        <p class="text-base font-semibold text-green-600 break-words">
+            {{ searchResult.transactionId }}
+        </p>
+    </div>
+    <div class="min-w-0">
+        <p class="text-sm text-gray-500 mb-1">Created On</p>
+
+        <p class="text-base font-semibold text-green-600">
+            {{ searchResult.createdOn | date:'dd MMM yyyy' }}<br>
+            {{ searchResult.createdOn | date:'hh:mm a' }}
+        </p>
+    </div>
+    <div *ngIf="showRollback">
+        <p class="text-sm text-gray-500 mb-1">Action</p>
+        <button (click)="reversal()"
+            class="px-6 py-2 text-white rounded-md flex items-center gap-2 transition hover:opacity-90"
+            style="background-color:#153B63">
+            Reversal
+        </button>
+    </div>
+</div>
+<div *ngIf="searched && !searchResult" class="mt-8 p-5 text-center rounded-lg bg-blue-50 text-[#153B63]">
+    No transaction details found.
+</div>

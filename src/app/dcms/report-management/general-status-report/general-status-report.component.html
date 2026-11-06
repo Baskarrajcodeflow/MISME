@@ -1,0 +1,172 @@
+<div class="container">
+    <div class="page-header"></div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card shadow-lg rounded-lg p-6 bg-white">
+                <div class="card-body">
+                    <h5 class="page-title text-xl font-bold mb-4">General Status Report</h5>
+                    <form [formGroup]="reportForm" (ngSubmit)="fetch()">
+                    </form>
+                    <table class="min-w-full bg-blue border border-gray-300">
+                        <thead style="background-color: rgb(10, 54, 90);">
+                            <tr>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                    ID</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                    Reference No</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                    Count</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                    Total Amount</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                    Created On</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                    Process Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                    Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr *ngFor="let c of beneficiaryList" class="hover:bg-gray-100 cursor-pointer divide-x">
+                                <td class="px-2 py-1 text-sm whitespace-nowrap">{{ c.id }}</td>
+                                <td class="px-2 py-1 text-sm whitespace-nowrap">{{ c.referenceNo }}</td>
+                                <td class="px-2 py-1 text-sm whitespace-nowrap">{{ c.count }}</td>
+                                <td class="px-2 py-1 text-sm whitespace-nowrap">{{ c.totalAmount }}</td>
+                                <td class="px-2 py-1 text-sm whitespace-nowrap">{{ c.createdOn }}</td>
+                                <td class="px-2 py-1 text-sm whitespace-nowrap">{{ c.processStatus }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <button type="button" (click)="viewMore(c)"
+                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                                        style="background-color: #0a365a;">
+                                        View More
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- View Modal -->
+<div *ngIf="showViewModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white p-6 rounded-xl shadow-2xl w-11/12 max-w-7xl max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center border-b pb-3 mb-4">
+            <h2 class="text-xl font-semibold text-gray-800">View Details</h2>
+            <button (click)="closeViewMore()"
+                class="text-gray-600 hover:text-red-500 text-2xl font-bold leading-none">&times;</button>
+        </div>
+        <!-- Download icon dropdown -->
+         <div class="sticky top-0 z-20 bg-white flex justify-between items-center w-full p-4 border-b">
+            <div class="relative inline-block text-left">
+                <button (click)="toggleDownloadMenu()"
+                    class="flex items-center px-4 py-2 bg-[#0a365a] text-white rounded-md hover:bg-[#092c4a] transition">
+                    <i class="fa fa-download mr-2"></i>
+                    Download
+                </button>
+                <div *ngIf="showDownloadMenu"
+                    class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <button (click)="exportWalletToPDF()"
+                        class="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100">
+                        <i class="fa fa-file-pdf-o mr-2 text-red-500"></i>
+                        Download as PDF
+                    </button>
+                    <button (click)="exportWalletToExcel()"
+                        class="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100">
+                        <i class="fa fa-file-excel-o mr-2 text-green-600"></i>
+                        Download as Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
+            <table class="min-w-full border-collapse border border-gray-400 text-sm text-gray-800">
+                <thead class="bg-[#0a365a] text-white text-sm uppercase sticky top-0 z-10">
+                    <tr>
+                        <th class="py-2 px-3 text-left border border-gray-400">Address</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Account No</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">City</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Country</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Description</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Employee ID</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Father Name</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Gender</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">ID</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Job Status</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Name</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Province</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Work Location</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Reference No</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Taskira</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Mobile</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Amount</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Paid Status</th>
+                          <th class="py-2 px-3 text-left border border-gray-400">Created On</th>
+                        <th class="py-2 px-3 text-left border border-gray-400">Expiry Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of dataByRef; let i = index" class="hover:bg-gray-50 transition">
+                        <td class="py-2 px-3 border border-gray-300">{{ c.address || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.accountNumber || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.city || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.country || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.descriptions || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.employeeId || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.fatherName || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.gender || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.id || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.jobStatus || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.name || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.province || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.provinceWorkLocation || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.referenceNo || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.taskira || 'NIL' }}</td>
+
+                        <td class="py-2 px-3 border border-gray-300">{{ c.mobileNumber || 'NIL' }}</td>
+                        <td class="py-2 px-3 border border-gray-300">{{ c.amount || 'NIL' }}</td>
+                        <!-- <td class="py-2 px-3 border border-gray-300">{{ c.processStatus || 'NIL' }}</td> -->
+                        <td class="py-2 px-3 border border-gray-300 text-center">
+                            <span *ngIf="c?.paid !== null && c?.paid !== undefined; else noPaidStatus" [ngClass]="{
+      'bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold': c.paid === true,
+      'bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold': c.paid === false
+    }">
+                                {{ c.paid ? 'PAID' : 'UNPAID' }}
+                            </span>
+                            <ng-template #noPaidStatus>
+                                <span class="text-gray-400 italic text-xs">NIL</span>
+                            </ng-template>
+                        </td>
+                     <td class="py-2 px-3 border border-gray-300">{{ c.createdOn | date:'dd/MM/yyyy hh:mm:ss a'}}
+                        </td>
+                        <td class="py-2 px-3 border border-gray-300">{{ getExpiryDate(c.createdOn) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Summary Section -->
+        <div
+            class="grid grid-cols-2 gap-8 mt-6 bg-gray-50 p-6 rounded-lg shadow-sm text-sm text-gray-800 border border-gray-200">
+            <!-- Left Section -->
+            <div class="space-y-2 pl-4">
+                <p><strong>Total Amount:</strong> {{ totalAmount || 0 | number:'1.2-2' }}</p>
+                <p><strong>Total Amount Paid:</strong> {{ totalAmountPaid || 0 | number:'1.2-2' }}</p>
+                <p><strong>Total Amount UnPaid:</strong> {{ totalAmountUnpaid || 0 | number:'1.2-2' }}</p>
+            </div>
+            <!-- Right Section -->
+            <div class="text-right space-y-2 pr-4">
+                <p><strong>Total Count:</strong> {{ totalCount || 0 }}</p>
+                <p><strong>Total Paid Count:</strong> {{ totalpaidcount || 0 }}</p>
+                <p><strong>Total UnPaid Count:</strong> {{ totalUnpaidCount || 0 }}</p>
+            </div>
+        </div>
+    </div>
+</div>

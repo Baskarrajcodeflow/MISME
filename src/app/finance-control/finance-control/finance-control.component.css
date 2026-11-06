@@ -1,0 +1,264 @@
+.voucher {
+  width: 190mm;
+  min-height: 277mm;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000;
+  background: #fff;
+}
+
+/* MAIN BOX */
+.box {
+  border: 2px solid #000;
+  padding: 12px;
+}
+
+/* ================= HEADER ================= */
+
+.header-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr 220px;
+  align-items: center;
+  border-bottom: 2px solid #000;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.logo-section {
+  text-align: center;
+}
+
+.logo-section img {
+  width: 70px;
+  height: auto;
+}
+
+.org {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.ref-section {
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.ref-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ref-label {
+  font-weight: bold;
+}
+
+.line,
+.line-long,
+.long-line {
+  display: inline-block;
+  vertical-align: middle;
+  border-bottom: 1px solid #000;
+  height: 14px;
+}
+
+/* Small line */
+.line {
+  width: 120px;
+}
+
+/* Long lines */
+.line-long,
+.long-line {
+  width: 300px;
+}
+
+/* ================= TABLE ================= */
+
+.voucher-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.voucher-table th {
+  border: 1.5px solid #000;
+  padding: 8px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  background: #f3f3f3;
+}
+
+.voucher-table td {
+  border: 1px solid #000;
+  padding: 7px 8px;
+  font-size: 12px;
+  vertical-align: top;
+}
+
+/* Column Widths */
+.voucher-table th:nth-child(1),
+.voucher-table td:nth-child(1) {
+  width: 20%;
+}
+
+.voucher-table th:nth-child(2),
+.voucher-table td:nth-child(2) {
+  width: 45%;
+}
+
+.voucher-table th:nth-child(3),
+.voucher-table td:nth-child(3),
+.voucher-table th:nth-child(4),
+.voucher-table td:nth-child(4) {
+  width: 17.5%;
+  text-align: right;
+}
+
+/* Description rows */
+.desc-row td {
+  height: 32px;
+}
+
+/* Empty rows */
+.empty td {
+  height: 32px;
+}
+
+/* Spacer */
+.spacer td {
+  height: 20px;
+}
+
+/* TOTAL */
+.total td {
+  font-weight: bold;
+  background: #f5f5f5;
+  font-size: 13px;
+}
+
+.total td:first-child {
+  text-align: center;
+}
+
+/* ================= SIGNATURE ================= */
+
+.sign-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 35px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.sign-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign-line {
+  width: 170px;
+  border-bottom: 1px solid #000;
+  margin: 25px 0 6px;
+}
+
+.sign-title {
+  font-weight: bold;
+}
+
+.signature-text {
+  font-size: 11px;
+  color: #444;
+}
+
+/* ================= APPROVAL ================= */
+
+.approval {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.long-line {
+  display: inline-block;
+  width: 320px;
+  border-bottom: 1px solid #000;
+  margin: 0 10px;
+}
+
+/* ================= BOTTOM ================= */
+
+.bottom-section {
+  margin-top: 25px;
+  font-size: 12px;
+}
+
+.bottom-item {
+  margin-top: 12px;
+}
+
+.bottom-item-note {
+  margin-top: 30%;
+}
+.line-long {
+  display: inline-block;
+  width: 300px;
+  border-bottom: 1px solid #000;
+  margin-left: 10px;
+}
+
+/* ================= PRINT ================= */
+
+@media print {
+
+  body * {
+    visibility: hidden;
+  }
+
+  #print-section,
+  #print-section * {
+    visibility: visible;
+  }
+
+  #print-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 190mm;
+  }
+
+  .fixed,
+  .bg-black\/50 {
+    display: none !important;
+  }
+
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+  }
+
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+}
+
+.print-area {
+  display: none;
+}

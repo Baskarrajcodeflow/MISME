@@ -1,0 +1,7 @@
+.spinner-border {
+    border-width: 4px;
+    border-radius: 50%;
+    border-color: #007bff transparent transparent transparent;
+    border-top-color: currentColor;
+    border-style: solid;
+  }

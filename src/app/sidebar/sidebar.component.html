@@ -1,0 +1,11 @@
+
+<div style="height: calc(100vh - var(--header-footer-height)); " 
+  class="w-64 bg-white dark:bg-slate-800 shadow-lg ring-1 ring-slate-300/10 overflow-auto scrollbar scrollbar-thumb-orange-500 scrollbar-track-gray-100 ml-2 p-3 rounded transition-all duration-300"
+>
+  <div [hidden]="auth.currentUser() === ''">
+    <app-sidebar-item
+      *ngFor="let item of permittedModules"
+      [module]="item"
+    ></app-sidebar-item>
+  </div>
+</div>
