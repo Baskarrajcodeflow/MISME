@@ -1,7 +1,10 @@
-export const environment = {
+import { Environment } from './environment.model';
+export const environment: Environment = {
   production: false,
-  // apiUrl1:"http://192.168.0.150:9382/",
-  apiUrl: 'http://localhost:4200',
+  apiUrl: 'http://uatbo.mymoney.af',
   debugMode: true,
+  enableLogs:true,
+  sessiontimout: 50 * 60 * 1000,
+  inactivetimout: 15 * 60 * 1000,
 };
   
