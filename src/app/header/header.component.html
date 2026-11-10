@@ -1,5 +1,5 @@
-<!-- Outer container: MiPay Dark Gradient applied directly via Tailwind -->
-<div class="relative h-16 sticky top-0 z-50 bg-[radial-gradient(circle_at_10%_20%,#654112_0%,#442406_40%,#251203_100%)] shadow-md">
+<!-- Outer container: brand gradient from --brand-gradient (defaults in styles.css, platform overrides in src/themes/) -->
+<div class="relative h-16 sticky top-0 z-50 bg-[image:var(--brand-gradient)] shadow-md">
   
   <!-- Header container -->
   <header [class]="auth.currentUser() ? 'text-white absolute inset-x-0 top-0 h-16 flex items-center' : ''">
@@ -8,8 +8,11 @@
       
       <!-- Left side: Logo -->
       <div class="flex items-center">
-        <!-- Added a slight white background and padding to the logo so it pops against the dark header -->
-        <!-- <img src="../../../assets/images/logo.png" alt="Logo" class="h-10 w-auto object-contain bg-white rounded px-2 py-1 shadow-sm" /> -->
+        <!-- Logo comes from PLATFORM_BRAND (src/environments/platform*.ts); nothing shows when the platform sets no logo. -->
+        <!-- Slight white background and padding so the logo pops against the dark header -->
+        @if (brand.logo) {
+          <img [src]="brand.logo" [alt]="brand.appName" class="h-10 w-auto object-contain bg-white rounded px-2 py-1 shadow-sm" />
+        }
       </div>
 
       <!-- Right side: User Menu -->
@@ -30,8 +33,8 @@
               <div class="text-sm font-bold text-gray-900">{{ userName }}</div>
               <div class="text-xs text-gray-500 flex items-center mt-0.5">
                 <span class="font-medium mr-1">Role:</span>
-                <!-- Role text in MiPay Amber color (Tailwind amber-500) -->
-                <span class="text-amber-500 font-bold">{{ roleName }}</span>
+                <!-- Role text in the brand accent colour -->
+                <span class="text-[color:var(--brand-accent)] font-bold">{{ roleName }}</span>
               </div>
             </div>
           </div>

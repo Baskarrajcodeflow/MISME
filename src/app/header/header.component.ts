@@ -7,6 +7,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { Router } from "@angular/router";
 import { MatDividerModule } from '@angular/material/divider';
 import { PermissionService } from "../permission.service";
+import { PLATFORM_BRAND } from "../../environments/platform";
 @Component({
   selector: "app-header",
   standalone: true,
@@ -15,6 +16,7 @@ import { PermissionService } from "../permission.service";
   styleUrl: "./header.component.scss",
 })
 export class HeaderComponent {
+  readonly brand = PLATFORM_BRAND;
   userPrivileges: any;
   roleName: any;
   userName: any;

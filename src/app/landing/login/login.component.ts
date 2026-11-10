@@ -17,6 +17,7 @@ import { UserManagementService } from "../../user-management/user-management/use
 import { LoaderComponent } from "../../loader/loader.component";
 import { DashboardService } from "../../dashboard/dashboard.service";
 import { SessionService } from "../../session.service";
+import { PLATFORM_BRAND, PLATFORM_LOGIN } from "../../../environments/platform";
 
 @Component({
   standalone: true,
@@ -29,6 +30,8 @@ import { SessionService } from "../../session.service";
 
 
 export class LoginComponent {
+  readonly brand = PLATFORM_BRAND;
+  readonly loginConfig = PLATFORM_LOGIN;
   otpForm: FormGroup = new FormGroup({});
   ForgotPassOtpForm: FormGroup = new FormGroup({});
   timeLeft: number = 300; // 5 minutes in seconds
@@ -54,7 +57,7 @@ export class LoginComponent {
   newpassword: any = null;
   phone: any;
   userTypeConst = UserType;
-  userType: any = "";
+  userType: UserType = this.userTypeConst.backoffice ;//this.loginConfig.userType;
   changePassword: boolean = false;
   isLoading: boolean = false;
   email: any;
@@ -106,10 +109,10 @@ export class LoginComponent {
     //code to extract user type from the URL
     let urlSegments = this.location.path().split("/");
     // this.userType1 = urlSegments[1];
-    this.userType = this.userTypeConst.backoffice;
+    // userType depends on the platform this build is for (PLATFORM_LOGIN in src/environments/platform*.ts)
+    this.userType = this.loginConfig.userType;
     // console.log("User type1 = ", this.userType1);
 
-    console.log("User type = ", this.userType);
 
     this.resetForgotPassTimer();
   }
@@ -159,7 +162,7 @@ export class LoginComponent {
     sessionStorage.setItem("loginUserName", this.username);
     this.isLoading = true;
     this.authService
-      .generateLoginOTP(this.username, this.password, this.userType)
+      .generateLoginOTP(this.username, this.password, 'BO'/*this.userType*/)
       .subscribe({
         next: (v: any) => {
           // console.log("response from generate",v);
@@ -326,7 +329,7 @@ export class LoginComponent {
   sendOtp() {
     let body = {
       email: this.email,
-      userType: "BO",
+      userType: 'BO'//this.loginConfig.userType,
     };
     // this.dataSharing.show();
     this.isLoading = true;
@@ -419,7 +422,7 @@ export class LoginComponent {
     let body = {
       email: this.email,
       password: this.newpasswordfield,
-      userType: "BO",
+      userType: this.loginConfig.userType,
       // otp: this.otp,
       otp: this.fullOtp
     };

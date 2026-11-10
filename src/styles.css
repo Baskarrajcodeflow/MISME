@@ -7,6 +7,15 @@
 
   :root {
     --header-footer-height: 122px;
+
+    /* Brand tokens: default (back office) theme.
+       Other platforms override these in src/themes/<platform>.css, added via angular.json "styles". */
+    --brand-gradient: radial-gradient(circle at 10% 20%, #654112 0%, #442406 40%, #251203 100%);
+    --brand-primary: #8c5e10;
+    --brand-primary-soft: #f4ece1;
+    --brand-primary-hover: #f0ebd9;
+    --brand-accent: #f59e0b;
+    --brand-accent-hover: #d97706;
   }
   
 

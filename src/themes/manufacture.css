@@ -1,0 +1,14 @@
+/*
+  Manufacture platform theme.
+  Added after styles.css only in the manufacture-* configurations (angular.json), so these values
+  override the default (back office) brand tokens defined in styles.css.
+  Placeholder palette: replace with the real manufacture brand colours.
+*/
+:root {
+  --brand-gradient: radial-gradient(circle at 10% 20%, #0f5f58 0%, #0b3f3b 40%, #052220 100%);
+  --brand-primary: #0f766e;
+  --brand-primary-soft: #e6f4f1;
+  --brand-primary-hover: #d5ede8;
+  --brand-accent: #14b8a6;
+  --brand-accent-hover: #0d9488;
+}

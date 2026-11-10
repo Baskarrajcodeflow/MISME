@@ -70,7 +70,64 @@
               ],
               "outputHashing": "all"
             },
-            "development": {  
+            "development": {
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "manufacture-prod": {
+              "index": {
+                "input": "src/index.manufacture.html",
+                "output": "index.html"
+              },
+              "styles": [
+                "@angular/material/prebuilt-themes/indigo-pink.css",
+                "src/styles.css",
+                "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+                "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+                "src/themes/manufacture.css"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/environments/platform.ts",
+                  "with": "src/environments/platform.manufacture.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "manufacture-dev": {
+              "index": {
+                "input": "src/index.manufacture.html",
+                "output": "index.html"
+              },
+              "styles": [
+                "@angular/material/prebuilt-themes/indigo-pink.css",
+                "src/styles.css",
+                "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+                "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+                "src/themes/manufacture.css"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/platform.ts",
+                  "with": "src/environments/platform.manufacture.ts"
+                }
+              ],
               "extractLicenses": false,
               "sourceMap": true
             }
@@ -88,7 +145,14 @@
             "development": {
               "buildTarget": "frontend:build:development",
              "proxyConfig": "src/proxy.conf.json"
-              
+
+            },
+            "manufacture-prod": {
+              "buildTarget": "frontend:build:manufacture-prod"
+            },
+            "manufacture-dev": {
+              "buildTarget": "frontend:build:manufacture-dev",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
