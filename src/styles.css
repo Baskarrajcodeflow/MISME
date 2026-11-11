@@ -39,3 +39,97 @@ body { margin: 0;}
 #special-icon {
   color: green;
 }
+
+/*
+  Toast messages (src/app/core/toast/toast.ts): stacked at the top right, below the header and
+  above dialogs. --toast-color is the colour of the round icon, set per type.
+*/
+.app-toasts {
+  position: fixed;
+  top: 76px;
+  right: 16px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  pointer-events: none;
+}
+
+.app-toast {
+  --toast-color: var(--brand-primary);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 10px 12px 14px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  color: #1f2937;
+  font-size: 14px;
+  line-height: 22px;
+  pointer-events: auto;
+  animation: app-toast-in 0.22s ease-out;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.app-toast::before {
+  content: 'i';
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--toast-color);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.app-toast-success { --toast-color: #16a34a; }
+.app-toast-success::before { content: '\2713'; }
+.app-toast-error { --toast-color: #dc2626; }
+.app-toast-error::before { content: '!'; }
+
+.app-toast-text {
+  flex: 1;
+  min-width: 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.app-toast-close {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: #9ca3af;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.app-toast-close:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.app-toast-leave {
+  opacity: 0;
+  transform: translateX(12px);
+}
+
+@keyframes app-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-toast {
+    animation: none;
+    transition: none;
+  }
+}

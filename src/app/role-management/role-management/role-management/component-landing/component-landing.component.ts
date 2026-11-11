@@ -3,6 +3,7 @@ import { ComponentControllerService } from '../openapi';
 import { AddComponentComponent } from '../add-component/add-component.component';
 import { NgFor, NgIf } from '@angular/common';
 import { LoaderComponent } from '../../../../loader/loader.component';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-component-landing',
@@ -52,7 +53,7 @@ export class ComponentLandingComponent implements OnInit {
     },
     error: () => {
       this.isLoading = false;
-      alert("Something went wrong");
+      showToast("Something went wrong");
     }
    })
   }

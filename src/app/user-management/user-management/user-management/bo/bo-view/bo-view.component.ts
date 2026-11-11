@@ -5,6 +5,7 @@ import { RoleManagementControllerService, BranchControllerServiceService, Depart
 import { LoaderComponent } from '../../../../../loader/loader.component';
 import { boService } from '../bo.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { showToast } from '../../../../../core/toast/toast';
 
 @Component({
   selector: 'app-bo-view',
@@ -173,7 +174,7 @@ export class BoViewComponent implements OnInit, OnChanges {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }
@@ -196,7 +197,7 @@ export class BoViewComponent implements OnInit, OnChanges {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }
@@ -222,7 +223,7 @@ export class BoViewComponent implements OnInit, OnChanges {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }

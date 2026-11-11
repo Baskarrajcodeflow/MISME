@@ -16,6 +16,7 @@ import {
 import { NgFor, NgIf } from '@angular/common';
 import { componentPrivilage, PrevilageComponent, UserPrivilages } from '../user-privilages';
 import { roleService } from '../../../role.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-edit-role',
@@ -267,14 +268,14 @@ export class EditRoleComponent {
       if (data?.responseCode == 200) {
         this.success = true;
         this.failure = false;
-        alert("Role edit Successful")
+        showToast("Role edit Successful")
         this.router.navigateByUrl("/Role");
       } else {
         this.success = false;
         this.failure = true;
       }
     }, (error) => {
-      alert("Something went wrong")
+      showToast("Something went wrong")
       this.success = false;
       this.failure = true;
     });

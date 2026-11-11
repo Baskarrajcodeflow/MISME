@@ -6,6 +6,7 @@ import { ComponentControllerService } from '../openapi';
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { RoleService } from '../role.service';
 import { roleService } from '../../../role.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-add-component',
@@ -32,7 +33,7 @@ export class AddComponentComponent {
       next: (component: any) => {
         if (component) {
           this.isLoading = false;
-          alert("created successfully");
+          showToast("created successfully");
           this.componentCreated.emit(true);
           this.componentName = '';
           // this.component = this.component.filter(o => o.id !== a.id);
@@ -41,7 +42,7 @@ export class AddComponentComponent {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     })
   }

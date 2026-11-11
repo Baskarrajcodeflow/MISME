@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { showToast } from '../../../../../core/toast/toast';
 
 
 @Component({
@@ -102,7 +103,7 @@ export class CustomerComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something Went Wrong");
+        showToast("Something Went Wrong");
       },
     });
   }
@@ -117,7 +118,7 @@ export class CustomerComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }
@@ -129,7 +130,7 @@ export class CustomerComponent implements OnInit {
     const searchByValue = this.searchForm.value.searchBy || 'EMAIL'; // default to EMAIL
     const keywordValue = this.searchText.value?.trim() || '';
     if (!keywordValue) {
-      alert('Please enter a search keyword.');
+      showToast('Please enter a search keyword.');
       return;
     }
     const req = {
@@ -229,14 +230,14 @@ export class CustomerComponent implements OnInit {
     }
     this.KycService.changeProduct(req, this.reason).subscribe((data: any) => {
       if (data?.responseCode == 200) {
-        alert('Success: The product has been changed successfully.');
+        showToast('Success: The product has been changed successfully.');
         this.showModal = false;
       } else {
-        alert('Failure: There was an issue changing the product.');
+        showToast('Failure: There was an issue changing the product.');
         this.showModal = false;
       }
     }, error => {
-      alert('Error: Something went wrong. Please try again later.');
+      showToast('Error: Something went wrong. Please try again later.');
       this.showModal = false;
     });
 
@@ -260,7 +261,7 @@ export class CustomerComponent implements OnInit {
         next: (user: any) => {
           if (user) {
             this.customerData = user;
-            alert("Customer created successfully")
+            showToast("Customer created successfully")
           }
 
           this.customers.push(user);
@@ -303,20 +304,20 @@ export class CustomerComponent implements OnInit {
       next: (res) => {
         if (res) {
           this.isLoading = false;
-          alert("Request Sent For UnSuspend");
+          showToast("Request Sent For UnSuspend");
           this.getAllCustomers();
         } else {
           this.isLoading = false;
-          alert(res?.error);
+          showToast(res?.error);
         }
       },
       error: (error) => {
         this.isLoading = false;
         if (error.status === 500) {
           const errorMessage = error.error?.message || 'Maker cannot be checker';
-          alert(errorMessage);
+          showToast(errorMessage);
         } else {
-          alert('An error occurred: ' + error.message);
+          showToast('An error occurred: ' + error.message);
         }
       }
     });
@@ -331,20 +332,20 @@ export class CustomerComponent implements OnInit {
       next: (res) => {
         if (res) {
           this.isLoading = false;
-          alert("Suspended");
+          showToast("Suspended");
           this.getAllCustomers();
         } else {
           this.isLoading = false;
-          alert(res);
+          showToast(res);
         }
       },
       error: (error) => {
         this.isLoading = false;
         if (error.status === 500) {
           const errorMessage = error.error?.message || 'Maker cannot be checker';
-          alert(errorMessage);
+          showToast(errorMessage);
         } else {
-          alert('An error occurred: ' + error.message);
+          showToast('An error occurred: ' + error.message);
         }
       }
     });
@@ -406,11 +407,11 @@ export class CustomerComponent implements OnInit {
   approvePasswordUnlock(id: any) {
     this.userService.passwordUnlockRevoke(id).subscribe(response => {
       if (response.responseCode == 200) {
-        alert("Account Unlock Approved Successfully");
+        showToast("Account Unlock Approved Successfully");
         this.getAllCustomers();
       }
       else if (response.responseCode == 0) {
-        alert("Error Occured - " + response.error)
+        showToast("Error Occured - " + response.error)
       }
     })
 
@@ -515,10 +516,10 @@ export class CustomerComponent implements OnInit {
       next: (res) => {
         if (res?.responseCode == 200) {
           this.isLoading = false;
-          alert(res?.data);
+          showToast(res?.data);
         } else {
           this.isLoading = false;
-          alert(res?.error);
+          showToast(res?.error);
         }
       },
       error: (error) => {
@@ -526,9 +527,9 @@ export class CustomerComponent implements OnInit {
         if (error.status === 500) {
           const errorMessage =
             error.error?.message;
-          alert(errorMessage);
+          showToast(errorMessage);
         } else {
-          alert("An error occurred: " + error.message);
+          showToast("An error occurred: " + error.message);
         }
       },
     })

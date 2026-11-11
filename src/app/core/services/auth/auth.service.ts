@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { DataSharingService } from "../../../product/dataSharing/data-sharing.service";
 import { SessionService } from "../../../session.service";
 import { PLATFORM_LOGIN } from "../../../../environments/platform";
+import { showToast } from '../../toast/toast';
 
 @Injectable({
   providedIn: "root",
@@ -49,7 +50,7 @@ export class AuthService {
     return this.apiService.post(endURL, { emailOrPhone, password,userType }).pipe(
       tap((response: any) => {
         if(response.responseCode == 200) {
-          alert("OTP has sent to your email/phone");
+          showToast("OTP has sent to your email/phone");
         }
         // let tokens = JSON.stringify(response);
       })

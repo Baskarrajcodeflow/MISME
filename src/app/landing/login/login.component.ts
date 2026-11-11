@@ -18,6 +18,7 @@ import { LoaderComponent } from "../../loader/loader.component";
 import { DashboardService } from "../../dashboard/dashboard.service";
 import { SessionService } from "../../session.service";
 import { PLATFORM_BRAND, PLATFORM_LOGIN } from "../../../environments/platform";
+import { showToast } from '../../core/toast/toast';
 
 @Component({
   standalone: true,
@@ -181,20 +182,20 @@ export class LoginComponent {
             sessionStorage.setItem("JWT_TOKEN", v.token);
           } else if (v?.responseCode == 2) {
             this.isLoading = false;
-            alert(v?.message);
+            showToast(v?.message);
             this.changePassword = true;
             sessionStorage.setItem("JWT_TOKEN", v.token);
           } else if (v?.responseCode == 0) {
             this.isLoading = false;
-            alert(v?.error);
+            showToast(v?.error);
           } else {
             this.isLoading = false;
-            alert(v?.data)
+            showToast(v?.data)
           }
         },
         error: () => {
           this.isLoading = false;
-          alert("Error Please Try Again");
+          showToast("Error Please Try Again");
         },
       });
   }
@@ -264,7 +265,7 @@ export class LoginComponent {
                 const timeDifference = (currentTime - decodedTime) / 1000; // Convert to seconds
 
                 if (timeDifference <= 60) {
-                  alert("Login Successfull");
+                  showToast("Login Successfull");
                   this.isLoading = false;
                   this.showOTP = true;
                   this.sessionService.startTimer();
@@ -287,19 +288,19 @@ export class LoginComponent {
               }
             } else if (v?.responseCode == 2) {
               this.isLoading = false;
-              alert(v?.message);
+              showToast(v?.message);
               this.changePassword = true;
               sessionStorage.setItem("JWT_TOKEN", v.token);
             } else if (v?.responseCode == 0) {
               this.isLoading = false;
-              alert(v?.message);
+              showToast(v?.message);
               this.otpForm.reset('');
 
             }
           },
           error: () => {
             this.isLoading = false;
-            alert("Error Please Try Again");
+            showToast("Error Please Try Again");
           },
         });
       // Call API to verify OTP here...
@@ -318,7 +319,7 @@ export class LoginComponent {
       },
       error: () => {
         // this.isLoading = false
-        alert("Error While Fetching Roles Data");
+        showToast("Error While Fetching Roles Data");
       },
     });
   }
@@ -337,14 +338,14 @@ export class LoginComponent {
       next: (res) => {
         if (res?.responseCode == 200) {
           this.isLoading = false;
-          alert("OTP has sent to your mail");
+          showToast("OTP has sent to your mail");
           this.otpVerify = true;
           this.changePassword = false;
           this.login = false;
           this.changePasswordotp = false;
         }
         else if (res?.responseCode == 100) {
-          alert(res?.data);
+          showToast(res?.data);
         }
         //return to screen reg email
         else if (res?.error == "Invalid OTP!") {
@@ -355,12 +356,12 @@ export class LoginComponent {
         else {
           this.isLoading = false;
           // this.dataSharing.hide();
-          alert(res?.error);
+          showToast(res?.error);
         }
       },
       error: () => {
         this.isLoading = false;
-        alert("Error Try Again!!!");
+        showToast("Error Try Again!!!");
       },
     });
   }
@@ -405,15 +406,15 @@ export class LoginComponent {
           this.changePassword = false;
           this.changePasswordotp = false;
           this.login = false;
-          alert("OTP Verified Successfully");
+          showToast("OTP Verified Successfully");
         } else {
           this.isLoading = false;
-          alert(res?.error);
+          showToast(res?.error);
         }
       },
       error: () => {
         this.isLoading = false;
-        alert("Error Try Again!!!");
+        showToast("Error Try Again!!!");
       },
     });
   }
@@ -433,7 +434,7 @@ export class LoginComponent {
       next: (res) => {
         if (res?.responseCode == 200) {
           this.isLoading = false;
-          alert("Password Reset Successful");
+          showToast("Password Reset Successful");
           this.changePasswordNew = false;
           this.changePassword = false;
           this.login = true;
@@ -443,12 +444,12 @@ export class LoginComponent {
         } else {
           this.isLoading = false;
           // this.dataSharing.hide()
-          alert("Error Try Again");
+          showToast("Error Try Again");
         }
       },
       error: () => {
         this.isLoading = false;
-        alert("Error Try Again");
+        showToast("Error Try Again");
       },
     });
   }
@@ -466,16 +467,16 @@ export class LoginComponent {
         console.log(res);
         if (res?.responseCode == 200) {
           this.isLoading = false;
-          alert(res?.data);
+          showToast(res?.data);
           this.changePassword = false;
         } else {
           this.isLoading = false;
-          alert(res?.error);
+          showToast(res?.error);
         }
       },
       error: () => {
         this.isLoading = false;
-        alert("Error Try Again");
+        showToast("Error Try Again");
       },
     });
   }

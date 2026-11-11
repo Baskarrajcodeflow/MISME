@@ -2,6 +2,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../user-management/user-management/user-management/user.service';
+import { showToast } from '../../../core/toast/toast';
 
 @Component({
   selector: 'app-reset-password',
@@ -38,7 +39,7 @@ export class ResetPasswordComponent {
       }
       this.userService.resetPassword(req).subscribe((data: any) => {
         if (data?.responseCode == 200) {
-          alert(data?.data);
+          showToast(data?.data);
         }
       })
     }

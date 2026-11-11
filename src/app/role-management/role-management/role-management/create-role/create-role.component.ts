@@ -6,6 +6,7 @@ import { AddRoleRestControllerRequest, Branch, BranchControllerServiceService, C
 import { Router } from '@angular/router';
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { roleService } from '../../../role.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-create-role',
@@ -197,18 +198,18 @@ export class CreateRoleComponent {
     this.roleService1.addRole(this.req).subscribe((data: any) => {
       if (data?.responseCode == 200) {
         this.isLoading = false;
-        alert("Role created successfully");
+        showToast("Role created successfully");
         this.roleCreated.emit(true);
         this.resetForm();
         this.success = true;
         this.failure = false;
       } else {
-        alert("Something Went Wrong");
+        showToast("Something Went Wrong");
         this.success = false;
         this.failure = true;
       }
     }, (error) => {
-      alert("Something Went Wrong");
+      showToast("Something Went Wrong");
       this.isLoading = false;
       this.success = false;
       this.failure = true;
