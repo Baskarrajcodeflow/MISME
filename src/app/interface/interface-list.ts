@@ -35,9 +35,9 @@ export interface FormControlConfig {
   export enum UserType{
   //  customer='customer',
   //  agent='agent',
-  //add Manufacture
+  //add Manufacturer
     backoffice='BO',
-    manufacture='MANUFACTURE'
+    manufacturer='MANUFACTURER'
   }
   export enum AgentUserType{
     agent='agent',

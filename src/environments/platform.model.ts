@@ -4,7 +4,7 @@
 import { UserType } from "../app/interface/interface-list";
 
 /** Platforms built from this repo. Each one has a platform.<name>.ts file swapped in by angular.json. */
-export type Platform = 'backoffice' | 'manufacture-app';
+export type Platform = 'backoffice' | 'manufacturer-app';
 
 /** Per-platform branding read by the UI. Colours live in CSS: styles.css (defaults) and src/themes/. */
 export interface PlatformBrand {

@@ -16,7 +16,7 @@
     "role": null,
     "roleData": {
       "id": 1,
-      "roleName": "Manufacture Admin",
+      "roleName": "Manufacturer Admin",
       "roleDesc": "Full access to user and role management",
       "department": 5,
       "active": true

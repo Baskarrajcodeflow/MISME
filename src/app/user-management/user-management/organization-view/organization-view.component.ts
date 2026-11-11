@@ -14,10 +14,10 @@ import { organizationScreenFor } from '../../organization/organization-screen';
 })
 export class OrganizationViewComponent {
   organizationDetails:any;
-  // Merchants (back office) or Partners (manufacture), chosen by the route's data
+  // Merchants (back office) or Partners (manufacturer), chosen by the route's data
   private readonly route = inject(ActivatedRoute);
   readonly screen = organizationScreenFor(this.route);
-  // Entity type to show, from the ?type= query parameter (set by the manufacture dashboard's cards).
+  // Entity type to show, from the ?type= query parameter (set by the manufacturer dashboard's cards).
   // '' shows every type.
   typeFilter = '';
   constructor(

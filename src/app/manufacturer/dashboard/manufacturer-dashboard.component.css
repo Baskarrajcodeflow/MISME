@@ -1,5 +1,5 @@
 /*
-  Count cards of the manufacture dashboard: a round tinted icon, the count and its label.
+  Count cards of the manufacturer dashboard: a round tinted icon, the count and its label.
   Plain CSS (not Tailwind classes) so the cards don't depend on which Tailwind classes are loaded.
   Each card sets its own --tint (icon circle) and --tone (icon and focus colour) in the template.
 */

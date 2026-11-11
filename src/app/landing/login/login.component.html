@@ -315,15 +315,15 @@
                 </form>
               </div>
             </div>
-            <div *ngSwitchCase="userTypeConst.manufacture">
+            <div *ngSwitchCase="userTypeConst.manufacturer">
               
               <div *ngIf="!showOTP" class="mb-6 text-center">
-                <div class="text-[18px] font-bold text-gray-900">Login - Manufacture Platform</div>
+                <div class="text-[18px] font-bold text-gray-900">Login - Manufacturer Platform</div>
               </div>
 
               <div *ngIf="changePassword == false && login">
                 <div *ngIf="showOTP" class="text-[18px] font-bold text-gray-900 mb-6 text-center">
-                  Welcome to MI-SME Manufacture Platform
+                  Welcome to MI-SME Manufacturer Platform
                 </div>
                 
                 <form #loginForm="ngForm">

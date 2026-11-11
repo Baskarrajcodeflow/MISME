@@ -52,22 +52,22 @@ export class PermissionService {
   modules: ModuleMeta[] = [
 
     {
-      // Manufacture landing screen (PLATFORM_LOGIN.homePath). One link, so shown as a direct link
+      // Manufacturer landing screen (PLATFORM_LOGIN.homePath). One link, so shown as a direct link
       name: 'Dashboard',
       location: './Dashboard',
       icon: 'assets/icons/dashboard.png',
-      platforms: ['manufacture-app'],
+      platforms: ['manufacturer-app'],
       components: [
         { name: "dashboard", displayLink: "Dashboard" },
       ]
     },
     {
-      // A manufacturer's suppliers, distributors and merchants (see manufactureRoutes()).
+      // A manufacturer's suppliers, distributors and merchants (see manufacturerRoutes()).
       // One link, so the sidebar shows the module itself as the link (see singleLink on ModuleMeta)
       name: 'Partner Onboarding',
       location: './PartnerOnboarding',
       icon: 'assets/icons/verify.png',
-      platforms: ['manufacture-app'],
+      platforms: ['manufacturer-app'],
       components: [
         { name: "partners", displayLink: "Partners" },
       ]
@@ -76,13 +76,13 @@ export class PermissionService {
       name: 'User Management',
       location: './UserManagement',
       icon: 'assets/icons/key.png',
-      // Hidden on manufacture for now. To show it there again, remove this `platforms` line
+      // Hidden on the manufacturer platform for now. To show it there again, remove this `platforms` line
       platforms: ['backoffice'],
       components: [
         { name: "BOLanding", location: "user-modal/user-modal.component", displayLink: "Back Office User" },
         { name: "resetPassword", location: "user-modal/user-modal.component", displayLink: "Reset Password" },
         { name: "CustomerLanding", location: "user-modal/user-modal.component", displayLink: "Customer" },
-        // Manufacture registers organizations through Partner Onboarding instead
+        // A manufacturer registers organizations through Partner Onboarding instead
         { name: "organization", location: "user-modal/user-modal.component", displayLink: "Organization", platforms: ['backoffice'] },
       ]
     },
@@ -90,7 +90,7 @@ export class PermissionService {
       name: "Role Management",
       location: "./RoleManagement",
       icon: "assets/icons/key.png",
-      // Not shown on manufacture
+      // Not shown on the manufacturer platform
       platforms: ['backoffice'],
       components: [
         {
@@ -244,14 +244,14 @@ export class PermissionService {
   computeRoutes(): Route[] {
     const platformRoutes: Record<Platform, () => Route[]> = {
       'backoffice': () => this.backofficeRoutes(),
-      'manufacture-app': () => this.manufactureRoutes(),
+      'manufacturer-app': () => this.manufacturerRoutes(),
     };
     return [...this.sharedRoutes(), ...platformRoutes[PLATFORM]()];
   }
 
   /**
    * Routes every platform has: login, User Management and Role Management only.
-   * Platform-specific screens go in manufactureRoutes() / backofficeRoutes().
+   * Platform-specific screens go in manufacturerRoutes() / backofficeRoutes().
    */
   private sharedRoutes(): Route[] {
     return [
@@ -262,7 +262,7 @@ export class PermissionService {
       },
 
       {
-        // Per-platform login route (web/backOffice/login, web/manufacture/login, ...)
+        // Per-platform login route (web/backOffice/login, web/manufacturer/login, ...)
         path: PLATFORM_LOGIN.path,
         component: LoginComponent,
         pathMatch: 'full', data: { loginType: 'admin' }
@@ -321,13 +321,13 @@ export class PermissionService {
     ];
   }
 
-  /** Manufacture-only screens. Add new manufacture routes here. */
-  private manufactureRoutes(): Route[] {
+  /** Manufacturer-only screens. Add new manufacturer routes here. */
+  private manufacturerRoutes(): Route[] {
     return [
       // Landing screen after sign-in: partner counts, with links to the partner list and form
       {
         path: 'dashboard',
-        loadComponent: () => import('./manufacture/dashboard/manufacture-dashboard.component').then(c => c.ManufactureDashboardComponent)
+        loadComponent: () => import('./manufacturer/dashboard/manufacturer-dashboard.component').then(c => c.ManufacturerDashboardComponent)
       },
 
       // Partner Onboarding: the back office organization list and form, with Supplier /
@@ -347,8 +347,8 @@ export class PermissionService {
 
   /**
    * Back office-only screens. Add new back office routes here.
-   * The previous back office screens (KYC, GL, DCMS, corporate, reports, ...) were removed from routing;
-   * their components are still in the repo and the original route list is in git history.
+   * The previous back office screens (KYC, GL, DCMS, corporate, reports, ...) were removed from routing
+   * and their components were then deleted; the components and the original route list are in git history.
    */
   private backofficeRoutes(): Route[] {
     return [];

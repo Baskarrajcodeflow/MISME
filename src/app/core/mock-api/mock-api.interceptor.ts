@@ -5,12 +5,12 @@ import { environment } from '../../../environments/environment';
 import { PLATFORM, PLATFORM_API } from '../../../environments/platform';
 import type { Platform } from '../../../environments/platform.model';
 import { AuthService } from '../services/auth/auth.service';
-import { MANUFACTURE_MOCKS } from './manufacture.mocks';
+import { MANUFACTURER_MOCKS } from './manufacturer.mocks';
 import { findMock, MockRoute } from './mock-route';
 
 /** Mocked endpoints per platform. Only used when the platform's PLATFORM_API.useMocks is true. */
 const MOCKS_BY_PLATFORM: Partial<Record<Platform, readonly MockRoute[]>> = {
-  'manufacture-app': MANUFACTURE_MOCKS,
+  'manufacturer-app': MANUFACTURER_MOCKS,
 };
 
 /**

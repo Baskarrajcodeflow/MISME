@@ -83,7 +83,7 @@ export class RegisterOrganizationComponent {
   // Replace with your actual API Base URL
   private apiUrl = "https://your-api-domain.com/api/kyc/merchant/create";
 
-  // Merchant onboarding (back office) or partner onboarding (manufacture), chosen by the route's data
+  // Merchant onboarding (back office) or partner onboarding (manufacturer), chosen by the route's data
   readonly screen = organizationScreenFor(inject(ActivatedRoute));
 
   constructor(

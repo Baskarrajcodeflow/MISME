@@ -18,18 +18,18 @@ interface PartnerCard {
 }
 
 /**
- * Manufacture landing screen (PLATFORM_LOGIN.homePath): how many suppliers, merchants and
+ * Manufacturer landing screen (PLATFORM_LOGIN.homePath): how many suppliers, merchants and
  * distributors the signed-in manufacturer has onboarded. A card opens the partner list filtered
  * to that type; the Onboard button opens the registration form.
  */
 @Component({
-  selector: 'app-manufacture-dashboard',
+  selector: 'app-manufacturer-dashboard',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './manufacture-dashboard.component.html',
-  styleUrl: './manufacture-dashboard.component.css',
+  templateUrl: './manufacturer-dashboard.component.html',
+  styleUrl: './manufacturer-dashboard.component.css',
 })
-export class ManufactureDashboardComponent implements OnInit {
+export class ManufacturerDashboardComponent implements OnInit {
   readonly listPath = PARTNER_SCREEN.listPath;
   readonly registerPath = PARTNER_SCREEN.registerPath;
 

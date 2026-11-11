@@ -54,7 +54,7 @@ export const MERCHANT_SCREEN: OrganizationScreen = {
 };
 
 /**
- * Manufacture partners: a signed-in manufacturer registers its suppliers, distributors and
+ * Manufacturer partners: a signed-in manufacturer registers its suppliers, distributors and
  * merchants with the same form; only the Entity Type options differ. The backend should link each
  * partner to the manufacturer from the signed-in user's token.
  */
