@@ -33,3 +33,14 @@ export interface PlatformLogin {
   /** Small text at the bottom of the left panel. */
   footer: string;
 }
+
+/** Per-platform backend behaviour. */
+export interface PlatformApi {
+  /**
+   * Answer backend calls from JSON files instead of the real backend, for a platform whose
+   * backend isn't built yet. Only applies after sign-in (the login screen always uses the real
+   * backend). Mocked endpoints are listed in src/app/core/mock-api/; their JSON files live in
+   * src/assets/mock-api/<platform>/.
+   */
+  useMocks: boolean;
+}

@@ -1,11 +1,29 @@
+<!--
+  From 1024px up: a fixed-width column beside the page.
+  Below 1024px: a drawer that slides in over the page, opened by the header's menu button (SidebarService.mobileOpen).
+  Styles are in sidebar.component.css.
+-->
 
-<div style="height: calc(100vh - var(--header-footer-height)); " 
-  class="w-64 bg-white dark:bg-slate-800 shadow-lg ring-1 ring-slate-300/10 overflow-auto scrollbar scrollbar-thumb-orange-500 scrollbar-track-gray-100 ml-2 p-3 rounded transition-all duration-300"
->
-  <div [hidden]="auth.currentUser() === ''">
+<!-- Dimmed backdrop behind the open drawer; a click closes it -->
+@if (sidebar.mobileOpen()) {
+  <div class="backdrop" (click)="sidebar.closeMobile()" aria-hidden="true"></div>
+}
+
+<aside class="sidebar" [class.open]="sidebar.mobileOpen()" aria-label="Main menu">
+  <!-- Drawer top bar (below 1024px only): app name and close button -->
+  <div class="drawer-bar">
+    <span class="app-name">{{ brand.appName }}</span>
+    <button type="button" class="close-button" (click)="sidebar.closeMobile()" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- Menus -->
+  <nav class="menu" [hidden]="auth.currentUser() === ''" (click)="closeDrawerOnLinkClick($event)">
+    <p class="menu-label">Menu</p>
     <app-sidebar-item
       *ngFor="let item of permittedModules"
       [module]="item"
     ></app-sidebar-item>
-  </div>
-</div>
+  </nav>
+</aside>

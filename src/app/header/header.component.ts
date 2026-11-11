@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { MatDividerModule } from '@angular/material/divider';
 import { PermissionService } from "../permission.service";
 import { PLATFORM_BRAND } from "../../environments/platform";
+import { SidebarService } from "../sidebar/sidebar.service";
 @Component({
   selector: "app-header",
   standalone: true,
@@ -20,7 +21,7 @@ export class HeaderComponent {
   userPrivileges: any;
   roleName: any;
   userName: any;
-  constructor(public auth: AuthService,private router:Router, public permissionService : PermissionService) {}
+  constructor(public auth: AuthService,private router:Router, public permissionService : PermissionService, public sidebar: SidebarService) {}
   ngOnInit() {
     const privilegesData = sessionStorage.getItem("privileges");
     if (privilegesData) {

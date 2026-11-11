@@ -24,14 +24,9 @@
   </button>
 </div> -->
 
- <div
-    class="transition-all duration-300 ease-in-out bg-white shadow px-1 py-1"
-    [ngClass]="{ 'w-auto': !permissionService.hideSidebar, 'w-0 overflow-hidden': permissionService.hideSidebar }"
-  >
-    <div *ngIf="!permissionService.hideSidebar" class="min-w-[180px]">
-    
-      <app-sidebar></app-sidebar>     
-    </div>
+  <!-- Sidebar column. Below 1024px the sidebar is a slide-in drawer (see sidebar.component.css), so this takes no width there -->
+  <div *ngIf="!permissionService.hideSidebar" class="flex shrink-0">
+    <app-sidebar></app-sidebar>
   </div>
 
   

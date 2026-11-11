@@ -1,0 +1,213 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": {
+    "id": 1,
+    "roleName": "Manufacture Admin",
+    "roleDesc": "Full access to user and role management",
+    "department": 5,
+    "active": true,
+    "uiComponentPrivileges": [
+      {
+        "id": 1,
+        "component": {
+          "id": 1,
+          "componentName": "User Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 1,
+          "componentId": 1,
+          "subComponentName": "Back Office User",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 2,
+        "component": {
+          "id": 1,
+          "componentName": "User Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 2,
+          "componentId": 1,
+          "subComponentName": "Reset Password",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 3,
+        "component": {
+          "id": 1,
+          "componentName": "User Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 3,
+          "componentId": 1,
+          "subComponentName": "Customer",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 4,
+        "component": {
+          "id": 2,
+          "componentName": "Role Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 5,
+          "componentId": 2,
+          "subComponentName": "Component",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 5,
+        "component": {
+          "id": 2,
+          "componentName": "Role Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 6,
+          "componentId": 2,
+          "subComponentName": "Sub Component",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 6,
+        "component": {
+          "id": 2,
+          "componentName": "Role Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 7,
+          "componentId": 2,
+          "subComponentName": "Branch",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 7,
+        "component": {
+          "id": 2,
+          "componentName": "Role Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 8,
+          "componentId": 2,
+          "subComponentName": "Department",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 8,
+        "component": {
+          "id": 2,
+          "componentName": "Role Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 9,
+          "componentId": 2,
+          "subComponentName": "Role",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 9,
+        "component": {
+          "id": 3,
+          "componentName": "Partner Onboarding",
+          "active": true
+        },
+        "subComponent": {
+          "id": 10,
+          "componentId": 3,
+          "subComponentName": "Partners",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      },
+      {
+        "id": 10,
+        "component": {
+          "id": 4,
+          "componentName": "Dashboard",
+          "active": true
+        },
+        "subComponent": {
+          "id": 11,
+          "componentId": 4,
+          "subComponentName": "Dashboard",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": true,
+        "authorizePrivelege": true,
+        "active": true
+      }
+    ]
+  }
+}

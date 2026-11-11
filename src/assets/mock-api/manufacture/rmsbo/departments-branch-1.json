@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Production",
+    "branchId": 1
+  },
+  {
+    "id": 2,
+    "name": "Quality Control",
+    "branchId": 1
+  }
+]

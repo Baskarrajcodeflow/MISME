@@ -1,0 +1,37 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "id": 506,
+  "data": {
+    "id": 506,
+    "email": "registered.customer@example.com",
+    "firstName": "Registered",
+    "lastName": "Customer",
+    "phone": "26485200506",
+    "userType": "CUSTOMER",
+    "userCategoryType": null,
+    "active": true,
+    "role": null,
+    "roleData": null,
+    "username": "26485200506",
+    "gender": "FEMALE",
+    "accountKycLevel": "BASIC",
+    "product": 1,
+    "walletAccount": {
+      "id": 9506,
+      "accountNo": "ACC506",
+      "walletNo": "W1000506",
+      "productName": "MiSME Basic",
+      "productReference": 1,
+      "branchCode": "WHK01",
+      "ccy": "NAD",
+      "baseUserId": 506,
+      "walletStatus": "OK",
+      "wallet": true
+    },
+    "currentProductName": "MiSME Basic",
+    "changeRequestProductName": null,
+    "accountState": "ACTIVE",
+    "pwdLockout": false
+  }
+}

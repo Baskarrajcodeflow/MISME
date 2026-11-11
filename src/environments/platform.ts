@@ -1,6 +1,6 @@
 // Default platform (back office). Other builds swap this file via fileReplacements in angular.json.
 import { UserType } from '../app/interface/interface-list';
-import { Platform, PlatformBrand, PlatformLogin } from './platform.model';
+import { Platform, PlatformApi, PlatformBrand, PlatformLogin } from './platform.model';
 
 export const PLATFORM: Platform = 'backoffice';
 
@@ -23,4 +23,8 @@ export const PLATFORM_LOGIN: PlatformLogin = {
     'KYC onboarding with role-based access',
   ],
   footer: '© AfriqPay · Secured by AfriqPay Identity',
+};
+
+export const PLATFORM_API: PlatformApi = {
+  useMocks: false,
 };

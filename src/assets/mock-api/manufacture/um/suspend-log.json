@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "category": "SUSPEND",
+    "reason": "Requested by customer",
+    "authReason": "Verified with customer by phone",
+    "rejectReason": null,
+    "createdOn": "2026-10-20T10:00:00",
+    "authorizedOn": "2026-10-20T14:30:00"
+  },
+  {
+    "id": 2,
+    "category": "UNSUSPEND",
+    "reason": "Customer documents updated",
+    "authReason": null,
+    "rejectReason": null,
+    "createdOn": "2026-11-05T08:45:00",
+    "authorizedOn": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 5,
+    "componentId": 2,
+    "subComponentName": "Component",
+    "active": true
+  },
+  {
+    "id": 6,
+    "componentId": 2,
+    "subComponentName": "Sub Component",
+    "active": true
+  },
+  {
+    "id": 7,
+    "componentId": 2,
+    "subComponentName": "Branch",
+    "active": true
+  },
+  {
+    "id": 8,
+    "componentId": 2,
+    "subComponentName": "Department",
+    "active": true
+  },
+  {
+    "id": 9,
+    "componentId": 2,
+    "subComponentName": "Role",
+    "active": true
+  }
+]

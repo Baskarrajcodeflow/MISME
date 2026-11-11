@@ -1,0 +1,27 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": [
+    {
+      "id": 1,
+      "roleName": "Manufacture Admin",
+      "roleDesc": "Full access to user and role management",
+      "department": 5,
+      "active": true
+    },
+    {
+      "id": 2,
+      "roleName": "Plant Supervisor",
+      "roleDesc": "Manages plant users and customers",
+      "department": 1,
+      "active": true
+    },
+    {
+      "id": 3,
+      "roleName": "Quality Inspector",
+      "roleDesc": "Read-only access to users and customers",
+      "department": 2,
+      "active": true
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": [
+    {
+      "id": 1,
+      "baseUserId": 503,
+      "currentProductId": {
+        "id": 1,
+        "productName": "MiSME Basic",
+        "description": "Basic wallet for small manufacturers"
+      },
+      "requestedProductId": {
+        "id": 2,
+        "productName": "MiSME Business",
+        "description": "Higher limits for growing manufacturers"
+      },
+      "reason": "Needs higher transaction limits",
+      "approvedBy": null,
+      "createdOn": "2026-11-02T09:15:00"
+    }
+  ]
+}

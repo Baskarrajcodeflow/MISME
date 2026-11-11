@@ -7,6 +7,7 @@ import { UserPrivilages } from './role-management/role-management/role-managemen
 import { PLATFORM, PLATFORM_LOGIN } from '../environments/platform';
 import type { Platform } from '../environments/platform.model';
 import { isOnPlatform } from './core/platform/platform-filter';
+import { PARTNER_SCREEN } from './user-management/organization/organization-screen';
 
 @Injectable({
   providedIn: 'root',
@@ -49,22 +50,48 @@ export class PermissionService {
 
 
   modules: ModuleMeta[] = [
-  
+
+    {
+      // Manufacture landing screen (PLATFORM_LOGIN.homePath). One link, so shown as a direct link
+      name: 'Dashboard',
+      location: './Dashboard',
+      icon: 'assets/icons/dashboard.png',
+      platforms: ['manufacture-app'],
+      components: [
+        { name: "dashboard", displayLink: "Dashboard" },
+      ]
+    },
+    {
+      // A manufacturer's suppliers, distributors and merchants (see manufactureRoutes()).
+      // One link, so the sidebar shows the module itself as the link (see singleLink on ModuleMeta)
+      name: 'Partner Onboarding',
+      location: './PartnerOnboarding',
+      icon: 'assets/icons/verify.png',
+      platforms: ['manufacture-app'],
+      components: [
+        { name: "partners", displayLink: "Partners" },
+      ]
+    },
     {
       name: 'User Management',
       location: './UserManagement',
       icon: 'assets/icons/key.png',
+      // Hidden on manufacture for now. To show it there again, remove this `platforms` line
+      platforms: ['backoffice'],
       components: [
         { name: "BOLanding", location: "user-modal/user-modal.component", displayLink: "Back Office User" },
         { name: "resetPassword", location: "user-modal/user-modal.component", displayLink: "Reset Password" },
         { name: "CustomerLanding", location: "user-modal/user-modal.component", displayLink: "Customer" },
-        { name: "organization", location: "user-modal/user-modal.component", displayLink: "Organization" },
+        // Manufacture registers organizations through Partner Onboarding instead
+        { name: "organization", location: "user-modal/user-modal.component", displayLink: "Organization", platforms: ['backoffice'] },
       ]
     },
     {
       name: "Role Management",
       location: "./RoleManagement",
       icon: "assets/icons/key.png",
+      // Not shown on manufacture
+      platforms: ['backoffice'],
       components: [
         {
           name: "ComponentList",
@@ -200,6 +227,9 @@ export class PermissionService {
         permittedModules.push({
           ...module,
           components: permittedComponents,
+          // Counted on the module's definition, not on the role's permitted links, so a module
+          // with several links never turns into a single link for a role that can see only one
+          singleLink: module.components.filter((component) => isOnPlatform(component.platforms)).length === 1,
         });
       }
       // }
@@ -293,7 +323,26 @@ export class PermissionService {
 
   /** Manufacture-only screens. Add new manufacture routes here. */
   private manufactureRoutes(): Route[] {
-    return [];
+    return [
+      // Landing screen after sign-in: partner counts, with links to the partner list and form
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./manufacture/dashboard/manufacture-dashboard.component').then(c => c.ManufactureDashboardComponent)
+      },
+
+      // Partner Onboarding: the back office organization list and form, with Supplier /
+      // Distributor / Merchant as the entity types (PARTNER_SCREEN)
+      {
+        path: 'partners',
+        loadComponent: () => import('./user-management/user-management/organization-view/organization-view.component').then(c => c.OrganizationViewComponent),
+        data: { organizationScreen: PARTNER_SCREEN }
+      },
+      {
+        path: 'registerPartner',
+        loadComponent: () => import('./user-management/organization/register-organization/register-organization.component').then(c => c.RegisterOrganizationComponent),
+        data: { organizationScreen: PARTNER_SCREEN }
+      },
+    ];
   }
 
   /**

@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "productName": "MiSME Basic",
+    "description": "Basic wallet for small manufacturers"
+  },
+  {
+    "id": 2,
+    "productName": "MiSME Business",
+    "description": "Higher limits for growing manufacturers"
+  }
+]

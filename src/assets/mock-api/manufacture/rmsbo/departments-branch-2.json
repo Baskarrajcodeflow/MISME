@@ -1,0 +1,12 @@
+[
+  {
+    "id": 3,
+    "name": "Warehouse",
+    "branchId": 2
+  },
+  {
+    "id": 4,
+    "name": "Maintenance",
+    "branchId": 2
+  }
+]

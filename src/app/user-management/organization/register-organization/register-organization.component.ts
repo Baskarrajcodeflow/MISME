@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import {
   FormGroup,
   FormBuilder,
@@ -8,7 +8,8 @@ import {
   FormArray,
   ReactiveFormsModule,
 } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { organizationScreenFor } from "../organization-screen";
 import { CustomerApiService } from "../../user-management/user-management/bo/customer/ApiService/api.service";
 export interface BusinessProfile {
   legalBusinessName: string;
@@ -82,6 +83,9 @@ export class RegisterOrganizationComponent {
   // Replace with your actual API Base URL
   private apiUrl = "https://your-api-domain.com/api/kyc/merchant/create";
 
+  // Merchant onboarding (back office) or partner onboarding (manufacture), chosen by the route's data
+  readonly screen = organizationScreenFor(inject(ActivatedRoute));
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -100,7 +104,7 @@ export class RegisterOrganizationComponent {
       businessProfile: this.fb.group({
         legalBusinessName: ["", Validators.required],
         tradingName: [""],
-        entityType: ["SOLE_PROPRIETORSHIP", Validators.required],
+        entityType: [this.screen.defaultEntityType, Validators.required],
         registrationNumber: ["", Validators.required],
         incorporationDate: [""],
         taxIdentificationNumber: ["", Validators.required],
@@ -185,7 +189,7 @@ export class RegisterOrganizationComponent {
       next: (response) => {
         this.isLoading = false;
         console.log("Organization registered successfully:", response);
-        this.router.navigateByUrl("/organizationView");
+        this.router.navigateByUrl(this.screen.listPath);
       },
       error: (error) => {
         console.error("Error registering organization:", error);
@@ -195,6 +199,6 @@ export class RegisterOrganizationComponent {
   }
 
   cancel() {
-    this.router.navigateByUrl("/organizationView");
+    this.router.navigateByUrl(this.screen.listPath);
   }
 }

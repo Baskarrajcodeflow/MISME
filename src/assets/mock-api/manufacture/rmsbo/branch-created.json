@@ -1,0 +1,8 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": {
+    "id": 4,
+    "name": "New Branch"
+  }
+}

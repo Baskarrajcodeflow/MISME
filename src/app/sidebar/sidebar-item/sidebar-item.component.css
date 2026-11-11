@@ -1,61 +1,141 @@
-/* Ensure you include these styles in your global styles or component-specific stylesheet */
-
-/* Base styles for the sidebar */
-.sidebar-item {
-    background-color: #ffffff; /* White background for each item */
-    border-bottom: 1px solid #f1f1f1; /* Slight border for separation */
-    transition: background-color 0.3s;
+/*
+  One sidebar menu: a row (direct link or accordion header) and, for an accordion, its sub-links.
+  Plain CSS on purpose, see sidebar.component.css.
+*/
+:host {
+  display: block;
+  margin-bottom: 4px;
 }
 
-.sidebar-item:hover {
-    background-color: #f9f9f9; /* Light grey background on hover */
+/* Row: the direct link, or the accordion header */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: #475569;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
 }
 
-/* Styles for the header of each accordion item */
-.sidebar-header {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px; /* Adequate padding for touch targets */
-    cursor: pointer; /* Indicates this area is clickable */
-    color: #333333; /* Dark grey color for text for readability */
-    font-weight: bold;
+.row:hover {
+  background: #f1f5f9;
+  color: #0f172a;
 }
 
-/* Rotation effect for the icon indicating open/close state */
-.rotate-180 {
-    transform: rotate(180deg);
+.row.open {
+  color: #0f172a;
 }
 
-/* Additional styling for the expandable area */
-.sidebar-content {
-    padding: 10px 16px;
-    background-color: #ffffff; /* Keeping the background consistent with the header */
-    border-top: 1px solid #f1f1f1; /* Subtle separation from the header */
+/* Accordion header while one of its screens is open */
+.row.has-active {
+  color: var(--brand-primary);
+  font-weight: 600;
 }
 
-/* Link styling within the sidebar */
-.sidebar-link {
-    display: block;
-    color: #0056b3; /* A professional blue for links */
-    text-decoration: none; /* No underline by default */
-    padding: 8px 0; /* Spacing around links for easier targeting */
+/* The open screen's row or sub-link */
+.row.active,
+.sub-link.active {
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
+  font-weight: 600;
 }
 
-.sidebar-link:hover {
-    text-decoration: underline; /* Underline on hover for clear interactivity */
-    color: #004494; /* Slightly darker blue on hover */
+/* Inside the row, so the sub-links' clipping box doesn't cut the outline off */
+.row:focus-visible,
+.sub-link:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: -2px;
 }
-/* Accordion container */
-.accordion-content {
+
+.icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-  max-height: 0; /* Start with no height */
-  opacity: 0; /* Start with fully transparent */
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Class to add when accordion is open */
-.accordion-open {
-  max-height: max-content; /* Max height larger than content's natural height */
-  opacity: 1; /* Fully opaque */
+.chevron {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+  transition: transform 0.2s ease-out;
 }
 
+.row.open .chevron {
+  transform: rotate(180deg);
+}
+
+/* Sub-links: the grid row animates between 0 and the content's height */
+.sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease-out;
+}
+
+.sub.open {
+  grid-template-rows: 1fr;
+}
+
+.sub-clip {
+  overflow: hidden;
+}
+
+/* Indented under the icon, with a guide line */
+.sub-links {
+  margin: 4px 0 4px 21px;
+  padding-left: 12px;
+  border-left: 1px solid #e2e8f0;
+}
+
+.sub-link {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 18px;
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.sub-link + .sub-link {
+  margin-top: 2px;
+}
+
+.sub-link:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.sub-link.active:hover {
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron,
+  .sub {
+    transition: none;
+  }
+}

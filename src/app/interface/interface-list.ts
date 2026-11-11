@@ -57,7 +57,12 @@ export interface ModuleMeta{
   icon: string,
   components: Component[],
   /** Platforms that show this sidebar module. Leave out to show it on every platform. */
-  platforms?: Platform[]
+  platforms?: Platform[],
+  /**
+   * Set by PermissionService.getPermittedModules(), not by hand: true when the module is defined
+   * with one link on this platform. The sidebar then shows the module itself as the link, with no dropdown.
+   */
+  singleLink?: boolean
 }
 
 export interface TableColumn{
