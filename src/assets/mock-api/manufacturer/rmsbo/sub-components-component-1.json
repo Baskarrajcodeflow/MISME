@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "componentId": 1,
+    "subComponentName": "Back Office User",
+    "active": true
+  },
+  {
+    "id": 2,
+    "componentId": 1,
+    "subComponentName": "Reset Password",
+    "active": true
+  },
+  {
+    "id": 3,
+    "componentId": 1,
+    "subComponentName": "Customer",
+    "active": true
+  }
+]

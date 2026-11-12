@@ -1,0 +1,56 @@
+<div class="font-sans p-4 sm:p-8">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Title and Onboard button -->
+    <div class="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
+        <p class="mt-1 text-sm text-gray-500 font-medium">Suppliers, merchants and distributors registered under your business.</p>
+      </div>
+
+      <a
+        [routerLink]="registerPath"
+        class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[color:var(--brand-primary)] text-white font-semibold text-sm shadow-sm transition-all duration-200 hover:brightness-110 hover:-translate-y-[2px] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--brand-primary)]"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Onboard Partner
+      </a>
+    </div>
+
+    <!-- Counts couldn't be loaded -->
+    @if (loadFailed) {
+      <div class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+        <span>The partner counts couldn't be loaded.</span>
+        <button type="button" (click)="loadCounts()" class="font-semibold underline underline-offset-2 hover:text-red-900">Try again</button>
+      </div>
+    }
+
+    <!-- Count cards: each opens the partner list filtered to its type -->
+    <div class="cards">
+      @for (card of cards; track card.type) {
+        <a
+          class="card"
+          [routerLink]="listPath"
+          [queryParams]="{ type: card.type }"
+          [title]="card.description"
+          [style.--tint]="card.tint"
+          [style.--tone]="card.tone"
+        >
+          <div class="card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="card.icon" />
+            </svg>
+          </div>
+
+          <div class="card-text">
+            <p class="card-count">{{ countOf(card.type) }}</p>
+            <p class="card-label">{{ card.label }}</p>
+          </div>
+
+          <svg class="card-more" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+        </a>
+      }
+    </div>
+
+  </div>
+</div>

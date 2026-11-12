@@ -5,6 +5,7 @@ import { RoleManagementControllerService } from '../openapi';
 import { Router } from '@angular/router';
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { roleService } from '../../../role.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-roles-landing',
@@ -51,7 +52,7 @@ export class RolesLandingComponent implements OnInit {
     },
     error: () => {
       this.isLoading = false;
-      alert("Something went wrong");
+      showToast("Something went wrong");
     }
    })
   }

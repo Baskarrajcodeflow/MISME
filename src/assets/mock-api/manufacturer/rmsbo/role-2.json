@@ -1,0 +1,113 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": {
+    "id": 2,
+    "roleName": "Plant Supervisor",
+    "roleDesc": "Manages plant users and customers",
+    "department": 1,
+    "active": true,
+    "uiComponentPrivileges": [
+      {
+        "id": 11,
+        "component": {
+          "id": 4,
+          "componentName": "Dashboard",
+          "active": true
+        },
+        "subComponent": {
+          "id": 11,
+          "componentId": 4,
+          "subComponentName": "Dashboard",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": false,
+        "authorizePrivelege": false,
+        "active": true
+      },
+      {
+        "id": 12,
+        "component": {
+          "id": 1,
+          "componentName": "User Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 1,
+          "componentId": 1,
+          "subComponentName": "Back Office User",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": false,
+        "authorizePrivelege": false,
+        "active": true
+      },
+      {
+        "id": 13,
+        "component": {
+          "id": 1,
+          "componentName": "User Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 2,
+          "componentId": 1,
+          "subComponentName": "Reset Password",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": false,
+        "authorizePrivelege": false,
+        "active": true
+      },
+      {
+        "id": 14,
+        "component": {
+          "id": 1,
+          "componentName": "User Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 3,
+          "componentId": 1,
+          "subComponentName": "Customer",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": false,
+        "authorizePrivelege": false,
+        "active": true
+      },
+      {
+        "id": 15,
+        "component": {
+          "id": 3,
+          "componentName": "Partner Onboarding",
+          "active": true
+        },
+        "subComponent": {
+          "id": 10,
+          "componentId": 3,
+          "subComponentName": "Partners",
+          "active": true
+        },
+        "createPrivelege": true,
+        "readPrivelege": true,
+        "updatePrivelege": true,
+        "deletePrivelege": false,
+        "authorizePrivelege": false,
+        "active": true
+      }
+    ]
+  }
+}

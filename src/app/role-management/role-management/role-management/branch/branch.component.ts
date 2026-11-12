@@ -5,6 +5,7 @@ import { FormsModule, } from '@angular/forms';
 import { Branch, BranchControllerServiceService } from '../openapi';
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { NgFor, NgIf } from '@angular/common';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-branch',
@@ -52,20 +53,20 @@ export class BranchComponent {
     this.branchService.createBranch(this.branchRequest).subscribe({
         next: (branch:any) => {
           if(branch){
-            alert("created successfully");
+            showToast("created successfully");
             this.branchCreated.emit(true);
             this.branchName = '';
             this.isLoading = false;
           }
           else{
-            alert("Something went wrong");
+            showToast("Something went wrong");
             this.isLoading = false;
           }
           // this.branch = this.branch.filter(o => o.id !== a.id);
           // this.branch.push(branch);
         },
         error: (error) => {
-        alert("Something went wrong");
+        showToast("Something went wrong");
         this.isLoading = false;
       }
       })

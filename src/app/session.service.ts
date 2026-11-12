@@ -7,7 +7,7 @@ import { CorporateService } from "./corporate/corporate.service";
 import { MatDialog } from "@angular/material/dialog";
 import { SessionDialogComponent } from "./session-dialog/session-dialog.component";
 import { SessionInactiveDialogComponent } from "./session-dialog/session-inactive-dialog/session-inactive-dialog.component";
-import { environment } from "../environments/environment.prod";
+import { environment } from "../environments/environment";
 
 @Injectable({
   providedIn: "root",

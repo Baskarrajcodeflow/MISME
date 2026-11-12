@@ -13,6 +13,7 @@ import { inject } from '@angular/core';
 //new
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { showToast } from './core/toast/toast';
 //new
 //const SECRET_KEY = 'DAdHr3nBFT@hR3QdRK!XwAgA*M!mBB7Qso2J^4dHAN0tAIZg7A';
 const SALT_SIZE = 16;
@@ -62,7 +63,7 @@ req.url.includes('/assets/audit-trail/login_audit_log.xlsx')) {
     tap((event: any) => {
       if (event?.status && event.status !== 200 && event.status !== 201) {
         const errorMessage = event?.error?.error || 'Unknown Error';
-        alert(`Error code 01\n${errorMessage}`);
+        showToast(`Error code 01\n${errorMessage}`);
       }
     }),
     catchError((error) => {
@@ -72,11 +73,11 @@ req.url.includes('/assets/audit-trail/login_audit_log.xlsx')) {
       }
       else if (error?.status === 500 && typeof error?.error === 'string') {
         errorMessage = error.error;
-              alert(`Error code 02\n${errorMessage}`);
+              showToast(`Error code 02\n${errorMessage}`);
 
       } else if (error?.error?.error) {
         errorMessage = error.error.error;
-              alert(`Error code 02\n${errorMessage}`);
+              showToast(`Error code 02\n${errorMessage}`);
 
       }
       return of(error);

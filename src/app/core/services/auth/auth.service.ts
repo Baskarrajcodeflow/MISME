@@ -7,6 +7,8 @@ import { environment } from "../../../../environments/environment";
 import { Router } from "@angular/router";
 import { DataSharingService } from "../../../product/dataSharing/data-sharing.service";
 import { SessionService } from "../../../session.service";
+import { PLATFORM_LOGIN } from "../../../../environments/platform";
+import { showToast } from '../../toast/toast';
 
 @Injectable({
   providedIn: "root",
@@ -48,7 +50,7 @@ export class AuthService {
     return this.apiService.post(endURL, { emailOrPhone, password,userType }).pipe(
       tap((response: any) => {
         if(response.responseCode == 200) {
-          alert("OTP has sent to your email/phone");
+          showToast("OTP has sent to your email/phone");
         }
         // let tokens = JSON.stringify(response);
       })
@@ -59,7 +61,8 @@ export class AuthService {
     if(v?.responseCode == 200 ){
       this.currentUser.set(userName)
       this.storeToken(tokens)
-      this.router.navigate(['/dashboard']);
+      // Each platform has its own landing page (PLATFORM_LOGIN.homePath)
+      this.router.navigate(['/' + PLATFORM_LOGIN.homePath]);
       
     }
   }

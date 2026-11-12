@@ -2,8 +2,8 @@
   
   <!-- Ambient Background (Warm Tones) -->
   <div class="absolute inset-0 pointer-events-none z-0">
-    <div class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-amber-500/10 rounded-full mix-blend-multiply filter blur-[120px]"></div>
-    <div class="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-[#3B1E0B]/5 rounded-full mix-blend-multiply filter blur-[120px]"></div>
+    <div class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-amber-500/10 rounded-full mix-blend-multiply blur-[120px]"></div>
+    <div class="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-[#3B1E0B]/5 rounded-full mix-blend-multiply blur-[120px]"></div>
     <div class="absolute inset-0 bg-[radial-gradient(#78350f_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.03]"></div>
   </div>
 
@@ -12,14 +12,20 @@
     <!-- Header Section -->
     <div class="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-3xl font-bold text-[#3B1E0B] tracking-tight">Merchants</h1>
-        <p class="mt-1 text-sm text-slate-500 font-medium">Manage registered merchants.</p>
+        <h1 class="text-3xl font-bold text-[#3B1E0B] tracking-tight">{{ screen.listTitle }}</h1>
+        <p class="mt-1 text-sm text-slate-500 font-medium">{{ screen.listSubtitle }}</p>
+
+        <!-- Shown when the list is narrowed to one entity type (?type=...) -->
+        <div *ngIf="typeFilter" class="mt-3 inline-flex items-center gap-2 rounded-full border border-[#fde68a] bg-white pl-3 pr-1 py-1 text-xs font-semibold text-[#3B1E0B]">
+          Showing: {{ typeFilterLabel }}
+          <button type="button" (click)="clearTypeFilter()" class="rounded-full px-2 py-0.5 text-[#b45309] hover:bg-[#fffbeb]">Show all</button>
+        </div>
       </div>
       
       <!-- Register Button -->
       <button (click)="registerMerchant()" type="button" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#F59E0B] text-white font-semibold text-sm shadow-[0_4px_14px_rgba(245,158,11,0.3)] transition-all duration-300 hover:bg-[#D97706] hover:shadow-[0_6px_20px_rgba(245,158,11,0.4)] hover:-translate-y-0.5 active:scale-[0.98]">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-        Register Merchant
+        {{ screen.registerLabel }}
       </button>
     </div>
 
@@ -32,7 +38,7 @@
           <!-- Table Header -->
           <thead>
             <tr class="bg-[#FAF9F6] border-b border-amber-100/60">
-              <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Merchant ID</th>
+              <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">{{ screen.idColumnLabel }}</th>
               <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Business Details</th>
               <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Reg. Number</th>
               <th class="px-6 py-4 text-left text-[11px] font-bold text-[#3B1E0B]/70 uppercase tracking-wider">Entity Type</th>
@@ -45,7 +51,7 @@
           <tbody class="divide-y divide-amber-100/40">
             
             <!-- Row 1 -->
-            <tr *ngFor="let item of organizationDetails" class="hover:bg-amber-50/30 transition-colors duration-200 group">
+            <tr *ngFor="let item of visibleOrganizations" class="hover:bg-amber-50/30 transition-colors duration-200 group">
               <td class="px-6 py-4">
                 <span class="inline-flex items-center justify-center px-2 py-1 rounded-md bg-white border border-slate-200 text-xs font-mono font-medium text-[#3B1E0B] shadow-sm group-hover:border-amber-200 transition-all">
                   #{{ item.merchantId }}
@@ -96,10 +102,10 @@
         <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
         </div>
-        <h3 class="text-lg font-bold text-[#3B1E0B] mb-1">No merchants found</h3>
-        <p class="text-slate-500 text-sm mb-6 max-w-sm">Get started by registering your first merchant to process payments.</p>
+        <h3 class="text-lg font-bold text-[#3B1E0B] mb-1">{{ screen.emptyTitle }}</h3>
+        <p class="text-slate-500 text-sm mb-6 max-w-sm">{{ screen.emptyText }}</p>
         <button type="button" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#F59E0B] text-white font-semibold text-sm shadow-[0_4px_14px_rgba(245,158,11,0.3)] transition-all hover:bg-[#D97706] active:scale-[0.98]">
-          Register Merchant
+          {{ screen.registerLabel }}
         </button>
       </div>
 

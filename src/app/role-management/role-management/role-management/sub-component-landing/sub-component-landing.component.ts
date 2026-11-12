@@ -4,6 +4,7 @@ import { AddSubComponentComponent } from '../add-sub-component/add-sub-component
 import { NgFor, NgIf } from '@angular/common';
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { roleService } from '../../../role.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-sub-component-landing',
@@ -66,7 +67,7 @@ export class SubComponentLandingComponent {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     })
   }
@@ -82,7 +83,7 @@ export class SubComponentLandingComponent {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     })
   }

@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:manufacturer": "ng serve --configuration=manufacturer-dev",
     "build": "ng build",
+    "build:manufacturer": "ng build --configuration=manufacturer-prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

@@ -4,6 +4,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { BackOffice } from '../openapi';
 import { boService } from '../bo/bo.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-bo-user-edit',
@@ -144,7 +145,7 @@ export class BoUserEditComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }
@@ -165,7 +166,7 @@ export class BoUserEditComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }
@@ -183,7 +184,7 @@ export class BoUserEditComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }

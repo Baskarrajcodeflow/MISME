@@ -1,0 +1,73 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": {
+    "id": 3,
+    "roleName": "Quality Inspector",
+    "roleDesc": "Read-only access to users and customers",
+    "department": 2,
+    "active": true,
+    "uiComponentPrivileges": [
+      {
+        "id": 16,
+        "component": {
+          "id": 4,
+          "componentName": "Dashboard",
+          "active": true
+        },
+        "subComponent": {
+          "id": 11,
+          "componentId": 4,
+          "subComponentName": "Dashboard",
+          "active": true
+        },
+        "createPrivelege": false,
+        "readPrivelege": true,
+        "updatePrivelege": false,
+        "deletePrivelege": false,
+        "authorizePrivelege": false,
+        "active": true
+      },
+      {
+        "id": 17,
+        "component": {
+          "id": 1,
+          "componentName": "User Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 1,
+          "componentId": 1,
+          "subComponentName": "Back Office User",
+          "active": true
+        },
+        "createPrivelege": false,
+        "readPrivelege": true,
+        "updatePrivelege": false,
+        "deletePrivelege": false,
+        "authorizePrivelege": false,
+        "active": true
+      },
+      {
+        "id": 18,
+        "component": {
+          "id": 1,
+          "componentName": "User Management",
+          "active": true
+        },
+        "subComponent": {
+          "id": 3,
+          "componentId": 1,
+          "subComponentName": "Customer",
+          "active": true
+        },
+        "createPrivelege": false,
+        "readPrivelege": true,
+        "updatePrivelege": false,
+        "deletePrivelege": false,
+        "authorizePrivelege": false,
+        "active": true
+      }
+    ]
+  }
+}

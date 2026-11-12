@@ -1,0 +1,12 @@
+[
+  {
+    "id": 5,
+    "name": "Administration",
+    "branchId": 3
+  },
+  {
+    "id": 6,
+    "name": "Finance",
+    "branchId": 3
+  }
+]

@@ -1,4 +1,5 @@
 import { Validators } from "@angular/forms";
+import type { Platform } from "../../environments/platform.model";
 
 export interface FormControlConfig {
     key: string;
@@ -13,7 +14,9 @@ export interface FormControlConfig {
     name: string,
     location?: string,
     displayLink: string,
-    queryParams?: { [key: string]: any }
+    queryParams?: { [key: string]: any },
+    /** Platforms that show this sidebar link. Leave out to show it on every platform. */
+    platforms?: Platform[]
   }
   /* export interface UserType {
     value: string;
@@ -30,9 +33,11 @@ export interface FormControlConfig {
     signup='signup'
   }
   export enum UserType{
-    customer='customer',
-    agent='agent',
-    backoffice='BO'
+  //  customer='customer',
+  //  agent='agent',
+  //add Manufacturer
+    backoffice='BO',
+    manufacturer='MANUFACTURER'
   }
   export enum AgentUserType{
     agent='agent',
@@ -50,7 +55,14 @@ export interface ModuleMeta{
   name: string,
   location: string,
   icon: string,
-  components: Component[]
+  components: Component[],
+  /** Platforms that show this sidebar module. Leave out to show it on every platform. */
+  platforms?: Platform[],
+  /**
+   * Set by PermissionService.getPermittedModules(), not by hand: true when the module is defined
+   * with one link on this platform. The sidebar then shows the module itself as the link, with no dropdown.
+   */
+  singleLink?: boolean
 }
 
 export interface TableColumn{

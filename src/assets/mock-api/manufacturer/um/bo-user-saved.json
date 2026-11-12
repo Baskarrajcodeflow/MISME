@@ -1,0 +1,32 @@
+{
+  "id": 105,
+  "email": "new.user@example.com",
+  "firstName": "New",
+  "lastName": "User",
+  "phone": "26481100105",
+  "userType": "BO",
+  "userCategoryType": "MAKER",
+  "active": true,
+  "deleted": false,
+  "accountState": "ACTIVE",
+  "pwdLockout": false,
+  "isFirstActivated": true,
+  "username": "new.user@example.com",
+  "role": null,
+  "roleData": {
+    "id": 3,
+    "roleName": "Quality Inspector",
+    "roleDesc": "Read-only access to users and customers",
+    "department": 2,
+    "active": true
+  },
+  "branch": {
+    "id": 1,
+    "name": "Windhoek Plant"
+  },
+  "department": {
+    "id": 2,
+    "name": "Quality Control",
+    "branchId": 1
+  }
+}

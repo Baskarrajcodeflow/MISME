@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { SuspendUserDialogComponent } from '../../../../corporate/suspend-user-dialog/suspend-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BoUserEditComponent } from '../bo-user-edit/bo-user-edit.component';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-bo',
@@ -69,7 +70,7 @@ onCancel(): void {
             this.boUsers = this.boUsers.filter((o:any)=> o.id !== a.id);
             this.boUsers.push(a);
             this.selected = undefined
-            alert("Back office user created successfully")
+            showToast("Back office user created successfully")
           }
         },
         error: (error) => {
@@ -86,11 +87,11 @@ onCancel(): void {
             }
     
             // **THIS IS THE CORRECT PLACEMENT OF THE ALERT (OR BETTER METHOD)**
-            alert(errorMessage); // Or use a better method like: this.showErrorMessage(errorMessage); 
+            showToast(errorMessage); // Or use a better method like: this.showErrorMessage(errorMessage); 
     
           } else { // Handling other errors
             errorMessage = 'An error occurred: ' + error.message;
-            alert(errorMessage); // Or this.showErrorMessage(errorMessage);
+            showToast(errorMessage); // Or this.showErrorMessage(errorMessage);
           }
         }
       });
@@ -102,7 +103,7 @@ onCancel(): void {
             this.boUsers = this.boUsers.filter((o:any) => o.id !== a.id);
             this.boUsers.push(a);
             this.selected = undefined
-            alert("Back office user edit successfull")
+            showToast("Back office user edit successfull")
           }
         },
         error: (error) => {
@@ -119,11 +120,11 @@ onCancel(): void {
             }
     
             // **THIS IS THE CORRECT PLACEMENT OF THE ALERT (OR BETTER METHOD)**
-            alert(errorMessage); // Or use a better method like: this.showErrorMessage(errorMessage); 
+            showToast(errorMessage); // Or use a better method like: this.showErrorMessage(errorMessage); 
     
           } else { // Handling other errors
             errorMessage = 'An error occurred: ' + error.message;
-            alert(errorMessage); // Or this.showErrorMessage(errorMessage);
+            showToast(errorMessage); // Or this.showErrorMessage(errorMessage);
           }
         }
       });
@@ -172,16 +173,16 @@ onCancel(): void {
           user.active = true;
           this.activationState.set(user.id, true);          // user.isFirstActivated = true; 
           this.getAllBackOffice();
-          alert("Activated");
+          showToast("Activated");
         }
       },
       error: (error) => {
         this.isLoading = false;
         if (error.status === 500) {
           const errorMessage = error.error?.message || 'Maker cannot be checker';
-          alert(errorMessage);
+          showToast(errorMessage);
         } else {
-          alert('An error occurred: ' + error.message);
+          showToast('An error occurred: ' + error.message);
         } 
       }
     });
@@ -216,11 +217,11 @@ onCancel(): void {
        approvePasswordUnlock(id:any){
          this.userService.passwordUnlockRevoke(id).subscribe(response =>{
            if(response.responseCode == 200){
-             alert("Account Unlock Approved Successfully");
+             showToast("Account Unlock Approved Successfully");
              this.getAllBackOffice();
            }
            else if(response.responseCode == 0){
-             alert("Error Occured - "+response.error)
+             showToast("Error Occured - "+response.error)
            }
          })
      
@@ -244,7 +245,7 @@ onCancel(): void {
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }
@@ -258,12 +259,12 @@ onCancel(): void {
         if (a) {
           this.isLoading = false;
           this.getAllBackOffice();
-          alert("Deactiveted")
+          showToast("Deactiveted")
         }
       },
       error: () => {
         this.isLoading = false;
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     });
   }
@@ -275,16 +276,16 @@ onCancel(): void {
         if (a) {
           this.boUsers = this.boUsers.filter((o:any)=> o.id !== a.id);
           this.boUsers.push(a);
-          alert("rejected")
+          showToast("rejected")
           this.isLoading = false;
         }
       },error: (error) => {
         this.isLoading = false;
         if (error.status === 500) {
           const errorMessage = error.error?.message || 'Maker cannot be checker';
-          alert(errorMessage);
+          showToast(errorMessage);
         } else {
-          alert('An error occurred: ' + error.message);
+          showToast('An error occurred: ' + error.message);
         } 
       }
     });

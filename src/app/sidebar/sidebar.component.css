@@ -1,0 +1,128 @@
+/*
+  Sidebar shell.
+  From 1024px up: a fixed-width column beside the page.
+  Below 1024px: a drawer that slides in over the page (class "open"), with a dimmed backdrop.
+
+  Plain CSS, not Tailwind classes, on purpose: the build generates only part of Tailwind
+  (no colours, spacing or breakpoints), and the rest comes from a stylesheet the login screen loads.
+  The menu must not depend on that.
+*/
+:host {
+  display: flex;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 256px;
+  background: #fff;
+  border-right: 1px solid #e2e8f0;
+}
+
+.backdrop,
+.drawer-bar {
+  display: none;
+}
+
+.menu {
+  flex: 1;
+  overflow: hidden auto;
+  padding: 16px 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.menu-label {
+  margin: 0 0 8px;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+/* Drawer: keep this breakpoint the same as the header menu button's (lg:hidden = from 1024px) */
+@media (max-width: 1023.98px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 70; /* above the sticky header (50) and the backdrop (60) */
+    width: 288px;
+    max-width: 85vw;
+    transform: translateX(-100%);
+    visibility: hidden; /* closed: out of keyboard focus and screen readers */
+    transition: transform 0.3s ease-out, visibility 0.3s;
+  }
+
+  .sidebar.open {
+    transform: none;
+    visibility: visible;
+    box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.3);
+  }
+
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  .drawer-bar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 12px 0 24px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .app-name {
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .close-button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: #64748b;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .close-button:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+
+  .close-button:focus-visible {
+    outline: 2px solid var(--brand-primary);
+  }
+
+  .close-button svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
+}

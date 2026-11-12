@@ -19,6 +19,7 @@ import { last, } from 'rxjs/operators';
 import { ApiService } from '../../../../../../core/services/api/api.service';
 import { CustomerApiService } from '../ApiService/api.service';
 import { CustomerDatasharingService } from '../datasharing.service';
+import { showToast } from '../../../../../../core/toast/toast';
 interface imageUpload {
   type: any,
   file: any,
@@ -213,27 +214,27 @@ export class CustomerViewComponent {
           this.apiService.customerKYCRegister(request).subscribe({
             next: (res) => {
               if (res?.responseCode == 200) {
-                alert('Customer Registration Success');
+                showToast('Customer Registration Success');
                 this.router.navigateByUrl('userManagement/customer');
                 this.dataSgaring.corpKycData(false);
                 this.customerId = res?.id;
               } else {
                 this.isLoading = false;
-                alert(res?.error);
+                showToast(res?.error);
               }
             },
             error: () => {
               this.isLoading = false;
-              alert('Something Went Wrong!!!');
+              showToast('Something Went Wrong!!!');
             },
           });
         } else {
           this.isLoading = false;
-          alert(res?.error);
+          showToast(res?.error);
         }
       },
       error: () => {
-        alert('Error Try Again');
+        showToast('Error Try Again');
       },
     });
   } // customerKYCBasic() { //   let request = { //     kycType: 'CUSTOMER', //     submittedFor: this.customerId, //     kycInputs: { //       custInfoFirstName: this.identityDetailsForm.value.customerFirstName, //       custInfoLastName: this.identityDetailsForm.value.customerLastName, //       custInfoFatherName: this.identityDetailsForm.value.customerFatherName, //       custInfoDob: this.identityDetailsForm.value.customerDOB, //       custInfoGender: this.identityDetailsForm.value.customerGender, //       custInfoMaritalStatus: //         this.identityDetailsForm.value.customerMaritialStatus, //       custInfoAltPhone: this.identityDetailsForm.value.customerAlternatePhone, //       custInfoEmail: this.identityDetailsForm.value.customerEmail, //       custInfoNationality: this.identityDetailsForm.value.customerNationality, //       custInfoBirthCountry: //         this.identityDetailsForm.value.customerBirthCountry, //       custInfoBirthProvince: //         this.identityDetailsForm.value.customerBirthProvince, //       currLocation: this.addressDetailsForm.value.currentLocation, //       currCountry: this.addressDetailsForm.value.currentCountry, //       currProvince: this.addressDetailsForm.value.currentProvince, //       currProvinceId: this.addressDetailsForm.value.currentProvince, //       currDistrict: this.addressDetailsForm.value.currentDistrict, //       currDistrictId: this.addressDetailsForm.value.currentDistrict, //       permCountry: this.addressDetailsForm.value.permanantCountry, //       permProvince: this.addressDetailsForm.value.permanantProvince, //       permProvinceId: this.addressDetailsForm.value.permanantProvince, //       permDistrict: this.addressDetailsForm.value.permanantDistrict, //       permDistrictId: this.addressDetailsForm.value.permanantDistrict, //       employmentType: 'EMPLOYED', //       employerName: this.occupationDetailsForm.value?.employerName, //       sourceOfIncome: this.occupationDetailsForm.value?.sourceOfIncome, //       positionHeld: this.occupationDetailsForm.value?.positionHeld, //       periodOfService: 0, //       monthlyTurnover: this.occupationDetailsForm.value?.monthlyTurnover, //       monthlyIncome: this.occupationDetailsForm.value?.monthlyIncome, //       tinNumber: this.occupationDetailsForm.value?.tinNumber, //       bizNature: this.occupationDetailsForm.value?.natureofBusiness, //       govtOrgName: this.occupationDetailsForm.value?.govtOrganizationName, //       govtPositionHeld: this.occupationDetailsForm.value?.govtPositionHeld, //       nokName: this.nextOfKinDetailsForm.value.fullName, //       nokFatherName: this.nextOfKinDetailsForm.value.fatherName, //       nokRelationship: this.nextOfKinDetailsForm.value.relationship, //       nokPhone: this.nextOfKinDetailsForm.value.phoneNumber, //       nokLocation: this.nextOfKinDetailsForm.value.location, //       purposeOfAcc: this.proofsDetailsForm.value?.purposeofAcoount, //       custProofType: this.identityDetailsForm.value.idType, //       custProofNumber: this.proofsDetailsForm.value?.idNumber, //       custProofDateOfIssue: this.proofsDetailsForm.value?.dateofIsuue, //       custProofDateOfExpiry: this.proofsDetailsForm.value?.dateofExpiry, //       tazkiraPageNo: this.proofsDetailsForm.value?.pageNumber, //       tazkiraRegNo: this.proofsDetailsForm.value?.regNumber, //       tazkiraBookNo: this.proofsDetailsForm.value?.bookNumber, //     }, //   }; //   this.apiService.customerKYCSubmit(request).subscribe({ //     next: (user: any) => { //       if (user) { //         this.isLoading = false; //         this.otpVerify = true; //         this.dataSgaring.corpKycData(false); //         alert('Customer Registered Successfully'); //       } //     }, //     error: () => { //       this.isLoading = false; //       alert('Something went wrong'); //     }, //   }); // }
@@ -244,18 +245,18 @@ export class CustomerViewComponent {
     this.apiService.generateOtp(body).subscribe({
       next: (res) => {
         if (res?.responseCode == 200) {
-          alert('OTP has sent to you Email.Please Verify.');
+          showToast('OTP has sent to you Email.Please Verify.');
           this.otpVerify = true;
         } else {
           if (res?.error) {
-            alert(res?.error);
+            showToast(res?.error);
           } else if (res?.data) {
-            alert(res?.data);
+            showToast(res?.data);
           }
         }
       },
       error: () => {
-        alert('Error Try Again');
+        showToast('Error Try Again');
       },
     });
   }

@@ -5,6 +5,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { RoleService } from '../role.service';
 import { roleService } from '../../../role.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-department',
@@ -40,7 +41,7 @@ export class DepartmentComponent implements OnInit{
     },
     error: () => {
       this.isLoading = false;
-      alert("Something went wrong");
+      showToast("Something went wrong");
     }
   })
   }
@@ -54,19 +55,19 @@ export class DepartmentComponent implements OnInit{
     this.roleService.createDepartment(this.departmentReq).subscribe({
       next : (department:any)=>{
         if(department){
-          alert("Department created successfully");
+          showToast("Department created successfully");
           this.departmentName = '';
           this.isLoading = false;
           this.departmentCreated.emit(true);
         }
         else{
-          alert("Something went wrong");
+          showToast("Something went wrong");
           this.isLoading = false;
 
         }
       },
       error: (error) => {
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     })
   }

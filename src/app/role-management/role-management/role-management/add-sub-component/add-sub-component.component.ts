@@ -5,6 +5,7 @@ import { ComponentControllerService, SubComponentControllerService, UISubCompone
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { RoleService } from '../services/role.service';
 import { roleService } from '../../../role.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   selector: 'app-add-sub-component',
@@ -54,14 +55,14 @@ export class AddSubComponentComponent {
         next: (subcomponent:any) => {
           if(subcomponent){
             this.isLoading = false
-            alert("created successfully");
+            showToast("created successfully");
             this.subComponentCreated.emit(true);
             this.subComponentName = '';
           }
         },
         error: () => {
           this.isLoading = false;
-          alert("Something went wrong");
+          showToast("Something went wrong");
         }
       })
   }

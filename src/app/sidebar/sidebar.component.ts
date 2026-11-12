@@ -1,6 +1,8 @@
-import { Component, Input, OnInit, computed, inject } from '@angular/core';
+import { Component, HostListener, Input, OnInit, computed, inject } from '@angular/core';
 import { NgFor, NgIf, CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { PLATFORM_BRAND } from '../../environments/platform';
+import { SidebarService } from './sidebar.service';
 import { AuthService } from '../core/services/auth/auth.service';
 import { PermissionService } from '../permission.service';
 import { HttpClient } from '@angular/common/http';
@@ -14,6 +16,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   selector: 'app-sidebar',
   imports: [NgFor,  NgIf, SidebarItemComponent, CommonModule],
   templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.css',
   animations: [
     trigger('slideInOut', [
       state('void', style({ transform: 'translateX(-100%)', opacity: 0 })),
@@ -26,10 +29,26 @@ export class SidebarComponent implements OnInit {
   permittedModules: ModuleMeta[] = [];
   isSidebarVisible = true;
 
+  // App name shown at the top of the drawer (below lg)
+  readonly brand = PLATFORM_BRAND;
+
   constructor( private http: HttpClient, private router: Router, public auth: AuthService,
     public permissionService: PermissionService,
-    private data:DataSharingService
+    private data:DataSharingService,
+    public sidebar: SidebarService
   ) {}
+
+  /** Closes the drawer (below lg) when a menu link is clicked; clicks on accordion headers keep it open. */
+  closeDrawerOnLinkClick(event: Event) {
+    if ((event.target as HTMLElement).closest('a')) {
+      this.sidebar.closeMobile();
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  closeDrawerOnEscape() {
+    this.sidebar.closeMobile();
+  }
   ngOnInit(): void {
     // setTimeout(() => {
     this.data.setOperator$.subscribe((res)=>{

@@ -1,0 +1,10 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": {
+    "id": 12,
+    "componentId": 1,
+    "subComponentName": "New Sub Component",
+    "active": true
+  }
+}

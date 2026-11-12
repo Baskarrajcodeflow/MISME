@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "componentName": "User Management",
+    "active": true
+  },
+  {
+    "id": 2,
+    "componentName": "Role Management",
+    "active": true
+  },
+  {
+    "id": 3,
+    "componentName": "Partner Onboarding",
+    "active": true
+  },
+  {
+    "id": 4,
+    "componentName": "Dashboard",
+    "active": true
+  }
+]

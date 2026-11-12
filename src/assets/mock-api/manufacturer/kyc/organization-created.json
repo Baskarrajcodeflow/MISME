@@ -1,0 +1,12 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": {
+    "merchantId": "PRT-0005",
+    "legalBusinessName": "New Partner (Pty) Ltd",
+    "tradingName": "New Partner",
+    "registrationNumber": "CC/2026/00001",
+    "entityType": "SUPPLIER",
+    "createdAt": "2026-11-10T09:00:00"
+  }
+}

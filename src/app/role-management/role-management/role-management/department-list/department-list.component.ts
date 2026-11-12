@@ -5,6 +5,7 @@ import { DepartmentComponent } from '../department/department.component';
 import { Department, DepartmentControllerServiceService } from '../openapi';
 import { LoaderComponent } from '../../../../loader/loader.component';
 import { roleService } from '../../../role.service';
+import { showToast } from '../../../../core/toast/toast';
 
 @Component({
   standalone: true,
@@ -57,7 +58,7 @@ export class DepartmentListComponent implements OnInit {
         },
         error: () => {
           this.isLoading = false;
-          alert("Something went wrong");
+          showToast("Something went wrong");
         }
       })
       // }

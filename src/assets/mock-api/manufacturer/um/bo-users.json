@@ -1,0 +1,130 @@
+[
+  {
+    "id": 101,
+    "email": "anna.shikongo@example.com",
+    "firstName": "Anna",
+    "lastName": "Shikongo",
+    "phone": "26481100101",
+    "userType": "BO",
+    "userCategoryType": "CHECKER",
+    "active": true,
+    "deleted": false,
+    "accountState": "ACTIVE",
+    "pwdLockout": false,
+    "isFirstActivated": true,
+    "username": "anna.shikongo@example.com",
+    "role": null,
+    "roleData": {
+      "id": 1,
+      "roleName": "Manufacturer Admin",
+      "roleDesc": "Full access to user and role management",
+      "department": 5,
+      "active": true
+    },
+    "branch": {
+      "id": 3,
+      "name": "Head Office"
+    },
+    "department": {
+      "id": 5,
+      "name": "Administration",
+      "branchId": 3
+    }
+  },
+  {
+    "id": 102,
+    "email": "johan.vanwyk@example.com",
+    "firstName": "Johan",
+    "lastName": "van Wyk",
+    "phone": "26481100102",
+    "userType": "BO",
+    "userCategoryType": "MAKER",
+    "active": true,
+    "deleted": false,
+    "accountState": "ACTIVE",
+    "pwdLockout": false,
+    "isFirstActivated": true,
+    "username": "johan.vanwyk@example.com",
+    "role": null,
+    "roleData": {
+      "id": 2,
+      "roleName": "Plant Supervisor",
+      "roleDesc": "Manages plant users and customers",
+      "department": 1,
+      "active": true
+    },
+    "branch": {
+      "id": 1,
+      "name": "Windhoek Plant"
+    },
+    "department": {
+      "id": 1,
+      "name": "Production",
+      "branchId": 1
+    }
+  },
+  {
+    "id": 103,
+    "email": "maria.nangolo@example.com",
+    "firstName": "Maria",
+    "lastName": "Nangolo",
+    "phone": "26481100103",
+    "userType": "BO",
+    "userCategoryType": "MAKER",
+    "active": true,
+    "deleted": false,
+    "accountState": "PWD_LOCKOUT_REVOKE_PENDING",
+    "pwdLockout": true,
+    "isFirstActivated": true,
+    "username": "maria.nangolo@example.com",
+    "role": null,
+    "roleData": {
+      "id": 3,
+      "roleName": "Quality Inspector",
+      "roleDesc": "Read-only access to users and customers",
+      "department": 2,
+      "active": true
+    },
+    "branch": {
+      "id": 1,
+      "name": "Windhoek Plant"
+    },
+    "department": {
+      "id": 2,
+      "name": "Quality Control",
+      "branchId": 1
+    }
+  },
+  {
+    "id": 104,
+    "email": "peter.amupolo@example.com",
+    "firstName": "Peter",
+    "lastName": "Amupolo",
+    "phone": "26481100104",
+    "userType": "BO",
+    "userCategoryType": "MAKER",
+    "active": false,
+    "deleted": false,
+    "accountState": "ACTIVE",
+    "pwdLockout": false,
+    "isFirstActivated": false,
+    "username": "peter.amupolo@example.com",
+    "role": null,
+    "roleData": {
+      "id": 2,
+      "roleName": "Plant Supervisor",
+      "roleDesc": "Manages plant users and customers",
+      "department": 1,
+      "active": true
+    },
+    "branch": {
+      "id": 2,
+      "name": "Walvis Bay Plant"
+    },
+    "department": {
+      "id": 3,
+      "name": "Warehouse",
+      "branchId": 2
+    }
+  }
+]

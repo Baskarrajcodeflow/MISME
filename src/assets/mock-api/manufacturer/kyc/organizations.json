@@ -1,0 +1,44 @@
+{
+  "responseCode": 200,
+  "error": null,
+  "data": {
+    "content": [
+      {
+        "merchantId": "PRT-0001",
+        "legalBusinessName": "Namib Steel Supplies (Pty) Ltd",
+        "tradingName": "Namib Steel",
+        "registrationNumber": "CC/2019/04512",
+        "entityType": "SUPPLIER",
+        "createdAt": "2026-09-14T08:30:00"
+      },
+      {
+        "merchantId": "PRT-0002",
+        "legalBusinessName": "Erongo Packaging CC",
+        "tradingName": "Erongo Pack",
+        "registrationNumber": "CC/2020/07731",
+        "entityType": "SUPPLIER",
+        "createdAt": "2026-09-30T13:20:00"
+      },
+      {
+        "merchantId": "PRT-0003",
+        "legalBusinessName": "Northern Distribution Network (Pty) Ltd",
+        "tradingName": "NorthDist",
+        "registrationNumber": "CC/2021/11873",
+        "entityType": "DISTRIBUTOR",
+        "createdAt": "2026-10-02T11:05:00"
+      },
+      {
+        "merchantId": "PRT-0004",
+        "legalBusinessName": "Khomas Hardware Traders CC",
+        "tradingName": "Khomas Hardware",
+        "registrationNumber": "CC/2018/02290",
+        "entityType": "MERCHANT",
+        "createdAt": "2026-10-28T15:40:00"
+      }
+    ],
+    "totalElements": 4,
+    "totalPages": 1,
+    "size": 20,
+    "number": 0
+  }
+}

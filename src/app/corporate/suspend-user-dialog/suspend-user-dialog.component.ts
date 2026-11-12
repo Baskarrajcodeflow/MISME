@@ -8,6 +8,7 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { LoaderComponent } from '../../loader/loader.component';
 import { UserService } from '../../user-management/user-management/user-management/bo/user.service';
 import { finalize } from 'rxjs/operators';
+import { showToast } from '../../core/toast/toast';
 
 @Component({
   selector: 'app-suspend-user-dialog',
@@ -51,11 +52,11 @@ authorize() {
         .subscribe({
           next: (res) => {
             if (res) {
-              alert("User Suspended");
+              showToast("User Suspended");
               this.dialog.close();
-            } else alert(res?.error);
+            } else showToast(res?.error);
           },
-          error: () => alert("Something Went Wrong")
+          error: () => showToast("Something Went Wrong")
         });
 
     } else if (this.data?.flag == 1) {
@@ -66,11 +67,11 @@ authorize() {
         .subscribe({
           next: (res) => {
             if (res) {
-              alert("Request Sent For UnSuspend");
+              showToast("Request Sent For UnSuspend");
               this.dialog.close();
-            } else alert(res?.error);
+            } else showToast(res?.error);
           },
-          error: () => alert("Something Went Wrong")
+          error: () => showToast("Something Went Wrong")
         });
 
     } else if (this.data?.flag == 2) {
@@ -81,11 +82,11 @@ authorize() {
         .subscribe({
           next: (res) => {
             if (res) {
-              alert("UnSuspended");
+              showToast("UnSuspended");
               this.dialog.close();
-            } else alert(res);
+            } else showToast(res);
           },
-          error: (error) => alert(error.error?.message || "Maker cannot be checker")
+          error: (error) => showToast(error.error?.message || "Maker cannot be checker")
         });
 
     } else if (this.data?.flag == 3) {
@@ -96,11 +97,11 @@ authorize() {
         .subscribe({
           next: (res) => {
             if (res) {
-              alert("Request Rejected");
+              showToast("Request Rejected");
               this.dialog.close();
-            } else alert(res);
+            } else showToast(res);
           },
-          error: (error) => alert(error.error?.message || "Maker cannot be checker")
+          error: (error) => showToast(error.error?.message || "Maker cannot be checker")
         });
     }
   }
@@ -118,8 +119,8 @@ authorize() {
       this.corporate.lockCorporateUsers(request, this.reason)
         .pipe(finalize(() => this.isLoading = false))
         .subscribe({
-          next: (res) => res ? (alert("User Locked"), this.dialog.close()) : alert(res?.error),
-          error: () => alert("Something Went Wrong")
+          next: (res) => res ? (showToast("User Locked"), this.dialog.close()) : showToast(res?.error),
+          error: () => showToast("Something Went Wrong")
         });
 
     } else if (this.data?.flag == 5) {
@@ -128,8 +129,8 @@ authorize() {
       this.userService.authorizePending(request, this.reason)
         .pipe(finalize(() => this.isLoading = false))
         .subscribe({
-          next: (data) => data ? (alert("Requested To Unlock."), this.dialog.close()) : alert("Failed"),
-          error: (error) => alert(error.error?.message || "Locked User Can't be checker")
+          next: (data) => data ? (showToast("Requested To Unlock."), this.dialog.close()) : showToast("Failed"),
+          error: (error) => showToast(error.error?.message || "Locked User Can't be checker")
         });
 
     } else if (this.data?.flag == 6) {
@@ -138,8 +139,8 @@ authorize() {
       this.userService.unlock(request, this.reason)
         .pipe(finalize(() => this.isLoading = false))
         .subscribe({
-          next: (data) => data ? (alert("User Unlocked."), this.dialog.close()) : alert("Failed"),
-          error: (error) => alert(error.error?.message || "Locked User Can't be checker")
+          next: (data) => data ? (showToast("User Unlocked."), this.dialog.close()) : showToast("Failed"),
+          error: (error) => showToast(error.error?.message || "Locked User Can't be checker")
         });
 
     } else if (this.data?.flag == 7) {
@@ -148,8 +149,8 @@ authorize() {
       this.userService.rejectUnlockReq(request, this.reason)
         .pipe(finalize(() => this.isLoading = false))
         .subscribe({
-          next: (data) => data ? (alert("Request Rejected."), this.dialog.close()) : alert("Failed"),
-          error: (error) => alert(error.error?.message || "Locked User Can't be checker")
+          next: (data) => data ? (showToast("Request Rejected."), this.dialog.close()) : showToast("Failed"),
+          error: (error) => showToast(error.error?.message || "Locked User Can't be checker")
         });
     }
   }
@@ -163,8 +164,8 @@ authorize() {
       this.userService.passwordUnlock(body)
         .pipe(finalize(() => this.isLoading = false))
         .subscribe({
-          next: (res) => res ? (alert("Unlock Request Sent"), this.dialog.close()) : alert(res?.error),
-          error: () => alert("Something Went Wrong")
+          next: (res) => res ? (showToast("Unlock Request Sent"), this.dialog.close()) : showToast(res?.error),
+          error: () => showToast("Something Went Wrong")
         });
 
     } else if (this.data?.flag == 2) {
@@ -173,8 +174,8 @@ authorize() {
       this.userService.passwordUnlockRevoke(body.userId)
         .pipe(finalize(() => this.isLoading = false))
         .subscribe({
-          next: (res) => res ? (alert("Unlock Approved"), this.dialog.close()) : alert(res?.error),
-          error: () => alert("Something Went Wrong")
+          next: (res) => res ? (showToast("Unlock Approved"), this.dialog.close()) : showToast(res?.error),
+          error: () => showToast("Something Went Wrong")
         });
     }
   }
@@ -188,8 +189,8 @@ authorize() {
       this.corporate.finalAuthorizeProduct(this.data?.message, this.reason)
         .pipe(finalize(() => this.isLoading = false))
         .subscribe({
-          next: (data) => data ? (alert("Authorized."), this.dialog.close()) : alert("Failed"),
-          error: (error) => alert(error.error?.message || error.message)
+          next: (data) => data ? (showToast("Authorized."), this.dialog.close()) : showToast("Failed"),
+          error: (error) => showToast(error.error?.message || error.message)
         });
 
     } else if (this.data?.flag == 9) {
@@ -198,8 +199,8 @@ authorize() {
       this.corporate.rejectProduct(this.data?.message, this.reason)
         .pipe(finalize(() => this.isLoading = false))
         .subscribe({
-          next: (data) => data ? (alert("Rejected."), this.dialog.close()) : alert("Failed"),
-          error: (error) => alert(error.error?.message || error.message)
+          next: (data) => data ? (showToast("Rejected."), this.dialog.close()) : showToast("Failed"),
+          error: (error) => showToast(error.error?.message || error.message)
         });
     }
   }
